@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-//@JeiPlugin
+@JeiPlugin
 public class JEI_Armortrims implements IModPlugin {
     RecipeType trimmingRecipeType = RecipeType.create(Armortrims.MODID, "armor_trimming", IArmortrimsRecipe.class);
 
