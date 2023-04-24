@@ -93,9 +93,9 @@ public class ArmortrimsRecipeCategory implements IRecipeCategory<ArmortrimsRecip
 
     @Override
     public void setRecipe(@Nonnull IRecipeLayoutBuilder builder, @Nonnull ArmortrimsRecipe recipe, @Nonnull IFocusGroup focusGroup) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 34, 40).addIngredients((Ingredient) List.of(recipe.getBaseInput()));
-        builder.addSlot(RecipeIngredientRole.INPUT, 57, 18).addIngredients((Ingredient) List.of(recipe.getAdditionalInput()));
-        builder.addSlot(RecipeIngredientRole.INPUT, 103, 18).addIngredients((Ingredient) List.of(recipe.getMaterialInput()));
+        builder.addSlot(RecipeIngredientRole.INPUT, 34, 40).addIngredients(Ingredient.of(recipe.getBaseInput()));
+        builder.addSlot(RecipeIngredientRole.INPUT, 57, 18).addIngredients(Ingredient.of(recipe.getAdditionalInput()));
+        builder.addSlot(RecipeIngredientRole.INPUT, 103, 18).addIngredients(Ingredient.of(recipe.getMaterialInput()));
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 80, 60).addItemStack(recipe.getOutput());
     }
