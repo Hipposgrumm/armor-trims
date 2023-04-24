@@ -1,0 +1,12 @@
+{
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/stronghold_library"
+    }
+  ],
+  "addition": "armor_trims:eye_armor_trim_smithing_template",
+  "count": 1,
+  "chance": 100,
+  "type": "armor_trims:chest_loot_modifier"
+}

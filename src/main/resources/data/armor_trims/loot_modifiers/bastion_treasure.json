@@ -1,0 +1,12 @@
+{
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/bastion_treasure"
+    }
+  ],
+  "addition": "armor_trims:snout_armor_trim_smithing_template",
+  "count": 1,
+  "chance": 8,
+  "type": "armor_trims:chest_loot_modifier"
+}

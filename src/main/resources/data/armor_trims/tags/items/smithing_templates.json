@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "armor_trims:netherite_upgrade_smithing_template",
+    "armor_trims:coast_armor_trim_smithing_template",
+    "armor_trims:dune_armor_trim_smithing_template",
+    "armor_trims:eye_armor_trim_smithing_template",
+    "armor_trims:rib_armor_trim_smithing_template",
+    "armor_trims:sentry_armor_trim_smithing_template",
+    "armor_trims:snout_armor_trim_smithing_template",
+    "armor_trims:tide_armor_trim_smithing_template",
+    "armor_trims:vex_armor_trim_smithing_template",
+    "armor_trims:ward_armor_trim_smithing_template",
+    "armor_trims:wild_armor_trim_smithing_template"
+  ]
+}

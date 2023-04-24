@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#T#",
+    "#B#",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:gems/diamond"
+    },
+    "T": {
+      "item": "armor_trims:ward_armor_trim_smithing_template"
+    },
+    "B": {
+      "tag": "forge:cobblestone/deepslate"
+    }
+  },
+  "result": {
+    "item": "armor_trims:ward_armor_trim_smithing_template",
+    "count": 1
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/ancient_city"
+    }
+  ],
+  "addition": "armor_trims:ward_armor_trim_smithing_template",
+  "count": 1,
+  "chance": 5,
+  "type": "armor_trims:chest_loot_modifier",
+  "note": "(This value is not read) Ancient Cities don't exist in 1.18 and earlier, but this loot table is still here for any backport mods that use it."
+}

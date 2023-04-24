@@ -1,0 +1,27 @@
+modLoader="javafml"
+loaderVersion="[40,)"
+license="All rights reserved"
+
+[[mods]]
+modId="armor_trims"
+version="${file.jarVersion}"
+displayName="Armor Trims"
+logoFile="mod.png"
+credits="Intellij IDEA, Trims by Mojang Studios - Ported by Hipposgrumm"
+authors="Hipposgrumm"
+description='''
+Adds the Armor Trims from 23w04a to versions before to 1.20 (23w04a to be specific).
+'''
+
+[[dependencies.armor_trims]]
+    modId="forge"
+    mandatory=true
+    versionRange="[40,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.armor_trims]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.18.2,1.19)"
+    ordering="NONE"
+    side="BOTH"

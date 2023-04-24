@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "gg.hipposgrumm.armor_trims.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "mixins.armor_trims.refmap.json",
+  "mixins": [
+    "SmithingTableNewGUIMixin"
+  ],
+  "client": [
+    "ArmorTrimArmorLayerModifier",
+    "TrimmedItemDecorator"
+  ],
+  "minVersion": "0.8"
+}

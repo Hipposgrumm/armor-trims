@@ -1,0 +1,12 @@
+{
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:entities/elder_guardian"
+    }
+  ],
+  "addition": "armor_trims:tide_armor_trim_smithing_template",
+  "count": 1,
+  "chance": 20,
+  "type": "armor_trims:entity_loot_modifier"
+}
