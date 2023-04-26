@@ -8,13 +8,11 @@ public class ArmortrimsRecipe implements IArmortrimsRecipe {
     private final ItemStack baseInput;
     private final ItemStack additionalInput;
     private final ItemStack materialInput;
-    private final ItemStack output;
 
-    public ArmortrimsRecipe(ItemStack baseInput, ItemStack additionalInput, ItemStack materialInput, ItemStack output) {
+    public ArmortrimsRecipe(ItemStack baseInput, ItemStack additionalInput, ItemStack materialInput) {
         this.baseInput = baseInput;
         this.additionalInput = additionalInput;
         this.materialInput = materialInput;
-        this.output = output;
     }
 
     @Override
@@ -30,10 +28,5 @@ public class ArmortrimsRecipe implements IArmortrimsRecipe {
     @Override
     public ItemStack getMaterialInput() {
         return materialInput;
-    }
-
-    @Override
-    public ItemStack getOutput() {
-        return output;
     }
 }

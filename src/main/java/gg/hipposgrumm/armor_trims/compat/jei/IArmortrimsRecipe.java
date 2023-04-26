@@ -12,7 +12,4 @@ public interface IArmortrimsRecipe {
 
     @Unmodifiable
     ItemStack getMaterialInput();
-
-    @Unmodifiable
-    ItemStack getOutput();
 }
