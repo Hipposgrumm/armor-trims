@@ -9,13 +9,18 @@ public enum Trims {
     COAST,
     DUNE,
     EYE,
+    HOST,
+    RAISER,
     RIB,
     SENTRY,
+    SHAPER,
+    SILENCE,
     SNOUT,
     SPIRE,
     TIDE,
     VEX,
     WARD,
+    WAYFINDER,
     WILD,
     NETHERITE_UPGRADE;
 

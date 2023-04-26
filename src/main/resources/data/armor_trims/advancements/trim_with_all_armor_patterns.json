@@ -1,0 +1,21 @@
+{
+  "parent": "armor_trims:adventure/trim_with_any_armor_pattern",
+  "__comment": "My recipes are controlled by hardcoded logic, so these advancements are granted via that logic.",
+  "criteria": {},
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.adventure.trim_with_all_armor_patterns.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "armor_trims:silence_armor_trim_smithing_template"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.adventure.trim_with_all_armor_patterns.title"
+    }
+  },
+  "requirements": []
+}

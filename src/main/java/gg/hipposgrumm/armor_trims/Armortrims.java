@@ -67,13 +67,18 @@ public class Armortrims {
     public static final RegistryObject<Item> COAST_ARMOR_TRIM = SMITHING_TEMPLATES.register("coast_armor_trim_smithing_template", () -> new SmithingTemplate(Trims.COAST, new Item.Properties()));
     public static final RegistryObject<Item> DUNE_ARMOR_TRIM = SMITHING_TEMPLATES.register("dune_armor_trim_smithing_template", () -> new SmithingTemplate(Trims.DUNE, new Item.Properties()));
     public static final RegistryObject<Item> EYE_ARMOR_TRIM = SMITHING_TEMPLATES.register("eye_armor_trim_smithing_template", () -> new SmithingTemplate(Trims.EYE, new Item.Properties()));
+    public static final RegistryObject<Item> HOST_ARMOR_TRIM = SMITHING_TEMPLATES.register("host_armor_trim_smithing_template", () -> new SmithingTemplate(Trims.HOST, new Item.Properties()));
+    public static final RegistryObject<Item> RAISER_ARMOR_TRIM = SMITHING_TEMPLATES.register("raiser_armor_trim_smithing_template", () -> new SmithingTemplate(Trims.RAISER, new Item.Properties()));
     public static final RegistryObject<Item> RIB_ARMOR_TRIM = SMITHING_TEMPLATES.register("rib_armor_trim_smithing_template", () -> new SmithingTemplate(Trims.RIB, new Item.Properties()));
     public static final RegistryObject<Item> SENTRY_ARMOR_TRIM = SMITHING_TEMPLATES.register("sentry_armor_trim_smithing_template", () -> new SmithingTemplate(Trims.SENTRY, new Item.Properties()));
+    public static final RegistryObject<Item> SHAPER_ARMOR_TRIM = SMITHING_TEMPLATES.register("shaper_armor_trim_smithing_template", () -> new SmithingTemplate(Trims.SHAPER, new Item.Properties()));
+    public static final RegistryObject<Item> SILENCE_ARMOR_TRIM = SMITHING_TEMPLATES.register("silence_armor_trim_smithing_template", () -> new SmithingTemplate(Trims.SILENCE, new Item.Properties()));
     public static final RegistryObject<Item> SNOUT_ARMOR_TRIM = SMITHING_TEMPLATES.register("snout_armor_trim_smithing_template", () -> new SmithingTemplate(Trims.SNOUT, new Item.Properties()));
     public static final RegistryObject<Item> SPIRE_ARMOR_TRIM = SMITHING_TEMPLATES.register("spire_armor_trim_smithing_template", () -> new SmithingTemplate(Trims.SPIRE, new Item.Properties()));
     public static final RegistryObject<Item> TIDE_ARMOR_TRIM = SMITHING_TEMPLATES.register("tide_armor_trim_smithing_template", () -> new SmithingTemplate(Trims.TIDE, new Item.Properties()));
     public static final RegistryObject<Item> VEX_ARMOR_TRIM = SMITHING_TEMPLATES.register("vex_armor_trim_smithing_template", () -> new SmithingTemplate(Trims.VEX, new Item.Properties()));
     public static final RegistryObject<Item> WARD_ARMOR_TRIM = SMITHING_TEMPLATES.register("ward_armor_trim_smithing_template", () -> new SmithingTemplate(Trims.WARD, new Item.Properties()));
+    public static final RegistryObject<Item> WAYFINDER_ARMOR_TRIM = SMITHING_TEMPLATES.register("wayfinder_armor_trim_smithing_template", () -> new SmithingTemplate(Trims.WAYFINDER, new Item.Properties()));
     public static final RegistryObject<Item> WILD_ARMOR_TRIM = SMITHING_TEMPLATES.register("wild_armor_trim_smithing_template", () -> new SmithingTemplate(Trims.WILD, new Item.Properties()));
 
     public static final RegistryObject<MenuType<SmithingMenuNew>> SMITHING_MENU_NEW = NEW_SMITHING_MENUS.register("smithing_menu_new", () -> IForgeMenuType.create(SmithingMenuNew::new));
