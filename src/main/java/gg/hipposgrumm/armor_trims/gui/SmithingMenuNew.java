@@ -138,12 +138,12 @@ public class SmithingMenuNew extends AbstractContainerMenu {
                     this.resultSlots.setItem(0, itemstack);
                 }
             } else {
-                this.resultSlots.setItem(0, LargeItemLists.getAllMaterials().contains(materialItem.getItem())?TrimmableItem.applyTrim(baseItem, templateItem.getTrim(), materialItem):ItemStack.EMPTY);
+                this.resultSlots.setItem(0, LargeItemLists.getAllMaterials().contains(materialItem.getItem()) ? TrimmableItem.applyTrim(baseItem, templateItem.getTrim(), materialItem) : ItemStack.EMPTY);
             }
         } else {
             Container vanillaRecipeContainer = new SimpleContainer(2);
-            vanillaRecipeContainer.setItem(0,baseItem);
-            vanillaRecipeContainer.setItem(1,upgradeItem);
+            vanillaRecipeContainer.setItem(0, baseItem);
+            vanillaRecipeContainer.setItem(1, upgradeItem);
             List<UpgradeRecipe> list = this.level.getRecipeManager().getRecipesFor(RecipeType.SMITHING, vanillaRecipeContainer, this.level);
             if (list.isEmpty()) {
                 this.resultSlots.setItem(0, ItemStack.EMPTY);
@@ -154,54 +154,7 @@ public class SmithingMenuNew extends AbstractContainerMenu {
                 this.resultSlots.setItem(0, itemstack);
             }
         }
-        /*
-        if (this.inputSlots.getItem(1).getItem() instanceof SmithingTemplate) {
-            ItemStack itemstack = this.inputSlots.getItem(INPUT_SLOT).copy();
-            if (itemstack.getItem() instanceof ArmorItem && itemstack.getItem() instanceof TrimmableItem) {
-                if (!this.inputSlots.getItem(MATERIAL_SLOT).isEmpty() && Config.trimmableMaterials().contains(this.inputSlots.getItem(MATERIAL_SLOT).getItem().toString())) {
-                    try {
-                        this.resultSlots.setItem(0, ((TrimmableItem) itemstack.getItem()).applyTrim(itemstack, ((SmithingTemplate) this.inputSlots.getItem(1).getItem()).getTrim(), this.inputSlots.getItem(2)));
-                    } catch (ClassCastException e) {
-                        LOGGER.error("Cannot cast "+itemstack.getItem()+" to TrimmableItem, or...\nCannot cast "+inputSlots.getItem(1)+" to SmithingTemplate.");
-                    }
-                }
-            }
-        } else {
-            List<UpgradeRecipe> list = this.level.getRecipeManager().getRecipesFor(RecipeType.SMITHING, this.inputSlots, this.level);
-            if (list.isEmpty()) {
-                this.resultSlots.setItem(0, ItemStack.EMPTY);
-            } else {
-                this.selectedRecipe = list.get(0);
-                ItemStack itemstack = this.selectedRecipe.assemble(this.inputSlots);
-                this.resultSlots.setRecipeUsed(this.selectedRecipe);
-                this.resultSlots.setItem(0, itemstack);
-            }
-        }
-        */
     }
-
-    /*public void createResult() {
-        List<UpgradeRecipe> list = this.level.getRecipeManager().getAllRecipesFor(RecipeType.SMITHING);
-        ItemStack itemstack = ItemStack.EMPTY;
-        if (this.inputSlots.getItem(1).is(Main.smithing_templates)) {
-
-        } else {
-            if (list.isEmpty()) {
-                this.resultSlots.setItem(0, ItemStack.EMPTY);
-            } else {
-                this.selectedRecipe = list.get(0);
-                this.resultSlots.setItem(0, itemstack);
-                itemstack = this.selectedRecipe.assemble(this.inputSlots);
-                this.resultSlots.setRecipeUsed(this.selectedRecipe);
-            }
-        }
-        //List<SmithingRecipeNew> listTrim = this.level.getRecipeManager().getAllRecipesFor(SmithingRecipeNew.Type.INSTANCE);
-
-        //this.selectedRecipeTrim = listTrim.get(0);
-        //itemstack = this.selectedRecipeTrim.assemble((CraftingContainer) this.inputSlots);
-        //this.resultSlots.setRecipeUsed(this.selectedRecipeTrim);
-
-    }*/
 
     public void slotsChanged(Container p_39778_) {
         super.slotsChanged(p_39778_);

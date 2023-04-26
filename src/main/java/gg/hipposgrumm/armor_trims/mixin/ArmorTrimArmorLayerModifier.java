@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import gg.hipposgrumm.armor_trims.Armortrims;
 import gg.hipposgrumm.armor_trims.config.Config;
 import gg.hipposgrumm.armor_trims.trimming.TrimmableItem;
+import gg.hipposgrumm.armor_trims.trimming.Trims;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -136,7 +137,7 @@ public abstract class ArmorTrimArmorLayerModifier<T extends LivingEntity, M exte
     }
 
     public ResourceLocation getTrimResource(net.minecraft.world.entity.Entity entity, ItemStack stack, EquipmentSlot slot) {
-        String trim = TrimmableItem.getTrim(stack);
+        String trim = Trims.getValueOf(TrimmableItem.getTrim(stack)).getId();
         String namespace = Armortrims.MODID;
         String location = String.format(java.util.Locale.ROOT, "%s:textures/trims/models/armor/%s%s.png", namespace, trim, (usesInnerModel_armortrimsMixin(slot) ? "_leggings" : ""));
 

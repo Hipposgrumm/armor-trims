@@ -18,7 +18,8 @@
   "tooltip.armor_trims.ingredients": "Ingredients:",
   "tooltip.armor_trims.ingredients.show_more": "Hold Shift to Show",
   "tooltip.armor_trims.ingredients.empty": "No materials can be applied with this smithing template...",
-  "tooltip.armor_trims.trim": "Trim:",
+  "tooltip.armor_trims.trim": "Trim: ",
   "jei.armor_trimming": "Armor Trimming",
+  "jei.item_upgrading": "Item Upgrading",
   "jei.armor_untrimming": "Armor Un-Trimming"
 }

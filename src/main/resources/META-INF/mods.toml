@@ -1,6 +1,7 @@
 modLoader="javafml"
 loaderVersion="[40,)"
 license="All rights reserved"
+issueTrackerURL="https://github.com/Hipposgrumm/armor-trims/issues"
 
 [[mods]]
 modId="armor_trims"
