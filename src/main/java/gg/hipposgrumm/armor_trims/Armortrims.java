@@ -83,7 +83,7 @@ public class Armortrims {
 
     public static final RegistryObject<MenuType<SmithingMenuNew>> SMITHING_MENU_NEW = NEW_SMITHING_MENUS.register("smithing_menu_new", () -> IForgeMenuType.create(SmithingMenuNew::new));
 
-    public static final RegistryObject<RecipeSerializer<UntrimmingSpecialRecipe>> UNTRIMMING_RECIPE = TRIMMING_RECIPES.register("crafting_special_untrimming", () -> UntrimmingSpecialRecipe.Serializer.INSTANCE); // TODO: Serialize UntrimmingSpecialRecipe with a proper serializer like SmithingRecipeNew.
+    public static final RegistryObject<RecipeSerializer<UntrimmingSpecialRecipe>> UNTRIMMING_RECIPE = TRIMMING_RECIPES.register("crafting_special_untrimming", () -> UntrimmingSpecialRecipe.Serializer.INSTANCE);
 
     public static final RegistryObject<ChestLootModifier.Serializer> TEMPLATE_CHEST_LOOT = TEMPLATES_LOOT_SPAWNER.register("chest_loot_modifier", ChestLootModifier.Serializer::new);
     public static final RegistryObject<EntityLootModifier.Serializer> TEMPLATE_ENTITY_LOOT = TEMPLATES_LOOT_SPAWNER.register("entity_loot_modifier", EntityLootModifier.Serializer::new);

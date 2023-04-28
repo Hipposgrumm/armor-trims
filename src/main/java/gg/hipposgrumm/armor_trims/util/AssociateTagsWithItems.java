@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import java.util.*;
 
 public class AssociateTagsWithItems {
-    private static final Logger LOGGER = LogUtils.getLogger();
     private Item[] item;
 
     public AssociateTagsWithItems(String tag) {

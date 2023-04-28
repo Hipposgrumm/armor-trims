@@ -106,7 +106,7 @@ public class SmithingScreenNew extends AbstractContainerScreen<SmithingMenuNew> 
         if (this.menu.getSlot(1).hasItem() && this.menu.getSlot(1).getItem().getItem() instanceof SmithingTemplate) {
             this.blit(p_98917_, i + 7, j + 65, 0, this.imageHeight, 18, 18);
         }
-        renderEntityInInventory(i + 145, j + 75, 30, 50, -50, preview); // TODO: Polish this.
+        renderEntityInInventory(i + 145, j + 75, 30, 50, -50, preview);
     }
 
     private boolean determineCraftingIncomplete() {

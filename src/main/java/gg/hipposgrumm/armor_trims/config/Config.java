@@ -53,7 +53,7 @@ public final class Config {
             builder.push("Armor Trim Materials");
             trimmableMaterials = builder
                     .comment(" This is a list of items that can be used to trim armor.\n You can add any item/tag here. For example, you could use the item id \"minecraft:sponge\" for sponge or you could use the tag \"#forge:gems/amethyst\" for amethyst shards.")
-                    .defineList("Armor Trim Materials", trimmableMaterialsList, entry -> true); // TODO: Complete this list with common metals and ores.
+                    .defineList("Armor Trim Materials", trimmableMaterialsList, entry -> true);
             builder.pop();
         }
     }
@@ -89,7 +89,7 @@ public final class Config {
             builder.push("Armor Trim Materials");
             trimmableMaterials = builder
                     .comment(" This is a list of items that can be used to trim armor.\n You can add any item/tag here by adding \"minecraft:quartz\" for items (in this case a sponge) or \"#forge:gems/amethyst\" for tags (in this case, amethyst shards)")
-                    .defineList("Armor Trim Materials", trimmableMaterialsList, entry -> true); // TODO: Complete this list with common metals and ores.
+                    .defineList("Armor Trim Materials", trimmableMaterialsList, entry -> true);
             builder.pop();
         }
     }

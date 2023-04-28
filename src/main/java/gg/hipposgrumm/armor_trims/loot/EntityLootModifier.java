@@ -20,7 +20,6 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Original Code by Kaupenjoe
  */
-// TODO: Figure this out (still).
 public class EntityLootModifier extends LootModifier {
     private static final Logger LOGGER = LogUtils.getLogger();
 

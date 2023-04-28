@@ -43,26 +43,18 @@ public class GetAvgColor {
         }
     }
 
+    /**
+     * Borrowed from:
+     * <a href="https://github.com/InnovativeOnlineIndustries/Industrial-Foregoing/blob/1.19/src/main/java/com/buuz135/industrial/utils/ColorUtils.java">https://github.com/InnovativeOnlineIndustries/Industrial-Foregoing/blob/1.19/src/main/java/com/buuz135/industrial/utils/ColorUtils.java</a>
+     */
     public void addColorEntry(String resourceLocation) {
-        // TODO: https://github.com/InnovativeOnlineIndustries/Industrial-Foregoing/blob/1.19/src/main/java/com/buuz135/industrial/utils/ItemStackUtils.java
         ResourceLocation trueResourceLocation = resourceLocation.startsWith("#")?new AssociateTagsWithItems(resourceLocation).getItems()[0].getRegistryName():new ResourceLocation(resourceLocation);
         try {
             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
             ItemModelShaper itemModelMesher = itemRenderer.getItemModelShaper();
             BakedModel itemModel = itemModelMesher.getItemModel(new ItemStack(ForgeRegistries.ITEMS.getValue(trueResourceLocation)));
-            TextureAtlasSprite particleTexture = itemModel.getParticleIcon();
-            if (particleTexture instanceof MissingTextureAtlasSprite) {
-
-            }
-            TextureAtlasSprite texture = particleTexture;
-            /*
-            AbstractTexture atlas = Minecraft.getInstance().getTextureManager().getTexture(TextureAtlas.LOCATION_BLOCKS);
-            TextureAtlasSprite texture;
-            LOGGER.debug("True Resource Location: "+trueResourceLocation);
-            texture = ((TextureAtlas) atlas).getSprite(trueResourceLocation);
-            //if (texture instanceof MissingTextureAtlasSprite) throw new RuntimeException();
-            */
-            try { // TODO: https://github.com/InnovativeOnlineIndustries/Industrial-Foregoing/blob/1.19/src/main/java/com/buuz135/industrial/utils/ColorUtils.java
+            TextureAtlasSprite texture = itemModel.getParticleIcon();
+            try {
                 if (texture == null || texture.getFrameCount() <= 0) throw new IOException();
                 long[] colorVals = new long[]{0, 0, 0, 0};
                 int size = 0;
@@ -109,7 +101,7 @@ public class GetAvgColor {
                     avgColorMethod.addColorEntry(Config.trimmableMaterials().get(i));
                 }
             } catch (Exception e) {
-                LOGGER.warn("ArmorTrims: Could not create color for entry "+Config.trimmableMaterials().get(i)+" ("+i+"). You can ignore this error.");
+                //LOGGER.warn("ArmorTrims: Could not create color for entry "+Config.trimmableMaterials().get(i)+" ("+i+"). If you are not loaded into a world you can ignore this error.");
             }
         }
         LOGGER.info("ArmorTrims: Loaded trim colors for materials in config.");
