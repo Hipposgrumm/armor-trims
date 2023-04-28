@@ -2,7 +2,7 @@
   "advancements.armor_trims.trim_with_any_armor_pattern.title": "Crafting a new look",
   "advancements.armor_trims.trim_with_any_armor_pattern.description": "Craft a trimmed armor at a Smithing Table",
   "advancements.adventure.trim_with_all_armor_patterns.title": "Smithing with style",
-  "advancements.adventure.trim_with_all_armor_patterns.description": "Apply all trim smithing templates at least once",
+  "advancements.adventure.trim_with_all_armor_patterns.description": "Apply all trim smithing templates at least once. This only includes Coast, Dune, Eye, Rib, Sentry, Snout, Spire, Tide, Vex, and Wild. Host, Raiser, Shaper, Silence, Wayfinder, Ward, and any others do not count for this advancement.",
   "item.armor_trims.smithing_template": "Smithing Template",
   "trims.armor_trims.coast": "Coast Armor Trim",
   "trims.armor_trims.dune": "Dune Armor Trim",

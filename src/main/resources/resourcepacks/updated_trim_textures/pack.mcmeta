@@ -1,0 +1,6 @@
+{
+  "pack": {
+    "pack_format": 8,
+    "description": "Re-implement newer textures that were switched around in future versions."
+  }
+}
