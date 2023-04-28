@@ -2,6 +2,7 @@
   "replace": false,
   "entries": [
     "armor_trims:ancient_city",
+    "armor_trims:ancient_city_silence",
     "armor_trims:bastion_bridge",
     "armor_trims:bastion_hoglin_stable",
     "armor_trims:bastion_other",
@@ -21,6 +22,10 @@
     "armor_trims:shipwreck_treasure",
     "armor_trims:stronghold_altar",
     "armor_trims:stronghold_library",
+    "armor_trims:trail_ruins_host",
+    "armor_trims:trail_ruins_raiser",
+    "armor_trims:trail_ruins_shaper",
+    "armor_trims:trail_ruins_wayfinder",
     "armor_trims:woodland_mansion"
   ]
 }

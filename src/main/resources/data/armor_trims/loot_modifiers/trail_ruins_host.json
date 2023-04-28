@@ -1,0 +1,13 @@
+{
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:archeology/trail_ruins_rare"
+    }
+  ],
+  "addition": "armor_trims:host_armor_trim_smithing_template",
+  "count": 1,
+  "chance": 8,
+  "type": "armor_trims:chest_loot_modifier",
+  "_comment": "Trail ruins were added in 1.20 and are not present in 1.18. This is for compatibility with backports."
+}
