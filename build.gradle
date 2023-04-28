@@ -20,7 +20,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 
 
-version = '1.0'
+version = 'b1.0'
 group = 'gg.hipposgrumm.armor_trims' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'armor_trims'
 
@@ -169,9 +169,9 @@ repositories {
     }
 
     // If you have mod jar dependencies in ./libs, you can declare them as a repository like so:
-    // flatDir {
-    //     dir 'libs'
-    // }
+    //flatDir {
+    //    dir 'libs'
+    //}
 }
 
 dependencies {
@@ -188,7 +188,6 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}") // Adds the full JEI mod as a runtime dependency
     // implementation fg.deobf("com.tterrag.registrate:Registrate:MC${mc_version}-${registrate_version}") // Adds registrate as a dependency
 
-    compileOnly fg.deobf("vazkii.botania:Botania:1.18.2-435")
     runtimeOnly fg.deobf("vazkii.botania:Botania:1.18.2-435")
 
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.18.2-5.0.7.1")

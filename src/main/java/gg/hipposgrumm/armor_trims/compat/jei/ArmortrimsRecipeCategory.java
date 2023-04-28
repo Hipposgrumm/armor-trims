@@ -1,6 +1,9 @@
 package gg.hipposgrumm.armor_trims.compat.jei;
 
+import com.mojang.logging.LogUtils;
 import gg.hipposgrumm.armor_trims.Armortrims;
+import gg.hipposgrumm.armor_trims.gui.SmithingMenuNew;
+import gg.hipposgrumm.armor_trims.item.SmithingTemplate;
 import gg.hipposgrumm.armor_trims.trimming.TrimmableItem;
 import gg.hipposgrumm.armor_trims.trimming.Trims;
 import mezz.jei.api.constants.VanillaTypes;
@@ -29,7 +32,7 @@ public class ArmortrimsRecipeCategory implements IRecipeCategory<ArmortrimsRecip
     private final IDrawable icon;
 
     public ArmortrimsRecipeCategory(IGuiHelper helper) {
-        this.background = helper.createDrawable(TEXTURE, 0, 0, 176, 85);
+        this.background = helper.createDrawable(TEXTURE, 0, 0, 168, 85);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, TrimmableItem.applyTrim(new ItemStack(Items.IRON_CHESTPLATE), Trims.COAST, new ItemStack(Items.EMERALD)));
     }
 
@@ -71,6 +74,6 @@ public class ArmortrimsRecipeCategory implements IRecipeCategory<ArmortrimsRecip
         builder.addSlot(RecipeIngredientRole.INPUT, 70, 36).addIngredients(Ingredient.of(recipe.getAdditionalInput()));
         builder.addSlot(RecipeIngredientRole.INPUT, 26, 54).addIngredients(Ingredient.of(recipe.getMaterialInput()));
 
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 124, 36).addItemStack(ArmortrimRecipeMaker.getTrimmedItem(recipe.getBaseInput(), recipe.getAdditionalInput(), recipe.getMaterialInput()));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 124, 36).addItemStack(TrimmableItem.applyTrim(recipe.getBaseInput(), ((SmithingTemplate) recipe.getAdditionalInput().getItem()).getTrim(), recipe.getMaterialInput()));
     }
 }

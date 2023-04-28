@@ -1,21 +1,14 @@
 package gg.hipposgrumm.armor_trims.compat.jei;
 
 import com.mojang.logging.LogUtils;
-import gg.hipposgrumm.armor_trims.Armortrims;
 import gg.hipposgrumm.armor_trims.item.SmithingTemplate;
 import gg.hipposgrumm.armor_trims.trimming.TrimmableItem;
 import gg.hipposgrumm.armor_trims.util.LargeItemLists;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.ingredients.IIngredientHelper;
-import mezz.jei.api.recipe.vanilla.IJeiBrewingRecipe;
-import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
 import mezz.jei.api.runtime.IIngredientManager;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +40,7 @@ public class ArmortrimRecipeMaker {
 
     private static Stream<IArmortrimsRecipe> getArmortrimRecipes(IArmortrimsRecipeFactory recipeFactory, ItemStack armorItem) {
         List<IArmortrimsRecipe> recipes = new ArrayList<>();
+        LogUtils.getLogger().info(armorItem+", "+LargeItemLists.getTrimSmithingTemplates().size()+", "+LargeItemLists.getAllMaterials());
         for (Item templateItem:LargeItemLists.getTrimSmithingTemplates()) {
             for (Item materialItem:LargeItemLists.getAllMaterials()) {
                 if (armorItem.getItem() instanceof ArmorItem) recipes.add(recipeFactory.createTrimmingRecipe(armorItem, templateItem.getDefaultInstance(), materialItem.getDefaultInstance()));
