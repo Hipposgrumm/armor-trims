@@ -1,5 +1,6 @@
 package gg.hipposgrumm.armor_trims.gui;
 
+import java.util.Iterator;
 import java.util.List;
 import javax.annotation.Nullable;
 
@@ -10,8 +11,14 @@ import gg.hipposgrumm.armor_trims.item.SmithingTemplate;
 import gg.hipposgrumm.armor_trims.trimming.TrimmableItem;
 import gg.hipposgrumm.armor_trims.trimming.Trims;
 import gg.hipposgrumm.armor_trims.util.LargeItemLists;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.PlayerAdvancements;
+import net.minecraft.server.ServerAdvancementManager;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -46,17 +53,19 @@ public class SmithingMenuNew extends AbstractContainerMenu {
     };
     protected final ContainerLevelAccess access;
     protected final Player player;
+    protected final ServerPlayer sPlayer;
     private final Level level;
     @Nullable
     private UpgradeRecipe selectedRecipe;
     private final List<UpgradeRecipe> recipes;
 
-    public SmithingMenuNew(int p_40248_, Inventory p_40249_, ContainerLevelAccess access, @Nullable Player player) {
+    public SmithingMenuNew(int p_40248_, Inventory p_40249_, ContainerLevelAccess access, ServerPlayer sPlayer) {
         super(Armortrims.SMITHING_MENU_NEW.get(), p_40248_);
         LOGGER.warn("Creating Menu..");
         this.level = p_40249_.player.level;
         this.access = access;
         this.player = p_40249_.player;
+        this.sPlayer = sPlayer;
         this.addSlot(new Slot(this.inputSlots, INPUT_SLOT, 8, 48));
         this.addSlot(new Slot(this.inputSlots, ADDITIONAL_SLOT, 52, 48));
         this.addSlot(new Slot(this.inputSlots, MATERIAL_SLOT, 8, 66) {
@@ -83,7 +92,7 @@ public class SmithingMenuNew extends AbstractContainerMenu {
     }
 
     public SmithingMenuNew(int i, Inventory inventory, @Nullable FriendlyByteBuf friendlyByteBuf) {
-        this(i,inventory,ContainerLevelAccess.NULL, inventory.player);
+        this(i,inventory,ContainerLevelAccess.NULL, null);
     }
 
     protected boolean isValidBlock(BlockState p_40266_) {
@@ -102,6 +111,7 @@ public class SmithingMenuNew extends AbstractContainerMenu {
 
     protected void onTake(Player p_150663_, ItemStack p_150664_) {
         p_150664_.onCraftedBy(p_150663_.level, p_150663_, p_150664_.getCount());
+        boolean wasTrim = this.inputSlots.getItem(ADDITIONAL_SLOT).getItem() instanceof SmithingTemplate template && template.getTrim() != Trims.NETHERITE_UPGRADE;
         this.resultSlots.awardUsedRecipes(p_150663_);
         this.shrinkStackInSlot(INPUT_SLOT);
         this.shrinkStackInSlot(MATERIAL_SLOT);
@@ -111,6 +121,19 @@ public class SmithingMenuNew extends AbstractContainerMenu {
         this.access.execute((p_40263_, p_40264_) -> {
             p_40263_.levelEvent(1044, p_40264_, 0);
         });
+        if (wasTrim && !level.isClientSide()) {
+            Advancement advancement = sPlayer.getLevel().getServer().getAdvancements().getAdvancement(new ResourceLocation("armor_trims:trim_with_any_armor_pattern"));
+            Advancement advancementChallenge = sPlayer.getLevel().getServer().getAdvancements().getAdvancement(new ResourceLocation("armor_trims:trim_with_all_armor_pattern"));
+            //LOGGER.info("trim_with_any_armor_pattern is null: " + (advancement == null)+"\n"+"trim_with_all_armor_pattern is null: " + (advancementChallenge == null));
+            if (advancement != null && !sPlayer.getAdvancements().getOrStartProgress(advancement).isDone()) {
+                LOGGER.info("Granted trim_with_any_armor_pattern");
+                sPlayer.getAdvancements().award(advancement, "code_triggered");
+            }
+            if (advancementChallenge != null && !sPlayer.getAdvancements().getOrStartProgress(advancementChallenge).getCriterion("code_triggered_"+TrimmableItem.getTrim(p_150664_)).isDone()) {
+                LOGGER.info("Granted trim_with_all_armor_pattern");
+                sPlayer.getAdvancements().award(advancementChallenge, "code_triggered_"+TrimmableItem.getTrim(p_150664_));
+            }
+        }
     }
 
     private void shrinkStackInSlot(int p_40271_) {

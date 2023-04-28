@@ -1,7 +1,4 @@
 {
-  "parent": "minecraft:adventure/root",
-  "__comment": "My recipes are controlled by hardcoded logic, so these advancements are granted via that logic.",
-  "criteria": {},
   "display": {
     "announce_to_chat": true,
     "description": {
@@ -17,5 +14,13 @@
       "translate": "advancements.armor_trims.trim_with_any_armor_pattern.title"
     }
   },
-  "requirements": []
+  "criteria": {
+    "code_triggered": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [[
+    "code_triggered"
+  ]],
+  "parent": "minecraft:adventure/root"
 }
