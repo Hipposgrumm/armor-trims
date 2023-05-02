@@ -95,10 +95,12 @@ public class GetAvgColor {
     public static void buildDefaults() {
         colorList.clear();
         GetAvgColor avgColorMethod = new GetAvgColor();
-        for (int i=0;i<Config.trimmableMaterials().size();i++) {
+        for (String material:Config.trimmableMaterials()) {
             try {
-                if (!(colorList.containsKey(Config.trimmableMaterials().get(i)))) {
-                    avgColorMethod.addColorEntry(Config.trimmableMaterials().get(i));
+                if (!(colorList.containsKey(material))) {
+                    if (ForgeRegistries.ITEMS.containsKey(new ResourceLocation(material.replace("#","")))) {
+                        avgColorMethod.addColorEntry(material);
+                    }
                 }
             } catch (Exception e) {
                 //LOGGER.warn("ArmorTrims: Could not create color for entry "+Config.trimmableMaterials().get(i)+" ("+i+"). If you are not loaded into a world you can ignore this error.");

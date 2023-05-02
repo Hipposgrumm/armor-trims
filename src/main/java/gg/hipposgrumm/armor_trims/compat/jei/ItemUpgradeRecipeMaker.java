@@ -9,9 +9,7 @@ import mezz.jei.api.runtime.IIngredientManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TieredItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.UpgradeRecipe;
 import net.minecraftforge.common.Tags;
@@ -47,22 +45,21 @@ public final class ItemUpgradeRecipeMaker {
     private static Stream<IArmortrimsRecipe> getArmortrimRecipes(IItemUpgradeRecipeFactory recipeFactory, ItemStack upgradableItem) {
         List<IArmortrimsRecipe> recipes = new ArrayList<>();
         for (Item materialItem:new AssociateTagsWithItems(Tags.Items.INGOTS_NETHERITE.location().toString()).getItems()) {
-            if (upgradableItem.getItem() instanceof TieredItem && getUpgradedItem(upgradableItem, new ItemStack(Armortrims.NETHERITE_UPGRADE.get()), materialItem.getDefaultInstance()) != upgradableItem) recipes.add(recipeFactory.createUpgradingRecipe(upgradableItem, new ItemStack(Armortrims.NETHERITE_UPGRADE.get()), materialItem.getDefaultInstance()));
+            if ((upgradableItem.getItem() instanceof TieredItem || upgradableItem.getItem() instanceof ArmorItem)) {
+                ItemStack item = getUpgradedItem(upgradableItem.copy(), new ItemStack(Armortrims.NETHERITE_UPGRADE.get()), materialItem.getDefaultInstance());
+                if (!item.getItem().equals(upgradableItem.getItem())) recipes.add(recipeFactory.createUpgradingRecipe(upgradableItem, new ItemStack(Armortrims.NETHERITE_UPGRADE.get()), materialItem.getDefaultInstance()));
+            }
         }
         return recipes.stream();
     }
 
     public static ItemStack getUpgradedItem(ItemStack tieredItem, ItemStack templateItem, ItemStack material) {
         ItemStack upgradableItem = tieredItem.copy();
-        if (templateItem.getItem() instanceof SmithingTemplate template && template.getTrim() == Trims.NETHERITE_UPGRADE) {
-            if (material.is(Tags.Items.INGOTS_NETHERITE)) {
-                Container vanillaRecipeContainer = new SimpleContainer(2);
-                vanillaRecipeContainer.setItem(0, tieredItem);
-                vanillaRecipeContainer.setItem(1, material);
-                List<UpgradeRecipe> list = Minecraft.getInstance().level.getRecipeManager().getRecipesFor(RecipeType.SMITHING, vanillaRecipeContainer, Minecraft.getInstance().level);
-                if (!list.isEmpty()) return list.get(0).assemble(vanillaRecipeContainer);
-            }
-        }
+        Container vanillaRecipeContainer = new SimpleContainer(2);
+        vanillaRecipeContainer.setItem(0, tieredItem);
+        vanillaRecipeContainer.setItem(1, material);
+        List<UpgradeRecipe> list = Minecraft.getInstance().level.getRecipeManager().getRecipesFor(RecipeType.SMITHING, vanillaRecipeContainer, Minecraft.getInstance().level);
+        if (!list.isEmpty()) return list.get(0).assemble(vanillaRecipeContainer);
         return upgradableItem;
     }
 }

@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -28,11 +29,12 @@ public class LargeItemLists {
     private static List<Item> smithingTemplatesTrims = List.of();
 
     private static List<Item> getAllItems() {
-        Item[] items = new Item[0];
+        List<Item> items = new ArrayList<>();
         for (Item item : ImmutableList.copyOf(ForgeRegistries.ITEMS.iterator())) {
-            ArrayUtils.add(items, item);
+            items.add(item);
+            //LogUtils.getLogger().info("Got: "+item);
         }
-        return List.of(items);
+        return items;
     }
 
     public static void setAllArmors() {
@@ -44,10 +46,7 @@ public class LargeItemLists {
     }
 
     public static void setAllTrimTemplates() {
-        Item[] templates = new Item[0];
-        for (Item item:smithingTemplates) {
-            templates = ArrayUtils.add(templates, item);
-        }
+        Item[] templates = smithingTemplates.toArray(new Item[0]);
         templates = ArrayUtils.removeAllOccurrences(templates, Armortrims.NETHERITE_UPGRADE.get());
         smithingTemplatesTrims = List.of(templates);
     }
@@ -76,6 +75,15 @@ public class LargeItemLists {
         }
         itemlist = ArrayUtils.removeAllOccurrences(itemlist, Items.AIR);
         return List.of(itemlist);
+    }
+
+    public static Item getTemplateFromTrim(Trims trim) {
+        for (Item template:getTrimSmithingTemplates()) {
+            if (((SmithingTemplate) template).getTrim() == trim) {
+                return template;
+            }
+        }
+        return Items.AIR;
     }
 
     public static List<Item> getAllItemsOfType(Class<? extends Item> itemType) {

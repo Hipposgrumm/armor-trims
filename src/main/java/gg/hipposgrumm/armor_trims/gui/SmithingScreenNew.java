@@ -28,8 +28,6 @@ import static net.minecraft.client.gui.screens.inventory.InventoryScreen.renderE
 
 @OnlyIn(Dist.CLIENT)
 public class SmithingScreenNew extends AbstractContainerScreen<SmithingMenuNew> implements ContainerListener {
-    private static final Logger LOGGER = LogUtils.getLogger();
-
     public static final ResourceLocation SMITHING = new ResourceLocation(Armortrims.MODID, "textures/gui/container/smithing_new.png");
     public static final ResourceLocation SMITHING_CLEAN = new ResourceLocation(Armortrims.MODID, "textures/gui/container/smithing_new_clean.png");
 

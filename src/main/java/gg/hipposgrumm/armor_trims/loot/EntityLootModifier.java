@@ -21,8 +21,6 @@ import java.util.concurrent.ThreadLocalRandom;
  * Original Code by Kaupenjoe
  */
 public class EntityLootModifier extends LootModifier {
-    private static final Logger LOGGER = LogUtils.getLogger();
-
     private final Item addition;
     private final int count;
     private final int chance;

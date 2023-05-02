@@ -2,6 +2,7 @@ package gg.hipposgrumm.armor_trims.gui;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import javax.annotation.Nullable;
 
 import com.mojang.logging.LogUtils;
@@ -12,12 +13,8 @@ import gg.hipposgrumm.armor_trims.trimming.TrimmableItem;
 import gg.hipposgrumm.armor_trims.trimming.Trims;
 import gg.hipposgrumm.armor_trims.util.LargeItemLists;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.PlayerAdvancements;
-import net.minecraft.server.ServerAdvancementManager;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
@@ -31,6 +28,7 @@ import net.minecraft.world.item.crafting.UpgradeRecipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 
 public class SmithingMenuNew extends AbstractContainerMenu {
@@ -53,19 +51,16 @@ public class SmithingMenuNew extends AbstractContainerMenu {
     };
     protected final ContainerLevelAccess access;
     protected final Player player;
-    protected final ServerPlayer sPlayer;
     private final Level level;
     @Nullable
     private UpgradeRecipe selectedRecipe;
     private final List<UpgradeRecipe> recipes;
 
-    public SmithingMenuNew(int p_40248_, Inventory p_40249_, ContainerLevelAccess access, ServerPlayer sPlayer) {
+    public SmithingMenuNew(int p_40248_, Inventory p_40249_, ContainerLevelAccess access, @Nullable Player player) {
         super(Armortrims.SMITHING_MENU_NEW.get(), p_40248_);
-        LOGGER.warn("Creating Menu..");
         this.level = p_40249_.player.level;
         this.access = access;
         this.player = p_40249_.player;
-        this.sPlayer = sPlayer;
         this.addSlot(new Slot(this.inputSlots, INPUT_SLOT, 8, 48));
         this.addSlot(new Slot(this.inputSlots, ADDITIONAL_SLOT, 52, 48));
         this.addSlot(new Slot(this.inputSlots, MATERIAL_SLOT, 8, 66) {
@@ -92,7 +87,7 @@ public class SmithingMenuNew extends AbstractContainerMenu {
     }
 
     public SmithingMenuNew(int i, Inventory inventory, @Nullable FriendlyByteBuf friendlyByteBuf) {
-        this(i,inventory,ContainerLevelAccess.NULL, null);
+        this(i,inventory,ContainerLevelAccess.NULL, inventory.player);
     }
 
     protected boolean isValidBlock(BlockState p_40266_) {
@@ -121,18 +116,17 @@ public class SmithingMenuNew extends AbstractContainerMenu {
         this.access.execute((p_40263_, p_40264_) -> {
             p_40263_.levelEvent(1044, p_40264_, 0);
         });
-        if (wasTrim && !level.isClientSide()) {
+        if (wasTrim && p_150663_ instanceof ServerPlayer sPlayer) {
             Advancement advancement = sPlayer.getLevel().getServer().getAdvancements().getAdvancement(new ResourceLocation("armor_trims:trim_with_any_armor_pattern"));
-            Advancement advancementChallenge = sPlayer.getLevel().getServer().getAdvancements().getAdvancement(new ResourceLocation("armor_trims:trim_with_all_armor_pattern"));
-            //LOGGER.info("trim_with_any_armor_pattern is null: " + (advancement == null)+"\n"+"trim_with_all_armor_pattern is null: " + (advancementChallenge == null));
+            Advancement advancementChallenge = sPlayer.getLevel().getServer().getAdvancements().getAdvancement(new ResourceLocation("armor_trims:trim_with_all_armor_patterns"));
             if (advancement != null && !sPlayer.getAdvancements().getOrStartProgress(advancement).isDone()) {
-                LOGGER.info("Granted trim_with_any_armor_pattern");
                 sPlayer.getAdvancements().award(advancement, "code_triggered");
             }
-            if (advancementChallenge != null && !sPlayer.getAdvancements().getOrStartProgress(advancementChallenge).getCriterion("code_triggered_"+TrimmableItem.getTrim(p_150664_)).isDone()) {
-                LOGGER.info("Granted trim_with_all_armor_pattern");
-                sPlayer.getAdvancements().award(advancementChallenge, "code_triggered_"+TrimmableItem.getTrim(p_150664_));
-            }
+            try {
+                if (advancementChallenge != null && !Objects.requireNonNull(sPlayer.getAdvancements().getOrStartProgress(advancementChallenge).getCriterion("code_triggered_" + TrimmableItem.getTrim(p_150664_))).isDone()) {
+                    sPlayer.getAdvancements().award(advancementChallenge, "code_triggered_" + TrimmableItem.getTrim(p_150664_));
+                }
+            } catch (NullPointerException ignored) {}
         }
     }
 
@@ -202,16 +196,12 @@ public class SmithingMenuNew extends AbstractContainerMenu {
     protected int determineSlotToMove(ItemStack item) {
         Container crafting = this.inputSlots;
         if (item.getItem() instanceof SmithingTemplate && crafting.getItem(ADDITIONAL_SLOT).isEmpty()) {
-            LOGGER.debug("ADDITIONAL_SLOT Template");
             return ADDITIONAL_SLOT;
         } else if (crafting.getItem(INPUT_SLOT).isEmpty()) {
-            LOGGER.debug("INPUT_SLOT");
             return INPUT_SLOT;
         } else if (crafting.getItem(ADDITIONAL_SLOT).isEmpty()) {
-            LOGGER.debug("ADDITIONAL_SLOT");
             return ADDITIONAL_SLOT;
         } else {
-            LOGGER.debug("MATERIAL_SLOT");
             return MATERIAL_SLOT;
         }
     }

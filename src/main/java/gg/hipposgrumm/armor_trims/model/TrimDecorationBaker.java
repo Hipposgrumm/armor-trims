@@ -20,7 +20,6 @@ import java.util.function.Consumer;
  */
 public class TrimDecorationBaker {
     public static final TrimDecorationBaker INSTANCE = new TrimDecorationBaker();
-    private static final Logger LOGGER = LogUtils.getLogger();
 
     public boolean registeredModels = false;
     public BakedModel helmet;
@@ -42,7 +41,7 @@ public class TrimDecorationBaker {
 
     public void bakeModels(Map<ResourceLocation, BakedModel> map) {
         if (!registeredModels) {
-            LOGGER.error("Additional models failed to register! Aborting baking models to avoid early crashing.");
+            LogUtils.getLogger().error("Additional models failed to register! Aborting baking models to avoid early crashing.");
             return;
         }
         helmet = map.get(new ResourceLocation(Armortrims.MODID, "item/overlay/helmet_trim"));

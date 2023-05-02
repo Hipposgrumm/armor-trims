@@ -1,4 +1,4 @@
-package gg.hipposgrumm.armor_trims.mixin;
+package gg.hipposgrumm.armor_trims.item;
 
 import com.mojang.logging.LogUtils;
 import gg.hipposgrumm.armor_trims.trimming.TrimmableItem;
@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class TrimmedItemDescription {
-    private static final Logger LOGGER = LogUtils.getLogger();
-
     @SubscribeEvent
     public static void addTrimLabel(ItemTooltipEvent event) {
         List<Component> list = event.getToolTip();
@@ -29,10 +27,10 @@ public class TrimmedItemDescription {
             TextColor color = TextColor.fromRgb(TrimmableItem.getMaterialColor(itemstack));
             TranslatableComponent trimName = new TranslatableComponent("trims.armor_trims." + TrimmableItem.getTrim(itemstack));
             trimName.withStyle(trimName.getStyle().withColor(color));
-            list.add(index+1, new TextComponent(" ").append(trimName.getContents().startsWith("trims.armor_trims.")?new TranslatableComponent("trims.armor_trims.unknown").withStyle(ChatFormatting.ITALIC, ChatFormatting.UNDERLINE):trimName));
+            list.add(index+1, new TextComponent(" ").append(trimName));
             TranslatableComponent materialName = new TranslatableComponent(ForgeRegistries.ITEMS.getValue(TrimmableItem.getMaterial(itemstack)).getDescriptionId());
             materialName.withStyle(materialName.getStyle().withColor(color));
-            list.add(index+2, new TextComponent(" ").append(materialName.getContents().equals("Air")?new TextComponent("missingno").withStyle(ChatFormatting.ITALIC, ChatFormatting.UNDERLINE):materialName));
+            list.add(index+2, new TextComponent(" ").append(materialName));
         }
     }
 }

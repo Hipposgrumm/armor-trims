@@ -28,8 +28,6 @@ import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
 public class TrimRenderLayer<T extends LivingEntity, M extends HumanoidModel<T>, A extends HumanoidModel<T>> extends HumanoidArmorLayer<T, M, A> {
-    private static final Logger LOGGER = LogUtils.getLogger();
-
     private static final Map<String, ResourceLocation> ARMOR_LOCATION_CACHE = Maps.newHashMap();
     private final A innerModel;
     private final A outerModel;

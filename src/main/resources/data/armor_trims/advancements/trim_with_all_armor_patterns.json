@@ -47,16 +47,16 @@
       "trigger": "minecraft:impossible"
     }
   },
-  "requirements": [[
-    "code_triggered_coast",
-    "code_triggered_dune",
-    "code_triggered_eye",
-    "code_triggered_rib",
-    "code_triggered_sentry",
-    "code_triggered_snout",
-    "code_triggered_spire",
-    "code_triggered_tide",
-    "code_triggered_vex",
-    "code_triggered_wild"
-  ]]
+  "requirements": [
+    ["code_triggered_coast"],
+    ["code_triggered_dune"],
+    ["code_triggered_eye"],
+    ["code_triggered_rib"],
+    ["code_triggered_sentry"],
+    ["code_triggered_snout"],
+    ["code_triggered_spire"],
+    ["code_triggered_tide"],
+    ["code_triggered_vex"],
+    ["code_triggered_wild"]
+  ]
 }
