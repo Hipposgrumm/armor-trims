@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import gg.hipposgrumm.armor_trims.Armortrims;
 import gg.hipposgrumm.armor_trims.config.Config;
 import gg.hipposgrumm.armor_trims.trimming.TrimmableItem;
+import gg.hipposgrumm.armor_trims.trimming.Trims;
+import gg.hipposgrumm.armor_trims.util.LargeItemLists;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -13,10 +15,14 @@ import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 
 public class UntrimmingSpecialRecipe extends CustomRecipe {
+    private Item armor;
+    private Trims trim;
+    private Item material;
     private ItemStack result;
 
     public UntrimmingSpecialRecipe(ResourceLocation p_44487_) {
@@ -72,6 +78,12 @@ public class UntrimmingSpecialRecipe extends CustomRecipe {
         if (!Config.enableUntrimming()) {
             return ItemStack.EMPTY;
         } else {
+            try {
+                trim = Trims.valueOf(TrimmableItem.getTrim(armorItem));
+            } catch (IllegalArgumentException e) {
+                trim = null;
+            }
+            material = ForgeRegistries.ITEMS.getValue(TrimmableItem.getMaterial(armorItem));
             return finalItem;
         }
     }
@@ -85,11 +97,20 @@ public class UntrimmingSpecialRecipe extends CustomRecipe {
             if (itemstack.hasContainerItem()) {
                 nonnulllist.set(i, itemstack.getContainerItem());
             } else if (itemstack.is(Tags.Items.SHEARS)) {
-                ItemStack itemstack1 = itemstack.copy();
-                itemstack1.setCount(1);
-                if (itemstack1.isDamageableItem()) itemstack1.setDamageValue(itemstack1.getDamageValue()-1);
-                nonnulllist.set(i, itemstack1);
+                if (itemstack.isDamageableItem()) itemstack.setDamageValue(itemstack.getDamageValue()-1);
                 break;
+            }
+        }
+
+        for (int i=0;i<p_43820_.getContainerSize();++i) {
+            if (p_43820_.getItem(i).isEmpty()) {
+                p_43820_.setItem(i, new ItemStack(material));
+            }
+        }
+
+        for (int i=0;i<p_43820_.getContainerSize();++i) {
+            if (p_43820_.getItem(i).isEmpty()) {
+                p_43820_.setItem(i, new ItemStack(LargeItemLists.getTemplateFromTrim(trim)));
             }
         }
 
@@ -103,6 +124,8 @@ public class UntrimmingSpecialRecipe extends CustomRecipe {
     public RecipeSerializer<?> getSerializer() {
         return Armortrims.UNTRIMMING_RECIPE.get();
     }
+
+
     public static class Serializer implements RecipeSerializer<UntrimmingSpecialRecipe> {
         public static final UntrimmingSpecialRecipe.Serializer INSTANCE = new UntrimmingSpecialRecipe.Serializer();
         public static final ResourceLocation ID = new ResourceLocation(Armortrims.MODID,"crafting_special_untrimming");
