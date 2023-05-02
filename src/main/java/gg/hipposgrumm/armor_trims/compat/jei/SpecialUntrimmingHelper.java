@@ -1,45 +1,68 @@
 package gg.hipposgrumm.armor_trims.compat.jei;
 
-import com.google.common.collect.Lists;
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.util.Pair;
+import com.mojang.logging.LogUtils;
+import gg.hipposgrumm.armor_trims.Armortrims;
+import gg.hipposgrumm.armor_trims.item.SmithingTemplate;
 import gg.hipposgrumm.armor_trims.recipes.UntrimmingSpecialRecipe;
+import gg.hipposgrumm.armor_trims.trimming.TrimmableItem;
+import gg.hipposgrumm.armor_trims.util.LargeItemLists;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategoryExtension;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.language.I18n;
+
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.*;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.Nullable;
 
-public record SpecialUntrimmingHelper(UntrimmingSpecialRecipe recipe) implements ICraftingCategoryExtension {
+import java.util.*;
+
+public class SpecialUntrimmingHelper implements ICraftingCategoryExtension {
+    private final ResourceLocation name;
+
+    public SpecialUntrimmingHelper(UntrimmingSpecialRecipe recipe) {
+        this.name = recipe.getId();
+    }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayoutBuilder builder, @Nonnull ICraftingGridHelper craftingGridHelper, @Nonnull IFocusGroup focuses) {
-        List<List<ItemStack>> inputLists = new ArrayList<>();
-        for (Ingredient input : recipe.getIngredients()) {
-            ItemStack[] stacks = input.getItems();
-            List<ItemStack> expandedInput = List.of(stacks);
-            inputLists.add(expandedInput);
+    public void setRecipe(@Nonnull IRecipeLayoutBuilder builder, @Nonnull ICraftingGridHelper helper, @Nonnull IFocusGroup focuses) {
+        List<ItemStack> inputItems = new ArrayList<>();
+        List<ItemStack> outputItems = new ArrayList<>();
+        for (Item armorItem:LargeItemLists.getAllArmors()) {
+            for (Item templateItem:new ArrayList<Item>(Arrays.asList( // Limited list of templates so that Minecraft doesn't (completely) freeze when looking up uses for Shears.
+                Armortrims.COAST_ARMOR_TRIM.get(),
+                Armortrims.EYE_ARMOR_TRIM.get(),
+                Armortrims.RIB_ARMOR_TRIM.get(),
+                Armortrims.VEX_ARMOR_TRIM.get(),
+                Armortrims.WARD_ARMOR_TRIM.get()
+        ))) {
+                for (Item materialItem:new ArrayList<Item>(Arrays.asList( // Limited list of templates so that Minecraft doesn't (completely) freeze when looking up uses for Shears.
+                        Items.EMERALD,
+                        Items.LAPIS_LAZULI,
+                        Items.AMETHYST_SHARD,
+                        Items.DIAMOND,
+                        Items.GOLD_INGOT
+                ))) {
+                    inputItems.add(TrimmableItem.applyTrim(new ItemStack(armorItem), ((SmithingTemplate) templateItem).getTrim(), materialItem.getDefaultInstance(), true));
+                    outputItems.add(armorItem.getDefaultInstance());
+                }
+            }
         }
-        craftingGridHelper.setInputs(builder, VanillaTypes.ITEM_STACK, inputLists, 0, 0);
-        craftingGridHelper.setOutputs(builder, VanillaTypes.ITEM_STACK, Lists.newArrayList(recipe.getResultItem()));
+        LogUtils.getLogger().info("Inputs: "+inputItems+" \nOutputs: "+outputItems);
+        List<List<ItemStack>> inputs = List.of(inputItems.stream().toList(), Collections.singletonList(new ItemStack(Items.SHEARS)));
+        List<ItemStack> outputs = outputItems.stream().toList();
 
+        helper.setInputs(builder, VanillaTypes.ITEM_STACK, inputs, 0, 0);
+        helper.setOutputs(builder, VanillaTypes.ITEM_STACK, outputs);
     }
 
-    @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, @Nonnull PoseStack poseStack, double mouseX, double mouseY) {
-        Minecraft.getInstance().font.draw(poseStack, I18n.get("jei.armor_untrimming"), 60, 46, 0x555555);
-    }
-
+    @Nullable
     @Override
     public ResourceLocation getRegistryName() {
-        return recipe.getId();
+        return name;
     }
 }
