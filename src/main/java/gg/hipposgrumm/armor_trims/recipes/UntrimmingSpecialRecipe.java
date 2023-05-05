@@ -84,6 +84,7 @@ public class UntrimmingSpecialRecipe extends CustomRecipe {
                 trim = null;
             }
             material = ForgeRegistries.ITEMS.getValue(TrimmableItem.getMaterial(armorItem));
+            result = finalItem;
             return finalItem;
         }
     }

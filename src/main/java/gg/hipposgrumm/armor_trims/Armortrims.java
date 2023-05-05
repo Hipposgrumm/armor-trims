@@ -148,7 +148,7 @@ public class Armortrims {
 
                 @Override
                 protected void apply(Unit p_10793_, ResourceManager p_10794_, ProfilerFiller p_10795_) {
-                    GetAvgColor.buildDefaults();
+                    if (FMLEnvironment.dist.isClient()) GetAvgColor.buildDefaults();
                 }
             });
         }
@@ -160,7 +160,7 @@ public class Armortrims {
 
         @SubscribeEvent
         public static void loadCompleted(FMLLoadCompleteEvent event) {
-            GetAvgColor.isGameLoaded = true;
+            if (FMLEnvironment.dist.isClient()) GetAvgColor.isGameLoaded = true;
         }
     }
 

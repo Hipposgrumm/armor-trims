@@ -1,8 +1,10 @@
 package gg.hipposgrumm.armor_trims.mixin;
 
+import com.mojang.logging.LogUtils;
 import gg.hipposgrumm.armor_trims.config.Config;
 import gg.hipposgrumm.armor_trims.gui.SmithingMenuNew;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -11,6 +13,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SmithingTableBlock;
 import net.minecraft.world.level.block.state.BlockState;
