@@ -2,7 +2,6 @@ package gg.hipposgrumm.armor_trims.compat.jei;
 
 import gg.hipposgrumm.armor_trims.Armortrims;
 import gg.hipposgrumm.armor_trims.item.SmithingTemplate;
-import gg.hipposgrumm.armor_trims.recipes.UntrimmingSpecialRecipe;
 import gg.hipposgrumm.armor_trims.trimming.TrimmableItem;
 import gg.hipposgrumm.armor_trims.util.LargeItemLists;
 import mezz.jei.api.IModPlugin;
@@ -10,18 +9,14 @@ import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.*;
-import net.minecraft.core.Registry;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 @JeiPlugin
 public class JEI_Armortrims implements IModPlugin {
@@ -56,7 +51,7 @@ public class JEI_Armortrims implements IModPlugin {
 
     @Override
     public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registration) {
-        registration.getCraftingCategory().addCategoryExtension(UntrimmingSpecialRecipe.class, SpecialUntrimmingHelper::new);
+        //registration.getCraftingCategory().addCategoryExtension(UntrimmingSpecialRecipe.class, SpecialUntrimmingHelper::new);
     }
 
     @Override
