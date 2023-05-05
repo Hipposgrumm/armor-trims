@@ -20,10 +20,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import javax.annotation.Nullable;
 
 public class UntrimmingSpecialRecipe extends CustomRecipe {
-    private Item armor;
-    private Trims trim;
-    private Item material;
-    private ItemStack result;
 
     public UntrimmingSpecialRecipe(ResourceLocation p_44487_) {
         super(p_44487_);
@@ -78,13 +74,13 @@ public class UntrimmingSpecialRecipe extends CustomRecipe {
         if (!Config.enableUntrimming()) {
             return ItemStack.EMPTY;
         } else {
+            Trims trim;
             try {
                 trim = Trims.valueOf(TrimmableItem.getTrim(armorItem));
             } catch (IllegalArgumentException e) {
                 trim = null;
             }
-            material = ForgeRegistries.ITEMS.getValue(TrimmableItem.getMaterial(armorItem));
-            result = finalItem;
+            Item material = ForgeRegistries.ITEMS.getValue(TrimmableItem.getMaterial(armorItem));
             return finalItem;
         }
     }
@@ -100,18 +96,6 @@ public class UntrimmingSpecialRecipe extends CustomRecipe {
             } else if (itemstack.is(Tags.Items.SHEARS)) {
                 if (itemstack.isDamageableItem()) itemstack.setDamageValue(itemstack.getDamageValue()-1);
                 break;
-            }
-        }
-
-        for (int i=0;i<p_43820_.getContainerSize();++i) {
-            if (p_43820_.getItem(i).isEmpty()) {
-                p_43820_.setItem(i, new ItemStack(material));
-            }
-        }
-
-        for (int i=0;i<p_43820_.getContainerSize();++i) {
-            if (p_43820_.getItem(i).isEmpty()) {
-                p_43820_.setItem(i, new ItemStack(LargeItemLists.getTemplateFromTrim(trim)));
             }
         }
 
@@ -142,9 +126,7 @@ public class UntrimmingSpecialRecipe extends CustomRecipe {
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf buf, UntrimmingSpecialRecipe recipe) {
-            buf.writeItem(recipe.result);
-        }
+        public void toNetwork(FriendlyByteBuf buf, UntrimmingSpecialRecipe recipe) {}
 
         @Override
         public RecipeSerializer<?> setRegistryName(ResourceLocation name) {
