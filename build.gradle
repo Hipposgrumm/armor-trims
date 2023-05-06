@@ -20,7 +20,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 
 
-version = 'b1.0'
+version = '0.1'
 group = 'gg.hipposgrumm.armor_trims' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'armor_trims'
 

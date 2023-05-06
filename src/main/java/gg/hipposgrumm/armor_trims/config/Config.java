@@ -42,7 +42,7 @@ public final class Config {
                     .comment(" Disable vanilla netherite upgrading in favor of the new one. NOT recommended to enable this alongside disableNetheriteUpgrade.")
                     .define("Disable Vanilla Netherite Upgrading", false);
             disableNetheriteUpgrade = builder
-                    .comment(" Disable netherite upgrading via smithing template. Great if you feel like it takes away from the old vanilla experience. NOT recommended to enable this alongside disableVanillaNetheriteUpgrade")
+                    .comment(" Disable netherite upgrading via smithing template. Great if you feel like it takes away from the old vanilla experience. NOT recommended to enable this alongside disableVanillaNetheriteUpgrade.")
                     .define("Disable Netherite Upgrade Smithing Template", false);
             builder.push("Untrimming");
                 enableUntrimming = builder

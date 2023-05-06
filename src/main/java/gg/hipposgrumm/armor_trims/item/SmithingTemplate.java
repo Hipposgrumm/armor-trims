@@ -1,33 +1,26 @@
 package gg.hipposgrumm.armor_trims.item;
 
-import com.google.common.collect.Iterators;
 import gg.hipposgrumm.armor_trims.config.Config;
 import gg.hipposgrumm.armor_trims.trimming.Trims;
 import gg.hipposgrumm.armor_trims.util.AssociateTagsWithItems;
 import gg.hipposgrumm.armor_trims.util.GetAvgColor;
 import gg.hipposgrumm.armor_trims.util.LargeItemLists;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.tags.ITagManager;
-import org.apache.commons.lang3.ArrayUtils;
-import oshi.util.tuples.Pair;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class SmithingTemplate extends Item {
-    private Trims trim;
+    private final Trims trim;
 
     public Trims getTrim() {
         return this.trim;
@@ -67,8 +60,21 @@ public class SmithingTemplate extends Item {
         }
         list.add(new TranslatableComponent("tooltip.armor_trims.ingredients").withStyle(ChatFormatting.GRAY));
         if (trim.getId().equals("netherite_upgrade")) {
-            TranslatableComponent output = new TranslatableComponent("item.minecraft.netherite_ingot");
-            output.withStyle(output.getStyle().withColor(getIngredientColor(Items.NETHERITE_INGOT.getRegistryName())));
+            List<String> itemsList = Arrays.stream(new AssociateTagsWithItems(Tags.Items.INGOTS_NETHERITE.location().toString()).getItems()).map(f -> f.getRegistryName().toString()).toList();
+            MutableComponent output = createColoredList(itemsList);
+            if (output==null) {
+                list.add(new TextComponent(" ").append(new TranslatableComponent("tooltip.armor_trims.ingredients.empty").withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC)));
+            } else {
+                if (List.of(output.getContents().split(", ")).size() > 4) {
+                    if (Screen.hasShiftDown()) {
+                        list.add(new TextComponent(" ").append(output));
+                    } else {
+                        list.add(new TextComponent(" ").append(new TranslatableComponent("tooltip.armor_trims.ingredients.show_more").withStyle(ChatFormatting.BLUE, ChatFormatting.UNDERLINE)));
+                    }
+                } else {
+                    list.add(new TextComponent(" ").append(output));
+                }
+            }
             list.add(new TextComponent(" ").append(output.withStyle(ChatFormatting.ITALIC)));
         } else {
             List<String> configList = removeUnregisteredEntries(Config.compressItemNamesInTemplateTooltip()?Config.trimmableMaterials():removeUnregisteredAndDuplicateEntries(LargeItemLists.getAllMaterials()));
@@ -82,6 +88,8 @@ public class SmithingTemplate extends Item {
                     } else {
                         list.add(new TextComponent(" ").append(new TranslatableComponent("tooltip.armor_trims.ingredients.show_more").withStyle(ChatFormatting.BLUE, ChatFormatting.UNDERLINE)));
                     }
+                } else {
+                    list.add(new TextComponent(" ").append(coloredList));
                 }
             }
             /*
