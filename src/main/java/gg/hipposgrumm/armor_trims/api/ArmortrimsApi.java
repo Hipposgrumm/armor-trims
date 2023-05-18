@@ -1,46 +1,39 @@
 package gg.hipposgrumm.armor_trims.api;
 
-import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.logging.LogUtils;
+import gg.hipposgrumm.armor_trims.Armortrims;
 import gg.hipposgrumm.armor_trims.config.Config;
 import gg.hipposgrumm.armor_trims.item.SmithingTemplate;
 import gg.hipposgrumm.armor_trims.item.SmithingTemplate$Upgrade;
-import gg.hipposgrumm.armor_trims.loot.ChestLootModifier;
-import gg.hipposgrumm.armor_trims.loot.EntityLootModifier;
 import gg.hipposgrumm.armor_trims.trimming.Trims;
-import gg.hipposgrumm.armor_trims.util.AssociateTagsWithItems;
-import gg.hipposgrumm.armor_trims.util.GetAvgColor;
 import gg.hipposgrumm.armor_trims.util.LargeItemLists;
-import mezz.jei.api.runtime.IBookmarkOverlay;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
-import org.lwjgl.system.CallbackI;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
  * This serves as an API class for integration. You can call this class's various methods to create trims, templates, and armor model overrides.
  * <i>Note: If something can't be integrated you expect to, make sure to check the GitHub page, and create a pull request if it isn't implemented for some reason.</i>
- * <br><br>
- * You can use my util classes such as {@link AssociateTagsWithItems}, {@link GetAvgColor}, and {@link LargeItemLists}.<br>
- * You may also use my Loot Modifier classes {@link ChestLootModifier} and {@link EntityLootModifier}.<br>
  */
 public class ArmortrimsApi {
     private static Map<ResourceLocation, Pair<ResourceLocation, ResourceLocation>> trims = new HashMap<>();
     private static List<Pair<Pair<ResourceLocation, String>, Pair<ResourceLocation, Item.Properties>>> trimitems = new ArrayList<>();
-    private static List<Pair<Pair<ResourceLocation, Pair<String, String>>, Pair<Pair<TagKey<Item>, Boolean>, Item.Properties>>> upgradeitems = new ArrayList<>();
+    private static List<Pair<Pair<ResourceLocation, Pair<String, String>>, Pair<Pair<Pair<TagKey<Item>, Item>, Supplier<Boolean>>, Item.Properties>>> upgradeitems = new ArrayList<>();
     //private static Map<ResourceLocation, Item> templateItems = new HashMap<>();
-    public static List<TagKey<Item>> upgradeBaseBlocked = new ArrayList<>();
+    public static Map<Pair<TagKey<Item>, Item>, Supplier<Boolean>> upgradeBaseBlockedConditions = new HashMap<>();
+    private static List<ResourceLocation> itemsList = new ArrayList<>();
     private final String modid;
 
     /**
@@ -117,16 +110,16 @@ public class ArmortrimsApi {
      * @param translatableInput Translation key for template input items (Apply To:)
      * @param itemId ID of the item to create.
      */
-    public ArmortrimsApi createUpgradeTemplate(TagKey<Item> tag, boolean blockVanillaOutput, String translatableName, String translatableInput, String itemId) {
-        createUpgradeTemplate(tag, blockVanillaOutput, translatableName, translatableInput, itemId, new Item.Properties());
+    public ArmortrimsApi createUpgradeTemplate(TagKey<Item> tag, Item itemRepresentative, Supplier<Boolean> blockVanillaOutput, String translatableName, String translatableInput, String itemId) {
+        createUpgradeTemplate(tag, itemRepresentative, blockVanillaOutput, translatableName, translatableInput, itemId, new Item.Properties());
         return this;
     }
 
     /**
-     * Version of {@link #createUpgradeTemplate(TagKey, boolean, String, String, String)} where you can define item properties.
+     * Version of {@link #createUpgradeTemplate(TagKey, Item, Supplier, String, String, String)} where you can define item properties.
      */
-    public ArmortrimsApi createUpgradeTemplate(TagKey<Item> tag, boolean blockVanillaOutput, String translatableName, String translatableInput, String itemId, Item.Properties properties) {
-        upgradeitems.add(new Pair<>(new Pair<>(new ResourceLocation(modid, itemId), new Pair<>(translatableName, translatableInput)), new Pair<>(new Pair<>(tag, blockVanillaOutput), properties)));
+    public ArmortrimsApi createUpgradeTemplate(TagKey<Item> tag, Item itemRepresentative, Supplier<Boolean> blockVanillaOutput, String translatableName, String translatableInput, String itemId, Item.Properties properties) {
+        upgradeitems.add(new Pair<>(new Pair<>(new ResourceLocation(modid, itemId), new Pair<>(translatableName, translatableInput)), new Pair<>(new Pair<>(new Pair<>(tag, itemRepresentative), blockVanillaOutput), properties)));
         return this;
     }
 
@@ -140,17 +133,29 @@ public class ArmortrimsApi {
             Trims.createTrim(trim, trims.get(trim).getFirst(), trims.get(trim).getSecond());
         }
         Map<String, DeferredRegister<Item>> registerMap = new HashMap<>();
-        for (Pair<Pair<ResourceLocation, Pair<String, String>>, Pair<Pair<TagKey<Item>, Boolean>, Item.Properties>> upgradeItem:upgradeitems) {
+        for (Pair<Pair<ResourceLocation, Pair<String, String>>, Pair<Pair<Pair<TagKey<Item>, Item>, Supplier<Boolean>>, Item.Properties>> upgradeItem:upgradeitems) {
             if (!registerMap.containsKey(upgradeItem.getFirst().getFirst().getNamespace())) registerMap.put(upgradeItem.getFirst().getFirst().getNamespace(), DeferredRegister.create(ForgeRegistries.ITEMS, upgradeItem.getFirst().getFirst().getNamespace()));
-            registerMap.get(upgradeItem.getFirst().getFirst().getNamespace()).register(upgradeItem.getFirst().getFirst().getPath(), () -> new SmithingTemplate$Upgrade(upgradeItem.getSecond().getFirst().getFirst(), upgradeItem.getFirst().getSecond().getFirst(), upgradeItem.getFirst().getSecond().getSecond(), upgradeItem.getSecond().getSecond()));
-            if (upgradeItem.getSecond().getFirst().getSecond()) upgradeBaseBlocked.add(upgradeItem.getSecond().getFirst().getFirst());
+            registerMap.get(upgradeItem.getFirst().getFirst().getNamespace()).register(upgradeItem.getFirst().getFirst().getPath(), () -> new SmithingTemplate$Upgrade(upgradeItem.getSecond().getFirst().getFirst().getFirst(), upgradeItem.getSecond().getFirst().getFirst().getSecond(), upgradeItem.getFirst().getSecond().getFirst(), upgradeItem.getFirst().getSecond().getSecond(), upgradeItem.getSecond().getSecond()));
+            upgradeBaseBlockedConditions.put(upgradeItem.getSecond().getFirst().getFirst(), upgradeItem.getSecond().getFirst().getSecond());
+            itemsList.add(upgradeItem.getFirst().getFirst());
         }
         for (Pair<Pair<ResourceLocation, String>, Pair<ResourceLocation, Item.Properties>> trimitem:trimitems) {
             if (!registerMap.containsKey(trimitem.getFirst().getFirst().getNamespace())) registerMap.put(trimitem.getFirst().getFirst().getNamespace(), DeferredRegister.create(ForgeRegistries.ITEMS, trimitem.getFirst().getFirst().getNamespace()));
             registerMap.get(trimitem.getFirst().getFirst().getNamespace()).register(trimitem.getFirst().getFirst().getPath(), () -> new SmithingTemplate(trimitem.getSecond().getFirst(), trimitem.getFirst().getSecond(), trimitem.getSecond().getSecond()));
+            itemsList.add(trimitem.getFirst().getFirst());
         }
         for (DeferredRegister<Item> registry:registerMap.values()) {
             registry.register(modEventBus);
+        }
+    }
+
+    @Mod.EventBusSubscriber(modid = Armortrims.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    public static class CreativeTabRegistry {
+        @SubscribeEvent
+        public static void doCreativeTabs(CreativeModeTabEvent.BuildContents event) {
+            for (ResourceLocation item:itemsList) {
+                if (event.getTab().equals(CreativeModeTabs.INGREDIENTS)) event.accept(getItem(item));
+            }
         }
     }
 
@@ -162,7 +167,7 @@ public class ArmortrimsApi {
     public static Item getItem(ResourceLocation itemId) {
         Item target = Items.AIR;
         for (Item item:LargeItemLists.getAllSmithingTemplates()) {
-            if (item.getRegistryName().equals(itemId)) break;
+            if (ForgeRegistries.ITEMS.getKey(item).equals(itemId)) target = item;
         }
         return target;
     }

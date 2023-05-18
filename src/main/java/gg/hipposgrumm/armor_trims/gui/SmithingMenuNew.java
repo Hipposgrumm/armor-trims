@@ -1,10 +1,10 @@
 package gg.hipposgrumm.armor_trims.gui;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nullable;
 
+import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
 import gg.hipposgrumm.armor_trims.Armortrims;
 import gg.hipposgrumm.armor_trims.api.ArmortrimsApi;
@@ -12,13 +12,12 @@ import gg.hipposgrumm.armor_trims.config.Config;
 import gg.hipposgrumm.armor_trims.item.SmithingTemplate;
 import gg.hipposgrumm.armor_trims.item.SmithingTemplate$Upgrade;
 import gg.hipposgrumm.armor_trims.trimming.TrimmableItem;
-import gg.hipposgrumm.armor_trims.trimming.Trims;
 import gg.hipposgrumm.armor_trims.util.LargeItemLists;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -30,8 +29,6 @@ import net.minecraft.world.item.crafting.UpgradeRecipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.Tags;
-import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 
 public class SmithingMenuNew extends AbstractContainerMenu {
@@ -145,7 +142,7 @@ public class SmithingMenuNew extends AbstractContainerMenu {
         ItemStack upgradeItem = this.inputSlots.getItem(ADDITIONAL_SLOT);
         ItemStack materialItem = this.inputSlots.getItem(MATERIAL_SLOT);
         if (upgradeItem.getItem() instanceof SmithingTemplate templateItem) {
-            if (templateItem instanceof SmithingTemplate$Upgrade && !ArmortrimsApi.upgradeBaseBlocked.stream().map(materialItem::is).toList().contains(true)) {
+            if (templateItem instanceof SmithingTemplate$Upgrade) {
                 Container vanillaRecipeContainer = new SimpleContainer(2);
                 vanillaRecipeContainer.setItem(0, baseItem);
                 vanillaRecipeContainer.setItem(1, materialItem);
@@ -166,7 +163,14 @@ public class SmithingMenuNew extends AbstractContainerMenu {
             vanillaRecipeContainer.setItem(0, baseItem);
             vanillaRecipeContainer.setItem(1, upgradeItem);
             List<UpgradeRecipe> list = this.level.getRecipeManager().getRecipesFor(RecipeType.SMITHING, vanillaRecipeContainer, this.level);
-            if (list.isEmpty()) {
+            boolean deny = false;
+            for (Pair<TagKey<Item>, Item> key:ArmortrimsApi.upgradeBaseBlockedConditions.keySet()) {
+                if (upgradeItem.is(key.getFirst())) {
+                    deny = true;
+                    break;
+                }
+            }
+            if (list.isEmpty() || deny) {
                 this.resultSlots.setItem(0, ItemStack.EMPTY);
             } else {
                 this.selectedRecipe = list.get(0);

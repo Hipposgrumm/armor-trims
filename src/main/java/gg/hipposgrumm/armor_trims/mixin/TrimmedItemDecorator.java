@@ -38,7 +38,7 @@ public abstract class TrimmedItemDecorator {
 
     @Shadow @Final private ItemColors itemColors;
 
-    @Inject(method = "render(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemTransforms$TransformType;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/client/resources/model/BakedModel;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;renderModelLists(Lnet/minecraft/client/resources/model/BakedModel;Lnet/minecraft/world/item/ItemStack;IILcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;)V", shift = At.Shift.AFTER))
+    @Inject(method = "Lnet/minecraft/client/renderer/entity/ItemRenderer;render(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemTransforms$TransformType;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/client/resources/model/BakedModel;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;renderModelLists(Lnet/minecraft/client/resources/model/BakedModel;Lnet/minecraft/world/item/ItemStack;IILcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;)V", shift = At.Shift.AFTER))
     private void armortrims_armorDecoration(ItemStack p_115144_, ItemTransforms.TransformType p_115145_, boolean p_115146_, PoseStack p_115147_, MultiBufferSource p_115148_, int p_115149_, int p_115150_, BakedModel p_115151_, CallbackInfo ci) {
         if (!p_115151_.isCustomRenderer() && (!p_115144_.is(Items.TRIDENT) || (p_115145_ == ItemTransforms.TransformType.GUI || p_115145_ == ItemTransforms.TransformType.GROUND || p_115145_ == ItemTransforms.TransformType.FIXED)) && TrimmableItem.isTrimmed(p_115144_)) {
             boolean fabulousFlag_armortrimsMixin;
@@ -48,13 +48,12 @@ public abstract class TrimmedItemDecorator {
             } else {
                 fabulousFlag_armortrimsMixin = true;
             }
-            net.minecraftforge.client.ForgeHooksClient.drawItemLayered((ItemRenderer) (Object) this, p_115151_, p_115144_, p_115147_, p_115148_, p_115149_, p_115150_, p_115146_);
+            net.minecraftforge.client.extensions.common.IClientItemExtensions.of(p_115144_).getCustomRenderer().renderByItem(p_115144_, p_115145_, p_115147_, p_115148_, p_115149_, p_115150_);
 
             /** *Casually steals forge code...* */
             BakedModel layer = getModelForSlot(p_115144_);
 
             RenderType rendertype = ItemBlockRenderTypes.getRenderType(p_115144_, fabulousFlag_armortrimsMixin);
-            net.minecraftforge.client.ForgeHooksClient.setRenderType(rendertype); // needed for compatibility with MultiLayerModels
             VertexConsumer ivertexbuilder;
             if (fabulousFlag_armortrimsMixin) {
                 ivertexbuilder = ItemRenderer.getFoilBufferDirect(p_115148_, rendertype, true, p_115144_.hasFoil());

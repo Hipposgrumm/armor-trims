@@ -28,20 +28,20 @@ public class SmithingTemplate extends Item {
     }
 
     protected SmithingTemplate(Item.Properties properties) {
-        super(properties.tab(CreativeModeTab.TAB_MATERIALS).stacksTo(1));
+        super(properties.stacksTo(1));
         this.trim = null;
         this.translatableName = "";
     }
 
     public SmithingTemplate(ResourceLocation trim, String translatableName, Item.Properties properties) {
-        super(properties.tab(CreativeModeTab.TAB_MATERIALS).stacksTo(1));
+        super(properties.stacksTo(1));
         this.translatableName = translatableName;
         this.trim = new Trims(trim);
     }
 
     @Override
     public Component getName(ItemStack p_41458_) {
-        return new TranslatableComponent("item.armor_trims.smithing_template");
+        return Component.translatable("item.armor_trims.smithing_template");
     }
 
     @Override
@@ -50,41 +50,41 @@ public class SmithingTemplate extends Item {
     }
 
     @Override
-    public ItemStack getContainerItem(ItemStack item) {
+    public ItemStack getCraftingRemainingItem(ItemStack item) {
         return new ItemStack(this);
     }
 
     public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, world, list, flag);
         if (trim != null) {
-            list.add(new TranslatableComponent("trims." + trim.name.toString().replace(":", ".")).withStyle(ChatFormatting.DARK_GRAY));
-            list.add(new TextComponent(""));
-            list.add(new TranslatableComponent("tooltip.armor_trims.applyTo").withStyle(ChatFormatting.GRAY));
-            list.add(new TextComponent(" ").append(new TranslatableComponent("tooltip.armor_trims.applyTo.armor")).withStyle(ChatFormatting.BLUE));
-            list.add(new TranslatableComponent("tooltip.armor_trims.ingredients").withStyle(ChatFormatting.GRAY));
+            list.add(Component.translatable("trims." + trim.name.toString().replace(":", ".")).withStyle(ChatFormatting.DARK_GRAY));
+            list.add(Component.literal(""));
+            list.add(Component.translatable("tooltip.armor_trims.applyTo").withStyle(ChatFormatting.GRAY));
+            list.add(Component.literal(" ").append(Component.translatable("tooltip.armor_trims.applyTo.armor")).withStyle(ChatFormatting.BLUE));
+            list.add(Component.translatable("tooltip.armor_trims.ingredients").withStyle(ChatFormatting.GRAY));
 
             List<String> configList = removeUnregisteredEntries(Config.compressItemNamesInTemplateTooltip() ? Config.trimmableMaterials() : removeUnregisteredAndDuplicateEntries(LargeItemLists.getAllMaterials()));
             MutableComponent coloredList = createColoredList(configList);
             if (coloredList == null) {
-                list.add(new TextComponent(" ").append(new TranslatableComponent("tooltip.armor_trims.ingredients.empty").withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC)));
+                list.add(Component.literal(" ").append(Component.translatable("tooltip.armor_trims.ingredients.empty").withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC)));
             } else {
                 if (!(configList.size() > 4) || Screen.hasShiftDown()) {
-                    list.add(new TextComponent(" ").append(coloredList));
+                    list.add(Component.literal(" ").append(coloredList));
                 } else {
-                    list.add(new TextComponent(" ").append(new TranslatableComponent("tooltip.armor_trims.ingredients.show_more").withStyle(ChatFormatting.BLUE, ChatFormatting.UNDERLINE)));
+                    list.add(Component.literal(" ").append(Component.translatable("tooltip.armor_trims.ingredients.show_more").withStyle(ChatFormatting.BLUE, ChatFormatting.UNDERLINE)));
                 }
             }
         }
     }
 
     protected List<? extends String> removeUnregisteredAndDuplicateEntries(List<Item> list) {
-        List<String> items = new ArrayList<>();
+        List<Item> items = new ArrayList<>();
         for (Item item:list) {
-            if (ForgeRegistries.ITEMS.containsKey(item.getRegistryName()) && !items.contains(item.getRegistryName().toString())) {
-                items.add(item.getRegistryName().toString());
+            if (ForgeRegistries.ITEMS.containsValue(item) && !items.contains(item)) {
+                items.add(item);
             }
         }
-        return items;
+        return items.stream().map(f -> ForgeRegistries.ITEMS.getKey(f).toString()).toList();
     }
 
     @SuppressWarnings("unchecked")
@@ -96,7 +96,7 @@ public class SmithingTemplate extends Item {
                 Item[] items = new AssociateTagsWithItems(item.replace("#","")).getItems();
                 if (items.length==0) continue;
                 if (items.length==1) {
-                    itemList.add(items[0].getRegistryName().toString());
+                    itemList.add(ForgeRegistries.ITEMS.getKey(items[0]).toString());
                 } else {
                     itemList.add(item);
                 }
@@ -110,14 +110,14 @@ public class SmithingTemplate extends Item {
 
     public static MutableComponent createColoredList(List<String> list) {
         if (list.size() >= 3) {
-            MutableComponent item = new TextComponent("");
+            MutableComponent item = Component.literal("");
             for (int i = 0; i < list.size() - 2; i++) {
-                item.append(colorAndNameIngredient(i, list)).append(new TextComponent(", "));
+                item.append(colorAndNameIngredient(i, list)).append(Component.literal(", "));
             }
             return item.append(colorAndNameIngredient(list.size() - 2, list))
-                    .append(new TextComponent(", & ")).append(colorAndNameIngredient(list.size() - 1, list));
+                    .append(Component.literal(", & ")).append(colorAndNameIngredient(list.size() - 1, list));
         } else if (list.size() == 2) {
-            MutableComponent item = new TextComponent("");
+            MutableComponent item = Component.literal("");
             return item.append(colorAndNameIngredient(0, list))
                     .append(" & ").append(colorAndNameIngredient(1, list));
         } else if (list.size() == 1) {
@@ -131,12 +131,12 @@ public class SmithingTemplate extends Item {
         boolean isFromTag = list.get(index).startsWith("#");
         Item item;
         item = isFromTag ? new AssociateTagsWithItems(list.get(index)).getItems()[0] : ForgeRegistries.ITEMS.getValue(Objects.equals(ResourceLocation.tryParse(list.get(index)), null) ?new ResourceLocation("minecraft:air"):new ResourceLocation(list.get(index)));
-        MutableComponent output = new TranslatableComponent(item.getDescriptionId());
+        MutableComponent output = Component.translatable(item.getDescriptionId());
         if (list.get(index).startsWith("#")) output.withStyle(ChatFormatting.ITALIC);
-        return output.withStyle(output.getStyle().withColor(getIngredientColor(item.getRegistryName())));
+        return output.withStyle(output.getStyle().withColor(getIngredientColor(item)));
     }
 
-    public static TextColor getIngredientColor(ResourceLocation item) {
-        return TextColor.fromRgb(new GetAvgColor(item).getColor());
+    public static TextColor getIngredientColor(Item item) {
+        return TextColor.fromRgb(new GetAvgColor(ForgeRegistries.ITEMS.getKey(item)).getColor());
     }
 }

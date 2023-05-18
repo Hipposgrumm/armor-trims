@@ -5,12 +5,9 @@ import gg.hipposgrumm.armor_trims.Armortrims;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.ForgeModelBakery;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.slf4j.Logger;
 
 import java.util.Map;
 import java.util.function.Consumer;
@@ -55,13 +52,13 @@ public class TrimDecorationBaker {
     @Mod.EventBusSubscriber(modid = Armortrims.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ModelBakeryInitializer {
         @SubscribeEvent
-        public static void onModelBake(ModelBakeEvent evt) {
-            INSTANCE.bakeModels(evt.getModelRegistry());
+        public static void onModelBake(ModelEvent.BakingCompleted evt) {
+            INSTANCE.bakeModels(evt.getModels());
         }
 
         @SubscribeEvent
-        public static void onModelRegister(ModelRegistryEvent evt) {
-            INSTANCE.registerModels(ForgeModelBakery::addSpecialModel);
+        public static void onModelRegister(ModelEvent.RegisterAdditional evt) {
+            INSTANCE.registerModels(evt::register);
         }
     }
 }

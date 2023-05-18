@@ -8,6 +8,5 @@
   "addition": "armor_trims:silence_armor_trim_smithing_template",
   "count": 1,
   "chance": 1,
-  "type": "armor_trims:chest_loot_modifier",
-  "_comment": "Ancient Cities don't exist in 1.18 and earlier, but this loot table is still here for any backport mods that use it."
+  "type": "armor_trims:chest_loot_modifier"
 }

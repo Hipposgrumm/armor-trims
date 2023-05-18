@@ -15,7 +15,6 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -42,25 +41,13 @@ public class ItemUpgradeRecipeCategory implements IRecipeCategory<ArmortrimsReci
     }
 
     @Override
-    @SuppressWarnings("removal")
-    public ResourceLocation getUid() {
-        return UID;
-    }
-
-    @Override
-    @SuppressWarnings("removal")
-    public Class<? extends ArmortrimsRecipe> getRecipeClass() {
-        return ArmortrimsRecipe.class;
-    }
-
-    @Override
     public mezz.jei.api.recipe.RecipeType<ArmortrimsRecipe> getRecipeType() {
         return new RecipeType<>(UID, ArmortrimsRecipe.class);
     }
 
     @Override
     public Component getTitle() {
-        return new TranslatableComponent("jei.item_upgrading");
+        return Component.translatable("jei.item_upgrading");
     }
 
     @Override

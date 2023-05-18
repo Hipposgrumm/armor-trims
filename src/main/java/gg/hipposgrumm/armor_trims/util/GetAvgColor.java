@@ -48,18 +48,18 @@ public class GetAvgColor {
      * <a href="https://github.com/InnovativeOnlineIndustries/Industrial-Foregoing/blob/1.19/src/main/java/com/buuz135/industrial/utils/ColorUtils.java">https://github.com/InnovativeOnlineIndustries/Industrial-Foregoing/blob/1.19/src/main/java/com/buuz135/industrial/utils/ColorUtils.java</a>
      */
     public void addColorEntry(String resourceLocation) {
-        ResourceLocation trueResourceLocation = resourceLocation.startsWith("#")?new AssociateTagsWithItems(resourceLocation).getItems()[0].getRegistryName():new ResourceLocation(resourceLocation);
+        ResourceLocation trueResourceLocation = resourceLocation.startsWith("#")?ForgeRegistries.ITEMS.getKey(new AssociateTagsWithItems(resourceLocation).getItems()[0]):new ResourceLocation(resourceLocation);
         try {
             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
             ItemModelShaper itemModelMesher = itemRenderer.getItemModelShaper();
             BakedModel itemModel = itemModelMesher.getItemModel(new ItemStack(ForgeRegistries.ITEMS.getValue(trueResourceLocation)));
             TextureAtlasSprite texture = itemModel.getParticleIcon();
             try {
-                if (texture == null || texture.getFrameCount() <= 0) throw new IOException();
+                if (texture == null || texture.contents().getUniqueFrames().count() <= 0) throw new IOException();
                 long[] colorVals = new long[]{0, 0, 0, 0};
                 int size = 0;
-                for (int x = 0; x < texture.getWidth(); x++) {
-                    for (int y = 0; y < texture.getHeight(); y++) {
+                for (int x = 0; x < texture.contents().width(); x++) {
+                    for (int y = 0; y < texture.contents().height(); y++) {
                         int pixel = texture.getPixelRGBA(0, x, y);
                         int borrowedAlpha =  pixel >> 24 & 0xFF;
                         if (borrowedAlpha >= 5) {

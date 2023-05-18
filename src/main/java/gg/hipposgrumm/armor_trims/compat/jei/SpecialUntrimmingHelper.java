@@ -62,8 +62,8 @@ public class SpecialUntrimmingHelper implements ICraftingCategoryExtension {
             }
             List<List<ItemStack>> inputs = List.of(inputItems.stream().toList(), Collections.singletonList(Items.SHEARS.getDefaultInstance()));
             List<ItemStack> outputs = outputItems.stream().toList();
-            helper.setInputs(builder, VanillaTypes.ITEM_STACK, inputs, 0, 0);
-            helper.setOutputs(builder, VanillaTypes.ITEM_STACK, outputs);
+            helper.createAndSetInputs(builder, VanillaTypes.ITEM_STACK, inputs, 0, 0);
+            helper.createAndSetOutputs(builder, VanillaTypes.ITEM_STACK, outputs);
         }
 
     }

@@ -11,7 +11,7 @@ import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.*;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -64,7 +64,7 @@ public class JEI_Armortrims implements IModPlugin {
     public void registerRecipes(IRecipeRegistration registration) {
         registration.addRecipes(trimmingRecipeType, ArmortrimRecipeMaker.getTrimmingRecipes(new ArmortrimRecipeMaker.ArmortrimsRecipeFactory(), registration.getIngredientManager()));
         registration.addRecipes(upgradeRecipeType, ItemUpgradeRecipeMaker.getUpgradingRecipes(new ItemUpgradeRecipeMaker.ItemUpgradeRecipeFactory(), registration.getIngredientManager()));
-        registration.addIngredientInfo(Arrays.stream(new AssociateTagsWithItems("#forge:shears").getItems()).map(f -> f.getDefaultInstance()).toList(), VanillaTypes.ITEM_STACK, new TranslatableComponent("jei.armor_untrimming_notice"));
+        registration.addIngredientInfo(Arrays.stream(new AssociateTagsWithItems("#forge:shears").getItems()).map(f -> f.getDefaultInstance()).toList(), VanillaTypes.ITEM_STACK, Component.translatable("jei.armor_untrimming_notice"));
     }
 
     @Override

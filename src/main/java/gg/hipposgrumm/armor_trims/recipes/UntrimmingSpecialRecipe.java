@@ -11,6 +11,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
@@ -22,7 +23,7 @@ import javax.annotation.Nullable;
 public class UntrimmingSpecialRecipe extends CustomRecipe {
 
     public UntrimmingSpecialRecipe(ResourceLocation p_44487_) {
-        super(p_44487_);
+        super(p_44487_, CraftingBookCategory.MISC);
     }
 
     public boolean matches(CraftingContainer crafting, Level p_44500_) {
@@ -80,8 +81,8 @@ public class UntrimmingSpecialRecipe extends CustomRecipe {
 
         for(int i = 0; i < nonnulllist.size(); ++i) {
             ItemStack itemstack = p_43820_.getItem(i);
-            if (itemstack.hasContainerItem()) {
-                nonnulllist.set(i, itemstack.getContainerItem());
+            if (!itemstack.isEmpty()) {
+                nonnulllist.set(i, itemstack);
             } else if (itemstack.is(Tags.Items.SHEARS)) {
                 ItemStack itemstack1 = itemstack.copy();
                 itemstack1.setDamageValue(itemstack.getDamageValue()-1);
@@ -118,22 +119,6 @@ public class UntrimmingSpecialRecipe extends CustomRecipe {
 
         @Override
         public void toNetwork(FriendlyByteBuf buf, UntrimmingSpecialRecipe recipe) {}
-
-        @Override
-        public RecipeSerializer<?> setRegistryName(ResourceLocation name) {
-            return INSTANCE;
-        }
-
-        @Nullable
-        @Override
-        public ResourceLocation getRegistryName() {
-            return ID;
-        }
-
-        @Override
-        public Class<RecipeSerializer<?>> getRegistryType() {
-            return UntrimmingSpecialRecipe.Serializer.castClass(RecipeSerializer.class);
-        }
 
         @SuppressWarnings("unchecked") // Need this wrapper, because generics
         private static <G> Class<G> castClass(Class<?> cls) {

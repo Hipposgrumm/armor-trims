@@ -7,6 +7,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public interface TrimmableItem {
     String TAG_TRIM_MATERIAL = "material";
@@ -41,7 +42,7 @@ public interface TrimmableItem {
     }
 
     static void setMaterial(ItemStack targetItem, ItemStack material) {
-        targetItem.getOrCreateTagElement(TAG_TRIM).putString(TAG_TRIM_MATERIAL, material.getItem().getRegistryName().toString());
+        targetItem.getOrCreateTagElement(TAG_TRIM).putString(TAG_TRIM_MATERIAL, ForgeRegistries.ITEMS.getKey(material.getItem()).toString());
     }
     static void setTrim(ItemStack targetItem, Trims trim) {
         targetItem.getOrCreateTagElement(TAG_TRIM).putString(TAG_TRIM_PATTERN, trim.name.toString());

@@ -30,7 +30,7 @@ public class AssociateTagsWithItems {
     private static Item[] alphabetize(Item[] items) {
         String[] itemNames = new String[0];
         for (Item item:items) {
-            itemNames = ArrayUtils.add(itemNames, item.getRegistryName().toString());
+            itemNames = ArrayUtils.add(itemNames, ForgeRegistries.ITEMS.getKey(item).toString());
         }
         Collections.sort(Lists.newArrayList(itemNames));
         Item[] sortedItems = new Item[0];

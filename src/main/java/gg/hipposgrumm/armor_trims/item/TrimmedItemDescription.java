@@ -1,12 +1,12 @@
 package gg.hipposgrumm.armor_trims.item;
 
+import com.mojang.blaze3d.platform.MacosUtil;
 import com.mojang.logging.LogUtils;
 import gg.hipposgrumm.armor_trims.trimming.TrimmableItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextColor;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -23,14 +23,14 @@ public class TrimmedItemDescription {
         ItemStack itemstack = event.getItemStack();
         int index=1;
         if (TrimmableItem.isTrimmed(itemstack)) {
-            list.add(index, new TranslatableComponent("tooltip.armor_trims.trim").withStyle(ChatFormatting.GRAY));
+            list.add(index, Component.translatable("tooltip.armor_trims.trim").withStyle(ChatFormatting.GRAY));
             TextColor color = TextColor.fromRgb(TrimmableItem.getMaterialColor(itemstack));
-            TranslatableComponent trimName = new TranslatableComponent("trims."+TrimmableItem.getTrim(itemstack).getNamespace()+"." + TrimmableItem.getTrim(itemstack).getPath());
+            MutableComponent trimName = Component.translatable("trims."+TrimmableItem.getTrim(itemstack).getNamespace()+"." + TrimmableItem.getTrim(itemstack).getPath());
             trimName.withStyle(trimName.getStyle().withColor(color));
-            list.add(index+1, new TextComponent(" ").append(trimName));
-            TranslatableComponent materialName = new TranslatableComponent(ForgeRegistries.ITEMS.getValue(TrimmableItem.getMaterial(itemstack)).getDescriptionId());
+            list.add(index+1, Component.literal(" ").append(trimName));
+            MutableComponent materialName = Component.translatable(ForgeRegistries.ITEMS.getValue(TrimmableItem.getMaterial(itemstack)).getDescriptionId());
             materialName.withStyle(materialName.getStyle().withColor(color));
-            list.add(index+2, new TextComponent(" ").append(materialName));
+            list.add(index+2, Component.literal(" ").append(materialName));
         }
     }
 }

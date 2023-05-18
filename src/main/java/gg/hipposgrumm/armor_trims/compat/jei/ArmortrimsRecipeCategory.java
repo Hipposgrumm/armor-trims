@@ -15,7 +15,6 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -37,25 +36,13 @@ public class ArmortrimsRecipeCategory implements IRecipeCategory<ArmortrimsRecip
     }
 
     @Override
-    @SuppressWarnings("removal")
-    public ResourceLocation getUid() {
-        return UID;
-    }
-
-    @Override
-    @SuppressWarnings("removal")
-    public Class<? extends ArmortrimsRecipe> getRecipeClass() {
-        return ArmortrimsRecipe.class;
-    }
-
-    @Override
     public RecipeType<ArmortrimsRecipe> getRecipeType() {
         return new RecipeType<>(UID, ArmortrimsRecipe.class);
     }
 
     @Override
     public Component getTitle() {
-        return new TranslatableComponent("jei.armor_trimming");
+        return Component.translatable("jei.armor_trimming");
     }
 
     @Override
