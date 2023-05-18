@@ -55,11 +55,11 @@ public class GetAvgColor {
             BakedModel itemModel = itemModelMesher.getItemModel(new ItemStack(ForgeRegistries.ITEMS.getValue(trueResourceLocation)));
             TextureAtlasSprite texture = itemModel.getParticleIcon();
             try {
-                if (texture == null || texture.contents().getUniqueFrames().count() <= 0) throw new IOException();
+                if (texture == null || texture.getFrameCount() <= 0) throw new IOException();
                 long[] colorVals = new long[]{0, 0, 0, 0};
                 int size = 0;
-                for (int x = 0; x < texture.contents().width(); x++) {
-                    for (int y = 0; y < texture.contents().height(); y++) {
+                for (int x = 0; x < texture.getWidth(); x++) {
+                    for (int y = 0; y < texture.getHeight(); y++) {
                         int pixel = texture.getPixelRGBA(0, x, y);
                         int borrowedAlpha =  pixel >> 24 & 0xFF;
                         if (borrowedAlpha >= 5) {

@@ -34,7 +34,7 @@ public class SmithingTemplate extends Item {
     }
 
     public SmithingTemplate(ResourceLocation trim, String translatableName, Item.Properties properties) {
-        super(properties.stacksTo(1));
+        super(properties.tab(CreativeModeTab.TAB_MATERIALS).stacksTo(1));
         this.translatableName = translatableName;
         this.trim = new Trims(trim);
     }

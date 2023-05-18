@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[44,)"
+loaderVersion="[41,)"
 license="All rights reserved"
 issueTrackerURL="https://github.com/Hipposgrumm/armor-trims/issues"
 
@@ -19,20 +19,20 @@ Is this mod a little too configurable? I feel like it's a little too configurabl
 [[dependencies.armor_trims]]
     modId="forge"
     mandatory=true
-    versionRange="[44,)"
+    versionRange="[41,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.armor_trims]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19.3,1.19.4)"
+    versionRange="[1.19,1.19.3)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.armor_trims]]
     modId="jei"
     mandatory=false
-    versionRange="[12.4.0,)"
+    versionRange="[11.6.0,)"
     ordering="AFTER"
     side="CLIENT"

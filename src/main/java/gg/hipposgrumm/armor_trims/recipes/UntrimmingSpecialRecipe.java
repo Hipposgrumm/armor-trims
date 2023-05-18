@@ -11,7 +11,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
@@ -23,7 +22,7 @@ import javax.annotation.Nullable;
 public class UntrimmingSpecialRecipe extends CustomRecipe {
 
     public UntrimmingSpecialRecipe(ResourceLocation p_44487_) {
-        super(p_44487_, CraftingBookCategory.MISC);
+        super(p_44487_);
     }
 
     public boolean matches(CraftingContainer crafting, Level p_44500_) {

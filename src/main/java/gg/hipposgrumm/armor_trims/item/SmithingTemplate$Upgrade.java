@@ -23,7 +23,7 @@ public class SmithingTemplate$Upgrade extends SmithingTemplate {
     }
 
     public SmithingTemplate$Upgrade(TagKey<Item> tag, Item itemRepresentative, String translatableName, String applicableTranslatable, Properties properties) {
-        super(properties.stacksTo(1));
+        super(properties.tab(CreativeModeTab.TAB_MATERIALS).stacksTo(1));
         this.tag = tag;
         this.targetItem = itemRepresentative;
         this.translatableName = translatableName;

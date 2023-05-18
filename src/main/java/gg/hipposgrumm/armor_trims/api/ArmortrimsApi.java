@@ -9,10 +9,8 @@ import gg.hipposgrumm.armor_trims.trimming.Trims;
 import gg.hipposgrumm.armor_trims.util.LargeItemLists;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -146,16 +144,6 @@ public class ArmortrimsApi {
         }
         for (DeferredRegister<Item> registry:registerMap.values()) {
             registry.register(modEventBus);
-        }
-    }
-
-    @Mod.EventBusSubscriber(modid = Armortrims.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class CreativeTabRegistry {
-        @SubscribeEvent
-        public static void doCreativeTabs(CreativeModeTabEvent.BuildContents event) {
-            for (ResourceLocation item:itemsList) {
-                if (event.getTab().equals(CreativeModeTabs.INGREDIENTS)) event.accept(getItem(item));
-            }
         }
     }
 

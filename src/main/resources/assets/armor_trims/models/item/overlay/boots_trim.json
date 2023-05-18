@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "armor_trims:item/boots_trim"
+    "layer0": "armor_trims:trims/items/boots_trim"
   }
 }
