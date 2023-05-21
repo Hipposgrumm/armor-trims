@@ -6,6 +6,7 @@ import gg.hipposgrumm.armor_trims.model.TrimDecorationBaker;
 import gg.hipposgrumm.armor_trims.model.TrimRenderLayer;
 import gg.hipposgrumm.armor_trims.trimming.TrimmableItem;
 import gg.hipposgrumm.armor_trims.trimming.Trims;
+import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -26,13 +27,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HalfTransparentBlock;
 import net.minecraft.world.level.block.StainedGlassPaneBlock;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ItemRenderer.class)
+@Mixin(value = ItemRenderer.class, priority = 1500)
 public abstract class TrimmedItemDecorator {
     @Shadow public abstract void renderModelLists(BakedModel p_115190_, ItemStack p_115191_, int p_115192_, int p_115193_, PoseStack p_115194_, VertexConsumer p_115195_);
 
@@ -87,6 +89,16 @@ public abstract class TrimmedItemDecorator {
     private boolean armortrims_armorDecorationTintCheckOverride(BakedQuad instance) {
         return true;
     }
+
+    @Dynamic("No need to apply Rubidium fix because Rubidium is not present.")
+    @Redirect(method = "Lnet/minecraft/client/renderer/entity/ItemRenderer;renderQuadList(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;Ljava/util/List;Lnet/minecraft/world/item/ItemStack;II)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/color/item/ItemColor;getColor(Lnet/minecraft/world/item/ItemStack;I)I"))
+    private int armortrims_armorDecorationTint_rubidiumFix(ItemColor instance, ItemStack p_92677_, int p_92678_) {
+        if (TrimmableItem.isTrimmed(p_92677_) && p_92677_.is(Items.AIR)) {
+            return TrimmableItem.getMaterialColor(p_92677_);
+        }
+        return p_92678_!=-1?this.itemColors.getColor(p_92677_,p_92678_):p_92678_;
+    }
+
 
     private static BakedModel getModelForSlot(ItemStack item) {
         if (!(item.getItem() instanceof ArmorItem)) return TrimDecorationBaker.INSTANCE.other;

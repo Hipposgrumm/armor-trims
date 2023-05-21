@@ -5,7 +5,7 @@ plugins {
     id 'org.spongepowered.mixin' version '0.7.+'
 }
 
-version = '1.1'
+version = '1.1.1'
 group = 'gg.hipposgrumm.armor_trims' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'armor_trims'
 
@@ -170,7 +170,7 @@ dependencies {
     // at runtime, use the full JEI jar for Forge
     runtimeOnly(fg.deobf("mezz.jei:jei-1.19.3-forge:12.4.0.22"))
 
-    runtimeOnly(fg.deobf("curse.maven:atlasviewer-633577:4420383"))
+    runtimeOnly(fg.deobf("curse.maven:rubidium-574856:4167344"))
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // implementation fg.deobf("com.tterrag.registrate:Registrate:MC${mc_version}-${registrate_version}") // Adds registrate as a dependency
