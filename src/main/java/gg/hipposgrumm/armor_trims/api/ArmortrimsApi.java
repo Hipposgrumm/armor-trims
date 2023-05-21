@@ -34,7 +34,7 @@ import java.util.function.Supplier;
 public class ArmortrimsApi {
     private static Map<ResourceLocation, Pair<ResourceLocation, ResourceLocation>> trims = new HashMap<>();
     private static List<Pair<Pair<ResourceLocation, String>, Pair<ResourceLocation, Item.Properties>>> trimitems = new ArrayList<>();
-    private static List<String> trimItemTypesNames = new ArrayList<>();
+    private static List<String> trimItemTypesNames = new ArrayList<>() {{add("tooltip.armor_trims.applyTo.armor");}};
     private static List<Pair<Pair<ResourceLocation, Pair<String, String>>, Pair<Pair<Pair<TagKey<Item>, Item>, Supplier<Boolean>>, Item.Properties>>> upgradeitems = new ArrayList<>();
     //private static Map<ResourceLocation, Item> templateItems = new HashMap<>();
     public static Map<Pair<TagKey<Item>, Item>, Supplier<Boolean>> upgradeBaseBlockedConditions = new HashMap<>();
