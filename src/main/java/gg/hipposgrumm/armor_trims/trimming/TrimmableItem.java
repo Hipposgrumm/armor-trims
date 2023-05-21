@@ -1,6 +1,7 @@
 package gg.hipposgrumm.armor_trims.trimming;
 
 import gg.hipposgrumm.armor_trims.util.GetAvgColor;
+import gg.hipposgrumm.armor_trims.util.LargeItemLists;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ArmorItem;
@@ -55,7 +56,7 @@ public interface TrimmableItem {
     static ItemStack applyTrim(ItemStack targetItem, Trims trim, ItemStack material, boolean internal) {
         ItemStack armorItem;
         Item item = targetItem.getItem();
-        if ((internal || item instanceof ArmorItem) && trim != null) {
+        if ((internal || LargeItemLists.getAllTrimmable().contains(item)) && trim != null) {
             armorItem = targetItem.copy();
             armorItem.setCount(1);
 

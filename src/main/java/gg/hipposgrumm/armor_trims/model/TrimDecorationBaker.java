@@ -1,14 +1,20 @@
 package gg.hipposgrumm.armor_trims.model;
 
+import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
 import gg.hipposgrumm.armor_trims.Armortrims;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -19,11 +25,17 @@ public class TrimDecorationBaker {
     public static final TrimDecorationBaker INSTANCE = new TrimDecorationBaker();
 
     public boolean registeredModels = false;
+    public Map<Item, BakedModel> customModels = new HashMap<>();
+    private List<Pair<Item, ResourceLocation>> customModelsToLoad = new ArrayList<>();
     public BakedModel helmet;
     public BakedModel chestplate;
     public BakedModel leggings;
     public BakedModel boots;
     public BakedModel other;
+
+    public static void addModel(Item item, ResourceLocation modelResource) {
+        INSTANCE.customModelsToLoad.add(new Pair<>(item, modelResource));
+    }
 
     public void registerModels(Consumer<ResourceLocation> consumer) {
         consumer.accept(new ResourceLocation(Armortrims.MODID, "item/overlay/helmet_trim"));
@@ -32,6 +44,10 @@ public class TrimDecorationBaker {
         consumer.accept(new ResourceLocation(Armortrims.MODID, "item/overlay/boots_trim"));
         consumer.accept(new ResourceLocation(Armortrims.MODID, "item/overlay/other_trim"));
         consumer.accept(new ResourceLocation(Armortrims.MODID, "item/overlay/empty"));
+
+        for (Pair<Item, ResourceLocation> itemModel:customModelsToLoad) {
+            consumer.accept(itemModel.getSecond());
+        }
 
         registeredModels = true;
     }
@@ -46,7 +62,15 @@ public class TrimDecorationBaker {
         leggings = map.get(new ResourceLocation(Armortrims.MODID, "item/overlay/leggings_trim"));
         boots = map.get(new ResourceLocation(Armortrims.MODID, "item/overlay/boots_trim"));
         other = map.get(new ResourceLocation(Armortrims.MODID, "item/overlay/other_trim"));
-        //other = map.get(new ResourceLocation(Main.MODID, "item/overlay/empty"));
+        //other = map.get(new ResourceLocation(Armortrims.MODID, "item/overlay/empty"));
+
+        for (Pair<Item, ResourceLocation> itemModel:customModelsToLoad) {
+            customModels.put(itemModel.getFirst(), map.get(itemModel.getSecond()));
+        }
+    }
+
+    public BakedModel getModel(Item item) {
+        return customModels.getOrDefault(item, other);
     }
 
     @Mod.EventBusSubscriber(modid = Armortrims.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

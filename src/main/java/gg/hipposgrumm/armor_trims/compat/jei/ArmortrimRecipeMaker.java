@@ -42,7 +42,7 @@ public class ArmortrimRecipeMaker {
         List<IArmortrimsRecipe> recipes = new ArrayList<>();
         for (Item templateItem:LargeItemLists.getTrimSmithingTemplates()) {
             for (Item materialItem:LargeItemLists.getAllMaterials()) {
-                if (armorItem.getItem() instanceof ArmorItem) recipes.add(recipeFactory.createTrimmingRecipe(armorItem, templateItem.getDefaultInstance(), materialItem.getDefaultInstance()));
+                if (LargeItemLists.getAllTrimmable().contains(armorItem.getItem())) recipes.add(recipeFactory.createTrimmingRecipe(armorItem, templateItem.getDefaultInstance(), materialItem.getDefaultInstance()));
             }
         }
         return recipes.stream();

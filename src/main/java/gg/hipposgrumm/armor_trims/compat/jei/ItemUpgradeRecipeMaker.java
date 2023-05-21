@@ -46,12 +46,10 @@ public final class ItemUpgradeRecipeMaker {
     private static Stream<IArmortrimsRecipe> getArmortrimRecipes(IItemUpgradeRecipeFactory recipeFactory, ItemStack upgradableItem) {
         List<IArmortrimsRecipe> recipes = new ArrayList<>();
         for (Item templateItem: LargeItemLists.getUpgradeSmithingTemplates()) {
-            for (Item materialItem : new AssociateTagsWithItems(Tags.Items.INGOTS_NETHERITE.location().toString()).getItems()) {
-                if ((upgradableItem.getItem() instanceof TieredItem || upgradableItem.getItem() instanceof ArmorItem)) {
-                    ItemStack item = getUpgradedItem(upgradableItem.copy(), templateItem.getDefaultInstance(), materialItem.getDefaultInstance());
-                    if (!item.getItem().equals(upgradableItem.getItem()))
-                        recipes.add(recipeFactory.createUpgradingRecipe(upgradableItem, templateItem.getDefaultInstance(), materialItem.getDefaultInstance()));
-                }
+            for (Item materialItem : LargeItemLists.getAllItems()) {
+                ItemStack item = getUpgradedItem(upgradableItem.copy(), templateItem.getDefaultInstance(), materialItem.getDefaultInstance());
+                if (!item.getItem().equals(upgradableItem.getItem()) && !item.isEmpty())
+                    recipes.add(recipeFactory.createUpgradingRecipe(upgradableItem, templateItem.getDefaultInstance(), materialItem.getDefaultInstance()));
             }
         }
         return recipes.stream();

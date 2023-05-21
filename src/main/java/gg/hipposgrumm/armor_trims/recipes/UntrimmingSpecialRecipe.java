@@ -26,14 +26,14 @@ public class UntrimmingSpecialRecipe extends CustomRecipe {
     }
 
     public boolean matches(CraftingContainer crafting, Level p_44500_) {
-        boolean isArmor = false;
+        boolean isTrimmable = false;
         boolean isShears = false;
 
         for(int i = 0; i < crafting.getContainerSize(); ++i) {
             ItemStack itemstack = crafting.getItem(i);
             if (!itemstack.isEmpty()) {
-                if (itemstack.getItem() instanceof ArmorItem && !isArmor) {
-                    isArmor = true;
+                if (LargeItemLists.getAllTrimmable().contains(itemstack.getItem()) && !isTrimmable) {
+                    isTrimmable = true;
                 } else {
                     if (!itemstack.is(Tags.Items.SHEARS) || isShears) {
                         return false;
@@ -43,7 +43,7 @@ public class UntrimmingSpecialRecipe extends CustomRecipe {
             }
         }
 
-        return isArmor && isShears;
+        return isTrimmable && isShears;
     }
 
     public ItemStack assemble(CraftingContainer crafting) {
@@ -52,7 +52,7 @@ public class UntrimmingSpecialRecipe extends CustomRecipe {
 
         for(int i = 0; i < crafting.getContainerSize(); ++i) {
             ItemStack itemstack1 = crafting.getItem(i);
-            if (!itemstack1.isEmpty() && itemstack1.getItem() instanceof ArmorItem) {
+            if (!itemstack1.isEmpty() && LargeItemLists.getAllTrimmable().contains(itemstack1.getItem())) {
                 armorItem = itemstack1;
                 break;
             }
@@ -67,7 +67,7 @@ public class UntrimmingSpecialRecipe extends CustomRecipe {
         }
 
         ItemStack finalItem = ItemStack.EMPTY;
-        if (armorItem.getItem() instanceof ArmorItem && TrimmableItem.isTrimmed(armorItem)) {
+        if (LargeItemLists.getAllTrimmable().contains(armorItem.getItem()) && TrimmableItem.isTrimmed(armorItem)) {
             finalItem = new ItemStack(armorItem.getItem());
             TrimmableItem.clearTrim(finalItem);
         }

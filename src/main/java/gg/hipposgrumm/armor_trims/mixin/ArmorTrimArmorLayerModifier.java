@@ -8,6 +8,7 @@ import gg.hipposgrumm.armor_trims.Armortrims;
 import gg.hipposgrumm.armor_trims.config.Config;
 import gg.hipposgrumm.armor_trims.trimming.TrimmableItem;
 import gg.hipposgrumm.armor_trims.trimming.Trims;
+import gg.hipposgrumm.armor_trims.util.LargeItemLists;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -50,7 +51,7 @@ public abstract class ArmorTrimArmorLayerModifier<T extends LivingEntity, M exte
     @Inject(method = "Lnet/minecraft/client/renderer/entity/layers/HumanoidArmorLayer;renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;)V", at = @At("TAIL"))
     private void armortrims_humanoidRenderLayerModifier(PoseStack p_117119_, MultiBufferSource p_117120_, T p_117121_, EquipmentSlot p_117122_, int p_117123_, A p_117124_, CallbackInfo ci) {
         ItemStack itemstack_m = p_117121_.getItemBySlot(p_117122_);
-        if (itemstack_m.getItem() instanceof ArmorItem && TrimmableItem.isTrimmed(itemstack_m)) {
+        if (LargeItemLists.getAllTrimmable().contains(itemstack_m.getItem()) && TrimmableItem.isTrimmed(itemstack_m)) {
             isCustomModel = this.getArmorModelHook(p_117121_, itemstack_m, p_117122_, p_117124_) != p_117124_;
             this.getParentModel().copyPropertiesTo(p_117124_);
             this.setPartVisibility(p_117124_, p_117122_);

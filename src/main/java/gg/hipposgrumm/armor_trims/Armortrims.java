@@ -36,6 +36,7 @@ import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -75,60 +76,63 @@ public class Armortrims {
         } else {
             ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_SPEC, "armor_trims.toml");
         }
+        if (ModList.get().isLoaded(MODID)) {
+            new ArmortrimsApi(MODID)
+                    .createUpgradeTemplate(Tags.Items.INGOTS_NETHERITE, Items.DIAMOND, Config::disableVanillaNetheriteUpgrade, "trims.armor_trims.netherite_upgrade", "tooltip.armor_trims.applyTo.diamond_equipment", "netherite_upgrade_smithing_template")
+                    .createTrimTemplate(new ResourceLocation(MODID, "coast"), "trims.armor_trims.coast", "coast_armor_trim_smithing_template")
+                    .createTrimTemplate(new ResourceLocation(MODID, "dune"), "trims.armor_trims.dune", "dune_armor_trim_smithing_template")
+                    .createTrimTemplate(new ResourceLocation(MODID, "eye"), "trims.armor_trims.eye", "eye_armor_trim_smithing_template")
+                    .createTrimTemplate(new ResourceLocation(MODID, "host"), "trims.armor_trims.host", "host_armor_trim_smithing_template")
+                    .createTrimTemplate(new ResourceLocation(MODID, "raiser"), "trims.armor_trims.raiser", "raiser_armor_trim_smithing_template")
+                    .createTrimTemplate(new ResourceLocation(MODID, "rib"), "trims.armor_trims.rib", "rib_armor_trim_smithing_template")
+                    .createTrimTemplate(new ResourceLocation(MODID, "sentry"), "trims.armor_trims.sentry", "sentry_armor_trim_smithing_template")
+                    .createTrimTemplate(new ResourceLocation(MODID, "shaper"), "trims.armor_trims.shaper", "shaper_armor_trim_smithing_template")
+                    .createTrimTemplate(new ResourceLocation(MODID, "silence"), "trims.armor_trims.silence", "silence_armor_trim_smithing_template")
+                    .createTrimTemplate(new ResourceLocation(MODID, "snout"), "trims.armor_trims.snout", "snout_armor_trim_smithing_template")
+                    .createTrimTemplate(new ResourceLocation(MODID, "spire"), "trims.armor_trims.spire", "spire_armor_trim_smithing_template")
+                    .createTrimTemplate(new ResourceLocation(MODID, "tide"), "trims.armor_trims.tide", "tide_armor_trim_smithing_template")
+                    .createTrimTemplate(new ResourceLocation(MODID, "vex"), "trims.armor_trims.vex", "vex_armor_trim_smithing_template")
+                    .createTrimTemplate(new ResourceLocation(MODID, "ward"), "trims.armor_trims.ward", "ward_armor_trim_smithing_template")
+                    .createTrimTemplate(new ResourceLocation(MODID, "wayfinder"), "trims.armor_trims.wayfinder", "wayfinder_armor_trim_smithing_template")
+                    .createTrimTemplate(new ResourceLocation(MODID, "wild"), "trims.armor_trims.wild", "wild_armor_trim_smithing_template")
 
-        new ArmortrimsApi(MODID)
-                .createUpgradeTemplate(Tags.Items.INGOTS_NETHERITE, Items.DIAMOND, Config::disableVanillaNetheriteUpgrade, "trims.armor_trims.netherite_upgrade", "tooltip.armor_trims.applyTo.diamond_equipment", "netherite_upgrade_smithing_template")
-                .createTrimTemplate(new ResourceLocation(MODID, "coast"), "trims.armor_trims.coast", "coast_armor_trim_smithing_template")
-                .createTrimTemplate(new ResourceLocation(MODID, "dune"), "trims.armor_trims.dune", "dune_armor_trim_smithing_template")
-                .createTrimTemplate(new ResourceLocation(MODID, "eye"), "trims.armor_trims.eye", "eye_armor_trim_smithing_template")
-                .createTrimTemplate(new ResourceLocation(MODID, "host"), "trims.armor_trims.host", "host_armor_trim_smithing_template")
-                .createTrimTemplate(new ResourceLocation(MODID, "raiser"), "trims.armor_trims.raiser", "raiser_armor_trim_smithing_template")
-                .createTrimTemplate(new ResourceLocation(MODID, "rib"), "trims.armor_trims.rib", "rib_armor_trim_smithing_template")
-                .createTrimTemplate(new ResourceLocation(MODID, "sentry"), "trims.armor_trims.sentry", "sentry_armor_trim_smithing_template")
-                .createTrimTemplate(new ResourceLocation(MODID, "shaper"), "trims.armor_trims.shaper", "shaper_armor_trim_smithing_template")
-                .createTrimTemplate(new ResourceLocation(MODID, "silence"), "trims.armor_trims.silence", "silence_armor_trim_smithing_template")
-                .createTrimTemplate(new ResourceLocation(MODID, "snout"), "trims.armor_trims.snout", "snout_armor_trim_smithing_template")
-                .createTrimTemplate(new ResourceLocation(MODID, "spire"), "trims.armor_trims.spire", "spire_armor_trim_smithing_template")
-                .createTrimTemplate(new ResourceLocation(MODID, "tide"), "trims.armor_trims.tide", "tide_armor_trim_smithing_template")
-                .createTrimTemplate(new ResourceLocation(MODID, "vex"), "trims.armor_trims.vex", "vex_armor_trim_smithing_template")
-                .createTrimTemplate(new ResourceLocation(MODID, "ward"), "trims.armor_trims.ward", "ward_armor_trim_smithing_template")
-                .createTrimTemplate(new ResourceLocation(MODID, "wayfinder"), "trims.armor_trims.wayfinder", "wayfinder_armor_trim_smithing_template")
-                .createTrimTemplate(new ResourceLocation(MODID, "wild"), "trims.armor_trims.wild", "wild_armor_trim_smithing_template")
+                    .createTrim("coast", new ResourceLocation(MODID, "textures/trims/models/armor/coast.png"), new ResourceLocation(MODID, "textures/trims/models/armor/coast_leggings.png"))
+                    .createTrim("dune", new ResourceLocation(MODID, "textures/trims/models/armor/dune.png"), new ResourceLocation(MODID, "textures/trims/models/armor/dune_leggings.png"))
+                    .createTrim("eye", new ResourceLocation(MODID, "textures/trims/models/armor/eye.png"), new ResourceLocation(MODID, "textures/trims/models/armor/eye_leggings.png"))
+                    .createTrim("host", new ResourceLocation(MODID, "textures/trims/models/armor/host.png"), new ResourceLocation(MODID, "textures/trims/models/armor/host_leggings.png"))
+                    .createTrim("raiser", new ResourceLocation(MODID, "textures/trims/models/armor/raiser.png"), new ResourceLocation(MODID, "textures/trims/models/armor/raiser_leggings.png"))
+                    .createTrim("rib", new ResourceLocation(MODID, "textures/trims/models/armor/rib.png"), new ResourceLocation(MODID, "textures/trims/models/armor/rib_leggings.png"))
+                    .createTrim("sentry", new ResourceLocation(MODID, "textures/trims/models/armor/sentry.png"), new ResourceLocation(MODID, "textures/trims/models/armor/sentry_leggings.png"))
+                    .createTrim("shaper", new ResourceLocation(MODID, "textures/trims/models/armor/shaper.png"), new ResourceLocation(MODID, "textures/trims/models/armor/shaper_leggings.png"))
+                    .createTrim("silence", new ResourceLocation(MODID, "textures/trims/models/armor/silence.png"), new ResourceLocation(MODID, "textures/trims/models/armor/silence_leggings.png"))
+                    .createTrim("snout", new ResourceLocation(MODID, "textures/trims/models/armor/snout.png"), new ResourceLocation(MODID, "textures/trims/models/armor/snout_leggings.png"))
+                    .createTrim("spire", new ResourceLocation(MODID, "textures/trims/models/armor/spire.png"), new ResourceLocation(MODID, "textures/trims/models/armor/spire_leggings.png"))
+                    .createTrim("tide", new ResourceLocation(MODID, "textures/trims/models/armor/tide.png"), new ResourceLocation(MODID, "textures/trims/models/armor/tide_leggings.png"))
+                    .createTrim("vex", new ResourceLocation(MODID, "textures/trims/models/armor/vex.png"), new ResourceLocation(MODID, "textures/trims/models/armor/vex_leggings.png"))
+                    .createTrim("ward", new ResourceLocation(MODID, "textures/trims/models/armor/ward.png"), new ResourceLocation(MODID, "textures/trims/models/armor/ward_leggings.png"))
+                    .createTrim("wayfinder", new ResourceLocation(MODID, "textures/trims/models/armor/wayfinder.png"), new ResourceLocation(MODID, "textures/trims/models/armor/wayfinder_leggings.png"))
+                    .createTrim("wild", new ResourceLocation(MODID, "textures/trims/models/armor/wild.png"), new ResourceLocation(MODID, "textures/trims/models/armor/wild_leggings.png"))
 
-                .createTrim("coast", new ResourceLocation(MODID, "textures/trims/models/armor/coast.png"), new ResourceLocation(MODID, "textures/trims/models/armor/coast_leggings.png"))
-                .createTrim("dune", new ResourceLocation(MODID, "textures/trims/models/armor/dune.png"), new ResourceLocation(MODID, "textures/trims/models/armor/dune_leggings.png"))
-                .createTrim("eye", new ResourceLocation(MODID, "textures/trims/models/armor/eye.png"), new ResourceLocation(MODID, "textures/trims/models/armor/eye_leggings.png"))
-                .createTrim("host", new ResourceLocation(MODID, "textures/trims/models/armor/host.png"), new ResourceLocation(MODID, "textures/trims/models/armor/host_leggings.png"))
-                .createTrim("raiser", new ResourceLocation(MODID, "textures/trims/models/armor/raiser.png"), new ResourceLocation(MODID, "textures/trims/models/armor/raiser_leggings.png"))
-                .createTrim("rib", new ResourceLocation(MODID, "textures/trims/models/armor/rib.png"), new ResourceLocation(MODID, "textures/trims/models/armor/rib_leggings.png"))
-                .createTrim("sentry", new ResourceLocation(MODID, "textures/trims/models/armor/sentry.png"), new ResourceLocation(MODID, "textures/trims/models/armor/sentry_leggings.png"))
-                .createTrim("shaper", new ResourceLocation(MODID, "textures/trims/models/armor/shaper.png"), new ResourceLocation(MODID, "textures/trims/models/armor/shaper_leggings.png"))
-                .createTrim("silence", new ResourceLocation(MODID, "textures/trims/models/armor/silence.png"), new ResourceLocation(MODID, "textures/trims/models/armor/silence_leggings.png"))
-                .createTrim("snout", new ResourceLocation(MODID, "textures/trims/models/armor/snout.png"), new ResourceLocation(MODID, "textures/trims/models/armor/snout_leggings.png"))
-                .createTrim("spire", new ResourceLocation(MODID, "textures/trims/models/armor/spire.png"), new ResourceLocation(MODID, "textures/trims/models/armor/spire_leggings.png"))
-                .createTrim("tide", new ResourceLocation(MODID, "textures/trims/models/armor/tide.png"), new ResourceLocation(MODID, "textures/trims/models/armor/tide_leggings.png"))
-                .createTrim("vex", new ResourceLocation(MODID, "textures/trims/models/armor/vex.png"), new ResourceLocation(MODID, "textures/trims/models/armor/vex_leggings.png"))
-                .createTrim("ward", new ResourceLocation(MODID, "textures/trims/models/armor/ward.png"), new ResourceLocation(MODID, "textures/trims/models/armor/ward_leggings.png"))
-                .createTrim("wayfinder", new ResourceLocation(MODID, "textures/trims/models/armor/wayfinder.png"), new ResourceLocation(MODID, "textures/trims/models/armor/wayfinder_leggings.png"))
-                .createTrim("wild", new ResourceLocation(MODID, "textures/trims/models/armor/wild.png"), new ResourceLocation(MODID, "textures/trims/models/armor/wild_leggings.png"))
+                    //.addTrimmableItem(ArmorItem.class, "tooltip.armor_trims.applyTo.armor")
 
-                .addConfigDefault(Tags.Items.INGOTS_GOLD)
-                .addConfigDefault(Tags.Items.INGOTS_IRON)
-                .addConfigDefault(Tags.Items.INGOTS_COPPER)
-                .addConfigDefault(Tags.Items.INGOTS_NETHERITE)
-                .addConfigDefault(Tags.Items.GEMS_EMERALD)
-                .addConfigDefault(Tags.Items.GEMS_AMETHYST)
-                .addConfigDefault(Tags.Items.DUSTS_REDSTONE)
-                .addConfigDefault(Tags.Items.GEMS_LAPIS)
-                .addConfigDefault(Tags.Items.GEMS_QUARTZ)
-                .addConfigDefault(Tags.Items.GEMS_DIAMOND)
-                .addConfigDefault(ItemTags.create(new ResourceLocation("forge", "ingots/manasteel")))
-                .addConfigDefault(ItemTags.create(new ResourceLocation("forge", "ingots/elementium")))
-                .addConfigDefault(ItemTags.create(new ResourceLocation("forge", "ingots/terrasteel")))
-                .addConfigDefault(ItemTags.create(new ResourceLocation("forge", "gems/mana_diamond")))
-                .addConfigDefault(ItemTags.create(new ResourceLocation("forge", "gems/dragonstone")))
-                .addConfigDefault(ItemTags.create(new ResourceLocation("forge", "ingots/zinc")))
-                .addConfigDefault("create:polished_rose_quartz");
+                    .addConfigDefault(Tags.Items.INGOTS_GOLD)
+                    .addConfigDefault(Tags.Items.INGOTS_IRON)
+                    .addConfigDefault(Tags.Items.INGOTS_COPPER)
+                    .addConfigDefault(Tags.Items.INGOTS_NETHERITE)
+                    .addConfigDefault(Tags.Items.GEMS_EMERALD)
+                    .addConfigDefault(Tags.Items.GEMS_AMETHYST)
+                    .addConfigDefault(Tags.Items.DUSTS_REDSTONE)
+                    .addConfigDefault(Tags.Items.GEMS_LAPIS)
+                    .addConfigDefault(Tags.Items.GEMS_QUARTZ)
+                    .addConfigDefault(Tags.Items.GEMS_DIAMOND)
+                    .addConfigDefault(ItemTags.create(new ResourceLocation("forge", "ingots/manasteel")))
+                    .addConfigDefault(ItemTags.create(new ResourceLocation("forge", "ingots/elementium")))
+                    .addConfigDefault(ItemTags.create(new ResourceLocation("forge", "ingots/terrasteel")))
+                    .addConfigDefault(ItemTags.create(new ResourceLocation("forge", "gems/mana_diamond")))
+                    .addConfigDefault(ItemTags.create(new ResourceLocation("forge", "gems/dragonstone")))
+                    .addConfigDefault(ItemTags.create(new ResourceLocation("forge", "ingots/zinc")))
+                    .addConfigDefault("create:polished_rose_quartz");
+        }
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -223,7 +227,6 @@ public class Armortrims {
     public static class CommonModEvents {
         @SubscribeEvent
         public static void onCommonSetup(FMLCommonSetupEvent event) {
-            LargeItemLists.setAllArmors();
             LargeItemLists.setAllTemplates();
             LargeItemLists.setAllUpgradeTemplates();
             LargeItemLists.setAllTrimTemplates();

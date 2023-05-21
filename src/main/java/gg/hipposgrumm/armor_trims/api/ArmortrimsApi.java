@@ -1,33 +1,40 @@
 package gg.hipposgrumm.armor_trims.api;
 
 import com.mojang.datafixers.util.Pair;
-import gg.hipposgrumm.armor_trims.Armortrims;
+import com.mojang.logging.LogUtils;
 import gg.hipposgrumm.armor_trims.config.Config;
 import gg.hipposgrumm.armor_trims.item.SmithingTemplate;
 import gg.hipposgrumm.armor_trims.item.SmithingTemplate$Upgrade;
+import gg.hipposgrumm.armor_trims.loot.ChestLootModifier;
+import gg.hipposgrumm.armor_trims.loot.EntityLootModifier;
+import gg.hipposgrumm.armor_trims.model.TrimDecorationBaker;
 import gg.hipposgrumm.armor_trims.trimming.Trims;
+import gg.hipposgrumm.armor_trims.util.AssociateTagsWithItems;
+import gg.hipposgrumm.armor_trims.util.GetAvgColor;
 import gg.hipposgrumm.armor_trims.util.LargeItemLists;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
  * This serves as an API class for integration. You can call this class's various methods to create trims, templates, and armor model overrides.
  * <i>Note: If something can't be integrated you expect to, make sure to check the GitHub page, and create a pull request if it isn't implemented for some reason.</i>
+ * <br><br>
+ * You can use my util classes such as {@link AssociateTagsWithItems}, {@link GetAvgColor}, and {@link LargeItemLists}.<br>
+ * You may also use my Loot Modifier classes {@link ChestLootModifier} and {@link EntityLootModifier}.<br>
+ * <br>
  */
 public class ArmortrimsApi {
     private static Map<ResourceLocation, Pair<ResourceLocation, ResourceLocation>> trims = new HashMap<>();
     private static List<Pair<Pair<ResourceLocation, String>, Pair<ResourceLocation, Item.Properties>>> trimitems = new ArrayList<>();
+    private static List<String> trimItemTypesNames = new ArrayList<>();
     private static List<Pair<Pair<ResourceLocation, Pair<String, String>>, Pair<Pair<Pair<TagKey<Item>, Item>, Supplier<Boolean>>, Item.Properties>>> upgradeitems = new ArrayList<>();
     //private static Map<ResourceLocation, Item> templateItems = new HashMap<>();
     public static Map<Pair<TagKey<Item>, Item>, Supplier<Boolean>> upgradeBaseBlockedConditions = new HashMap<>();
@@ -53,6 +60,28 @@ public class ArmortrimsApi {
         trims.put(prefix(name, modid), new Pair<>(suffix(prefix(overlayLocation, modid).toString(), ".png"), suffix(prefix(overlaySecondLocation, modid).toString(), ".png")));
         return this;
     }
+
+    /*
+     * Allows you to add item classes to the list of trimmable items.
+     * @param itemClass Class of the item type. MUST EXTEND {@link Item}!
+     * @param translatableName Translatable name for item type.
+     *
+    public ArmortrimsApi addTrimmableItem(Class<? extends Item> itemClass, String translatableName) {
+        LargeItemLists.allTrimmableClasses.add(itemClass);
+        trimItemTypesNames.add(translatableName);
+        return this;
+    }
+
+    /**
+     * Allows you to add item tags to the list of trimmable items.
+     * @param itemTag Item tag to add.
+     * @param translatableName Translatable name for item type.
+     *
+    public ArmortrimsApi addTrimmableItem(TagKey<Item> itemTag, String translatableName) {
+        LargeItemLists.allTrimmableTags.add(itemTag);
+        trimItemTypesNames.add(translatableName);
+        return this;
+    }*/
 
     /**
      * Add materials to the config's default options (if you add support and mod users are too lazy to add them themselves).
@@ -103,6 +132,7 @@ public class ArmortrimsApi {
     /**
      * Note: Upgrade recipes must be defined as smithing recipes in the datapack!
      * @param tag Item tag that can be used to upgrade.
+     * @param itemRepresentative Item used to determine color.
      * @param blockVanillaOutput Blocks outputs from being created the "vanilla way".
      * @param translatableName Translation key for template subtitle name.
      * @param translatableInput Translation key for template input items (Apply To:)
@@ -118,6 +148,17 @@ public class ArmortrimsApi {
      */
     public ArmortrimsApi createUpgradeTemplate(TagKey<Item> tag, Item itemRepresentative, Supplier<Boolean> blockVanillaOutput, String translatableName, String translatableInput, String itemId, Item.Properties properties) {
         upgradeitems.add(new Pair<>(new Pair<>(new ResourceLocation(modid, itemId), new Pair<>(translatableName, translatableInput)), new Pair<>(new Pair<>(new Pair<>(tag, itemRepresentative), blockVanillaOutput), properties)));
+        return this;
+    }
+
+    /**
+     * Allows the creation of models for custom trims based on the item.
+     * @param item Item to add the model for.
+     * @param modelLocation ResourceLocation of the item model to overlay on the trimmed ItemStack.
+     * @apiNote I have no way of knowing if this actually works. If it doesn't please submit an issue on GitHub (assuming there isn't one already) and just don't use this.
+     */
+    public ArmortrimsApi createCustomTrimModel(Item item, ResourceLocation modelLocation) {
+        TrimDecorationBaker.addModel(item, modelLocation);
         return this;
     }
 
@@ -139,7 +180,7 @@ public class ArmortrimsApi {
         }
         for (Pair<Pair<ResourceLocation, String>, Pair<ResourceLocation, Item.Properties>> trimitem:trimitems) {
             if (!registerMap.containsKey(trimitem.getFirst().getFirst().getNamespace())) registerMap.put(trimitem.getFirst().getFirst().getNamespace(), DeferredRegister.create(ForgeRegistries.ITEMS, trimitem.getFirst().getFirst().getNamespace()));
-            registerMap.get(trimitem.getFirst().getFirst().getNamespace()).register(trimitem.getFirst().getFirst().getPath(), () -> new SmithingTemplate(trimitem.getSecond().getFirst(), trimitem.getFirst().getSecond(), trimitem.getSecond().getSecond()));
+            registerMap.get(trimitem.getFirst().getFirst().getNamespace()).register(trimitem.getFirst().getFirst().getPath(), () -> new SmithingTemplate(trimitem.getSecond().getFirst(), trimitem.getFirst().getSecond(), trimitem.getSecond().getSecond(), trimItemTypesNames));
             itemsList.add(trimitem.getFirst().getFirst());
         }
         for (DeferredRegister<Item> registry:registerMap.values()) {
@@ -150,7 +191,7 @@ public class ArmortrimsApi {
     /**
      * Hook to get armor trim items.
      * @param itemId Item to get.
-     * @return Item specified if it is present, otherwise air.
+     * @return Item specified if it exists; otherwise air.
      */
     public static Item getItem(ResourceLocation itemId) {
         Item target = Items.AIR;

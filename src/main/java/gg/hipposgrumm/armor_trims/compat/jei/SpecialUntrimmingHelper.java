@@ -40,7 +40,7 @@ public class SpecialUntrimmingHelper implements ICraftingCategoryExtension {
         List<ItemStack> inputItems = new ArrayList<>();
         List<ItemStack> outputItems = new ArrayList<>();
         if (Collections.disjoint(focus, List.of(new AssociateTagsWithItems(Tags.Items.SHEARS.location().toString()).getItems()))) {
-            for (Item armorItem : LargeItemLists.getAllArmors()) {
+            for (Item armorItem : LargeItemLists.getAllTrimmable()) {
                 for (Item templateItem : new ArrayList<>(Arrays.asList( // Limited list of templates so that Minecraft doesn't (completely) freeze when looking up uses for Shears.
                         ArmortrimsApi.getItem(new ResourceLocation(Armortrims.MODID, "coast_armor_trim_smithing_template")),
                         ArmortrimsApi.getItem(new ResourceLocation(Armortrims.MODID, "eye_armor_trim_smithing_template")),

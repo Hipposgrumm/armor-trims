@@ -1,5 +1,6 @@
 package gg.hipposgrumm.armor_trims.item;
 
+import com.mojang.logging.LogUtils;
 import gg.hipposgrumm.armor_trims.config.Config;
 import gg.hipposgrumm.armor_trims.trimming.Trims;
 import gg.hipposgrumm.armor_trims.util.AssociateTagsWithItems;
@@ -22,6 +23,7 @@ import java.util.Objects;
 public class SmithingTemplate extends Item {
     private final Trims trim;
     private final String translatableName;
+    private final List<String> trimmableItemNames;
 
     public Trims getTrim() {
         return this.trim;
@@ -31,12 +33,14 @@ public class SmithingTemplate extends Item {
         super(properties.stacksTo(1));
         this.trim = null;
         this.translatableName = "";
+        this.trimmableItemNames = List.of();
     }
 
-    public SmithingTemplate(ResourceLocation trim, String translatableName, Item.Properties properties) {
+    public SmithingTemplate(ResourceLocation trim, String translatableName, Item.Properties properties, List<String> trimmableItemNames) {
         super(properties.tab(CreativeModeTab.TAB_MATERIALS).stacksTo(1));
         this.translatableName = translatableName;
         this.trim = new Trims(trim);
+        this.trimmableItemNames = trimmableItemNames;
     }
 
     @Override
@@ -60,7 +64,11 @@ public class SmithingTemplate extends Item {
             list.add(Component.translatable("trims." + trim.name.toString().replace(":", ".")).withStyle(ChatFormatting.DARK_GRAY));
             list.add(Component.literal(""));
             list.add(Component.translatable("tooltip.armor_trims.applyTo").withStyle(ChatFormatting.GRAY));
-            list.add(Component.literal(" ").append(Component.translatable("tooltip.armor_trims.applyTo.armor")).withStyle(ChatFormatting.BLUE));
+            MutableComponent appliables = Component.empty();
+            for (int i=0;i<trimmableItemNames.size();i++) {
+                appliables.append(Component.translatable(trimmableItemNames.get(i)).append(Component.literal((i>=trimmableItemNames.size()-2)?(i>=trimmableItemNames.size()-1)?"":(trimmableItemNames.size()>2?", & ":" & "):", ")));
+            }
+            list.add(Component.literal(" ").append(appliables).withStyle(ChatFormatting.BLUE));
             list.add(Component.translatable("tooltip.armor_trims.ingredients").withStyle(ChatFormatting.GRAY));
 
             List<String> configList = removeUnregisteredEntries(Config.compressItemNamesInTemplateTooltip() ? Config.trimmableMaterials() : removeUnregisteredAndDuplicateEntries(LargeItemLists.getAllMaterials()));

@@ -1,46 +1,34 @@
 package gg.hipposgrumm.armor_trims.util;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.logging.LogUtils;
-import gg.hipposgrumm.armor_trims.Armortrims;
-import gg.hipposgrumm.armor_trims.compat.jei.ArmortrimsRecipe;
+import com.mojang.datafixers.util.Pair;
 import gg.hipposgrumm.armor_trims.config.Config;
 import gg.hipposgrumm.armor_trims.item.SmithingTemplate;
 import gg.hipposgrumm.armor_trims.item.SmithingTemplate$Upgrade;
-import gg.hipposgrumm.armor_trims.trimming.Trims;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.ArrayUtils;
-import oshi.util.tuples.Pair;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class LargeItemLists {
-    private static List<Item> allArmors = List.of();
+    public static List<Class<? extends Item>> allTrimmableClasses = new ArrayList<>(){{add(ArmorItem.class);}};
+    public static List<TagKey<Item>> allTrimmableTags = new ArrayList<>();
     private static List<Item> smithingTemplates = List.of();
     private static List<Item> smithingTemplatesUpgrades = List.of();
     private static List<Item> smithingTemplatesTrims = List.of();
 
-    private static List<Item> getAllItems() {
+    public static List<Item> getAllItems() {
         List<Item> items = new ArrayList<>();
         for (Item item : ImmutableList.copyOf(ForgeRegistries.ITEMS.iterator())) {
             items.add(item);
-            //LogUtils.getLogger().info("Got: "+item);
         }
         return items;
-    }
-
-    public static void setAllArmors() {
-        allArmors = getAllItemsOfType(ArmorItem.class);
     }
 
     public static void setAllTemplates() {
@@ -55,8 +43,23 @@ public class LargeItemLists {
         smithingTemplatesTrims = smithingTemplates.stream().filter(f -> !smithingTemplatesUpgrades.contains(f)).toList();
     }
 
+    /**
+     * @deprecated Use {@link #getAllTrimmable()}
+     */
+    @Deprecated
     public static List<Item> getAllArmors() {
-        return allArmors;
+        return getAllItemsOfType(ArmorItem.class);
+    }
+
+    public static List<Item> getAllTrimmable() {
+        List<Item> items = new ArrayList<>();
+        for (Class<? extends Item> item:allTrimmableClasses) {
+            items.addAll(getAllItemsOfType(item));
+        }
+        for (TagKey<Item> item:allTrimmableTags) {
+            items.addAll(List.of(new AssociateTagsWithItems(item.location().toString()).getItems()));
+        }
+        return items;
     }
 
     public static List<Item> getAllSmithingTemplates() {
