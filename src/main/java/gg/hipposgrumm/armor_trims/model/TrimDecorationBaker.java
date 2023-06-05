@@ -27,10 +27,6 @@ public class TrimDecorationBaker {
     public boolean registeredModels = false;
     public Map<Item, BakedModel> customModels = new HashMap<>();
     private List<Pair<Item, ResourceLocation>> customModelsToLoad = new ArrayList<>();
-    public BakedModel helmet;
-    public BakedModel chestplate;
-    public BakedModel leggings;
-    public BakedModel boots;
     public BakedModel other;
 
     public static void addModel(Item item, ResourceLocation modelResource) {
@@ -38,15 +34,15 @@ public class TrimDecorationBaker {
     }
 
     public void registerModels(Consumer<ResourceLocation> consumer) {
-        consumer.accept(new ResourceLocation(Armortrims.MODID, "item/overlay/helmet_trim"));
-        consumer.accept(new ResourceLocation(Armortrims.MODID, "item/overlay/chestplate_trim"));
-        consumer.accept(new ResourceLocation(Armortrims.MODID, "item/overlay/leggings_trim"));
-        consumer.accept(new ResourceLocation(Armortrims.MODID, "item/overlay/boots_trim"));
         consumer.accept(new ResourceLocation(Armortrims.MODID, "item/overlay/other_trim"));
-        consumer.accept(new ResourceLocation(Armortrims.MODID, "item/overlay/empty"));
 
+        List<ResourceLocation> addedModels = new ArrayList<>() {{
+            add(new ResourceLocation(Armortrims.MODID, "item/overlay/other_trim"));
+        }};
         for (Pair<Item, ResourceLocation> itemModel:customModelsToLoad) {
+            if (addedModels.contains(itemModel.getSecond())) continue;
             consumer.accept(itemModel.getSecond());
+            addedModels.add(itemModel.getSecond());
         }
 
         registeredModels = true;
@@ -57,12 +53,8 @@ public class TrimDecorationBaker {
             LogUtils.getLogger().error("Additional models failed to register! Aborting baking models to avoid early crashing.");
             return;
         }
-        helmet = map.get(new ResourceLocation(Armortrims.MODID, "item/overlay/helmet_trim"));
-        chestplate = map.get(new ResourceLocation(Armortrims.MODID, "item/overlay/chestplate_trim"));
-        leggings = map.get(new ResourceLocation(Armortrims.MODID, "item/overlay/leggings_trim"));
-        boots = map.get(new ResourceLocation(Armortrims.MODID, "item/overlay/boots_trim"));
+
         other = map.get(new ResourceLocation(Armortrims.MODID, "item/overlay/other_trim"));
-        //other = map.get(new ResourceLocation(Armortrims.MODID, "item/overlay/empty"));
 
         for (Pair<Item, ResourceLocation> itemModel:customModelsToLoad) {
             customModels.put(itemModel.getFirst(), map.get(itemModel.getSecond()));

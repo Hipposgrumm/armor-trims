@@ -61,7 +61,7 @@ public class SmithingTemplate extends Item {
     public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
         super.appendHoverText(itemstack, world, list, flag);
         if (trim != null) {
-            list.add(Component.translatable("trims." + trim.name.toString().replace(":", ".")).withStyle(ChatFormatting.DARK_GRAY));
+            list.add(Component.translatable(translatableName).withStyle(ChatFormatting.DARK_GRAY));
             list.add(Component.literal(""));
             list.add(Component.translatable("tooltip.armor_trims.applyTo").withStyle(ChatFormatting.GRAY));
             MutableComponent appliables = Component.empty();

@@ -61,11 +61,11 @@ public class ArmortrimsApi {
         return this;
     }
 
-    /*
+    /**
      * Allows you to add item classes to the list of trimmable items.
      * @param itemClass Class of the item type. MUST EXTEND {@link Item}!
      * @param translatableName Translatable name for item type.
-     *
+     */
     public ArmortrimsApi addTrimmableItem(Class<? extends Item> itemClass, String translatableName) {
         LargeItemLists.allTrimmableClasses.add(itemClass);
         trimItemTypesNames.add(translatableName);
@@ -76,12 +76,23 @@ public class ArmortrimsApi {
      * Allows you to add item tags to the list of trimmable items.
      * @param itemTag Item tag to add.
      * @param translatableName Translatable name for item type.
-     *
+     */
     public ArmortrimsApi addTrimmableItem(TagKey<Item> itemTag, String translatableName) {
         LargeItemLists.allTrimmableTags.add(itemTag);
         trimItemTypesNames.add(translatableName);
         return this;
-    }*/
+    }
+
+    /**
+     * @deprecated Just use {@link #addConfigDefault(ResourceLocation)}<br>
+     * I don't know what the heck I was thinking here.<br>
+     * It still exists I guess so that mods that use it for whatever reason don't break.
+     */
+    @Deprecated(forRemoval = true)
+    public ArmortrimsApi addConfigDefault(String material) {
+        Config.addCustomMaterial(material);
+        return this;
+    }
 
     /**
      * Add materials to the config's default options (if you add support and mod users are too lazy to add them themselves).
@@ -89,15 +100,6 @@ public class ArmortrimsApi {
      */
     public ArmortrimsApi addConfigDefault(ResourceLocation material) {
         Config.addCustomMaterial(material.toString());
-        return this;
-    }
-
-    /**
-     * Version of {@link #addConfigDefault(ResourceLocation)} allowing for raw strings.
-     * @param material String ResourceLocation of the material to add.
-     */
-    public ArmortrimsApi addConfigDefault(String material) {
-        Config.addCustomMaterial(material);
         return this;
     }
 
@@ -155,7 +157,7 @@ public class ArmortrimsApi {
      * Allows the creation of models for custom trims based on the item.
      * @param item Item to add the model for.
      * @param modelLocation ResourceLocation of the item model to overlay on the trimmed ItemStack.
-     * @apiNote I have no way of knowing if this actually works. If it doesn't please submit an issue on GitHub (assuming there isn't one already) and just don't use this.
+     * @apiNote I have no way of knowing if this actually works. If it doesn't please submit an issue on GitHub (assuming there isn't one already).
      */
     public ArmortrimsApi createCustomTrimModel(Item item, ResourceLocation modelLocation) {
         TrimDecorationBaker.addModel(item, modelLocation);

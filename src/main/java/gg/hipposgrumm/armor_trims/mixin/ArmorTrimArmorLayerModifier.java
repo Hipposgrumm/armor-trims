@@ -103,36 +103,6 @@ public abstract class ArmorTrimArmorLayerModifier<T extends LivingEntity, M exte
         return BLOCKBENCH_MODELS.get(clazz);
     }
 
-    /* // Whatever, I give up.
-    @Inject(method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/layers/HumanoidArmorLayer;renderModel(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IZLnet/minecraft/client/model/Model;FFFLnet/minecraft/resources/ResourceLocation;)V", shift = At.Shift.BEFORE))
-    private void armortrims_humanoidRenderLayerCustomArmorModelWorkaround(PoseStack p_117119_, MultiBufferSource p_117120_, T p_117121_, EquipmentSlot p_117122_, int p_117123_, A p_117124_, CallbackInfo ci) {
-        if (isCustomModel) {
-            ItemStack itemstack_w = p_117121_.getItemBySlot(p_117122_);
-            int i = TrimmableItem.getMaterialColor(itemstack_w);
-            float f = (float) (i >> 24 & 255) / 255.0F;
-            float f1 = (float) (i >> 16 & 255) / 255.0F;
-            float f2 = (float) (i >> 8 & 255) / 255.0F;
-            float f3 = (float) (i & 255) / 255.0F;
-            renderModelCustomArmorModelWorkaround(p_117119_, p_117120_, p_117123_, itemstack_w.hasFoil(), p_117124_, f, f1, f2, f3, this.getArmorResource(p_117121_, itemstack_w, p_117122_, null), this.getTrimResource(p_117121_, itemstack_w, p_117122_));
-        }
-    }
-
-    @Redirect(method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/layers/HumanoidArmorLayer;renderModel(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IZLnet/minecraft/client/model/Model;FFFLnet/minecraft/resources/ResourceLocation;)V"))
-    private void armortrims_humanoidRenderLayerCustomArmorModelWorkaroundHelper(HumanoidArmorLayer instance, PoseStack p_117107_, MultiBufferSource p_117108_, int p_117109_, boolean p_117111_, Model p_117112_, float p_117114_, float p_117115_, float p_117116_, ResourceLocation armorResource) {
-        if (!isCustomModel) {
-            renderModel(p_117107_,p_117108_,p_117109_,p_117111_,p_117112_,p_117114_,p_117115_,p_117116_, armorResource);
-        }
-    }
-
-    private void renderModelCustomArmorModelWorkaround(PoseStack p_117107_, MultiBufferSource p_117108_, int p_117109_, boolean p_117111_, net.minecraft.client.model.Model p_117112_, float alpha, float red, float green, float blue, ResourceLocation armorResource, ResourceLocation trimResource) {
-        VertexConsumer vertexconsumer = getArmorFoilBufferCustomArmorModelWorkaround(p_117108_, RenderType.armorCutoutNoCull(armorResource), RenderType.armorCutoutNoCull(trimResource), p_117111_);
-        p_117112_.renderToBuffer(p_117107_, vertexconsumer, p_117109_, OverlayTexture.NO_OVERLAY, red, green, blue, alpha);
-    }
-
-    private static VertexConsumer getArmorFoilBufferCustomArmorModelWorkaround(MultiBufferSource buffer, RenderType armorRendery, RenderType trimRendery, boolean isTinFoil) {
-        return isTinFoil ? VertexMultiConsumer.create(buffer.getBuffer(RenderType.armorEntityGlint()), VertexMultiConsumer.create(buffer.getBuffer(armorRendery), buffer.getBuffer(trimRendery))) : buffer.getBuffer(armorRendery);
-    }
-    */
     private boolean usesInnerModel_armortrimsMixin(EquipmentSlot p_117129_) {
         return p_117129_ == EquipmentSlot.LEGS;
     }

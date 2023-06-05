@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LargeItemLists {
-    public static List<Class<? extends Item>> allTrimmableClasses = new ArrayList<>(){{add(ArmorItem.class);}};
+    public static List<Class<? extends Item>> allTrimmableClasses = new ArrayList<>();
     public static List<TagKey<Item>> allTrimmableTags = new ArrayList<>();
     private static List<Item> smithingTemplates = List.of();
     private static List<Item> smithingTemplatesUpgrades = List.of();

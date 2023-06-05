@@ -24,6 +24,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Unit;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -77,7 +78,8 @@ public class Armortrims {
             ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_SPEC, "armor_trims.toml");
         }
         if (ModList.get().isLoaded(MODID)) {
-            new ArmortrimsApi(MODID)
+            ArmortrimsApi armortrims = new ArmortrimsApi(MODID);
+            armortrims
                     .createUpgradeTemplate(Tags.Items.INGOTS_NETHERITE, Items.DIAMOND, Config::disableVanillaNetheriteUpgrade, "trims.armor_trims.netherite_upgrade", "tooltip.armor_trims.applyTo.diamond_equipment", "netherite_upgrade_smithing_template")
                     .createTrimTemplate(new ResourceLocation(MODID, "coast"), "trims.armor_trims.coast", "coast_armor_trim_smithing_template")
                     .createTrimTemplate(new ResourceLocation(MODID, "dune"), "trims.armor_trims.dune", "dune_armor_trim_smithing_template")
@@ -113,7 +115,7 @@ public class Armortrims {
                     .createTrim("wayfinder", new ResourceLocation(MODID, "textures/trims/models/armor/wayfinder.png"), new ResourceLocation(MODID, "textures/trims/models/armor/wayfinder_leggings.png"))
                     .createTrim("wild", new ResourceLocation(MODID, "textures/trims/models/armor/wild.png"), new ResourceLocation(MODID, "textures/trims/models/armor/wild_leggings.png"))
 
-                    //.addTrimmableItem(ArmorItem.class, "tooltip.armor_trims.applyTo.armor")
+                    .addTrimmableItem(ArmorItem.class, "tooltip.armor_trims.applyTo.armor")
 
                     .addConfigDefault(Tags.Items.INGOTS_GOLD)
                     .addConfigDefault(Tags.Items.INGOTS_IRON)
@@ -131,7 +133,19 @@ public class Armortrims {
                     .addConfigDefault(ItemTags.create(new ResourceLocation("forge", "gems/mana_diamond")))
                     .addConfigDefault(ItemTags.create(new ResourceLocation("forge", "gems/dragonstone")))
                     .addConfigDefault(ItemTags.create(new ResourceLocation("forge", "ingots/zinc")))
-                    .addConfigDefault("create:polished_rose_quartz");
+                    .addConfigDefault(new ResourceLocation("create", "polished_rose_quartz"));
+
+            for (Item item:LargeItemLists.getAllItemsOfType(ArmorItem.class)) {
+                if (((ArmorItem) item).getSlot() == EquipmentSlot.HEAD) {
+                    armortrims.createCustomTrimModel(item, new ResourceLocation(Armortrims.MODID, "item/overlay/helmet_trim"));
+                } else if ((((ArmorItem) item).getSlot() == EquipmentSlot.CHEST)) {
+                    armortrims.createCustomTrimModel(item, new ResourceLocation(Armortrims.MODID, "item/overlay/chestplate_trim"));
+                } else if ((((ArmorItem) item).getSlot() == EquipmentSlot.HEAD)) {
+                    armortrims.createCustomTrimModel(item, new ResourceLocation(Armortrims.MODID, "item/overlay/leggings_trim"));
+                } else if ((((ArmorItem) item).getSlot() == EquipmentSlot.HEAD)) {
+                    armortrims.createCustomTrimModel(item, new ResourceLocation(Armortrims.MODID, "item/overlay/boots_trim"));
+                }
+            }
         }
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

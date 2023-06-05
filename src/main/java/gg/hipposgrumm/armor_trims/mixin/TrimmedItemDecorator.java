@@ -34,7 +34,6 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Debug(export = true)
 @Mixin(value = ItemRenderer.class, priority = 1500)
 public abstract class TrimmedItemDecorator {
     @Shadow public abstract void renderModelLists(BakedModel p_115190_, ItemStack p_115191_, int p_115192_, int p_115193_, PoseStack p_115194_, VertexConsumer p_115195_);
@@ -103,12 +102,6 @@ public abstract class TrimmedItemDecorator {
     private static BakedModel getModelForSlot(ItemStack item) {
         if (!LargeItemLists.getAllTrimmable().contains(item.getItem())) return TrimDecorationBaker.INSTANCE.other;
         EquipmentSlot slot = ((ArmorItem)item.getItem()).getSlot();
-        return switch (slot) {
-            case HEAD -> TrimDecorationBaker.INSTANCE.helmet;
-            case CHEST -> TrimDecorationBaker.INSTANCE.chestplate;
-            case LEGS -> TrimDecorationBaker.INSTANCE.leggings;
-            case FEET -> TrimDecorationBaker.INSTANCE.boots;
-            default -> TrimDecorationBaker.INSTANCE.getModel(item.getItem());
-        };
+        return TrimDecorationBaker.INSTANCE.getModel(item.getItem());
     }
 }

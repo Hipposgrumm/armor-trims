@@ -6,9 +6,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public final class Config {
     private static final List<String> trimmableMaterialsList = new ArrayList<>();
@@ -20,6 +18,7 @@ public final class Config {
         final ForgeConfigSpec.BooleanValue compressItemsInTemplateTooltip;
         final ForgeConfigSpec.ConfigValue<String> customArmorModelHandling;
         final ForgeConfigSpec.ConfigValue<List<? extends String>> trimmableMaterials;
+        final ForgeConfigSpec.BooleanValue tryBrightenColors;
         final ForgeConfigSpec.BooleanValue enableUntrimming;
 
         private As_Client(ForgeConfigSpec.Builder builder) {
@@ -30,6 +29,9 @@ public final class Config {
             customArmorModelHandling = builder
                     .comment(" For some reason, trim layers don't play nice with custom armor models (and I have given up trying to fix it now). You can choose what to do.\n NORMAL - Will attempt to render anyway. Usually trims will be invisible but sometimes yields wierd results (such as \"mystery belts\" for some boots).\n TINTED - Will tint armors the associated trim color.\n HIDDEN - Will hide trims on custom armor models entirely. Default option; anything not specified will default to this.")
                     .define("Custom Armor Model View", "HIDDEN");
+            tryBrightenColors = builder
+                    .comment(" Some textures have some dark bits that get factored into the final color. Enable this option to try to remove these dark colors in factorization.")
+                    .define("Brighten Trim Colors", false);
             builder.pop();
 
             builder.push("Base Features");
@@ -106,6 +108,10 @@ public final class Config {
     @OnlyIn(Dist.CLIENT)
     public static boolean compressItemNamesInTemplateTooltip() {
         return Config.COMMON.compressItemsInTemplateTooltip.get();
+    }
+    @OnlyIn(Dist.CLIENT)
+    public static boolean tryBrightenColors() {
+        return Config.COMMON.tryBrightenColors.get();
     }
     public static boolean enableNewSmithingGUI() {
         if (FMLEnvironment.dist.isClient()) {

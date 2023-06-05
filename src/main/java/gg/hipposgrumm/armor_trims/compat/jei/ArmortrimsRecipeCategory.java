@@ -18,6 +18,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -44,6 +45,7 @@ public class ArmortrimsRecipeCategory implements IRecipeCategory<ArmortrimsRecip
 
     @Override
     public Component getTitle() {
+        for (Item item:LargeItemLists.getAllTrimmable()) if (!(item instanceof ArmorItem)) return Component.translatable("jei.item_trimming");
         return Component.translatable("jei.armor_trimming");
     }
 

@@ -5,7 +5,6 @@ import gg.hipposgrumm.armor_trims.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelShaper;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
@@ -26,6 +25,7 @@ public class GetAvgColor {
     private int color = 16777215;
     private static Map<String, Integer> colorList = new HashMap<>();
     public static boolean isGameLoaded = false;
+    private static boolean brightenedColors = false;
 
     private GetAvgColor() {}
 
@@ -34,6 +34,7 @@ public class GetAvgColor {
     }
 
     public GetAvgColor(String location) {
+        if (brightenedColors != Config.tryBrightenColors()) buildDefaults();
         if (isGameLoaded) {
             if (colorList.containsKey(location)) {
                 color = colorList.get(location);
@@ -48,7 +49,7 @@ public class GetAvgColor {
      * <a href="https://github.com/InnovativeOnlineIndustries/Industrial-Foregoing/blob/1.19/src/main/java/com/buuz135/industrial/utils/ColorUtils.java">https://github.com/InnovativeOnlineIndustries/Industrial-Foregoing/blob/1.19/src/main/java/com/buuz135/industrial/utils/ColorUtils.java</a>
      */
     public void addColorEntry(String resourceLocation) {
-        ResourceLocation trueResourceLocation = resourceLocation.startsWith("#")?ForgeRegistries.ITEMS.getKey(new AssociateTagsWithItems(resourceLocation).getItems()[0]):new ResourceLocation(resourceLocation);
+        ResourceLocation trueResourceLocation = resourceLocation.startsWith("#") ? ForgeRegistries.ITEMS.getKey(new AssociateTagsWithItems(resourceLocation).getItems()[0]) : new ResourceLocation(resourceLocation);
         try {
             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
             ItemModelShaper itemModelMesher = itemRenderer.getItemModelShaper();
@@ -61,19 +62,27 @@ public class GetAvgColor {
                 for (int x = 0; x < texture.getWidth(); x++) {
                     for (int y = 0; y < texture.getHeight(); y++) {
                         int pixel = texture.getPixelRGBA(0, x, y);
-                        int borrowedAlpha =  pixel >> 24 & 0xFF;
-                        if (borrowedAlpha >= 5) {
+                        int borrowedAlpha = pixel >> 24 & 0xFF;
+                        int colorThreshold = 15;
+                        int alphaThreshold = 5;
+                        if (borrowedAlpha >= alphaThreshold) {
                             colorVals[0] += borrowedAlpha;
-                            colorVals[1] += (pixel >> 0 & 0xFF);
-                            colorVals[2] += (pixel >> 8 & 0xFF);
-                            colorVals[3] += (pixel >> 16 & 0xFF);
-                            size++;
+                            int[] colorTemps = new int[]{0,0,0};
+                            colorTemps[0] = (pixel >> 0 & 0xFF);
+                            colorTemps[1] = (pixel >> 8 & 0xFF);
+                            colorTemps[2] = (pixel >> 16 & 0xFF);
+                            if (!(colorTemps[0]<colorThreshold || colorTemps[1]<colorThreshold || colorTemps[2]<colorThreshold) || !Config.tryBrightenColors()) {
+                                colorVals[1] += colorTemps[0];
+                                colorVals[2] += colorTemps[1];
+                                colorVals[3] += colorTemps[2];
+                                size++;
+                            }
                         }
                     }
                 }
-                for (int i=0;i<colorVals.length;i++) {
-                    colorVals[i] = Math.round(colorVals[i]/size);
-                    colorVals[i] = i!=0?colorVals[i]>=235?255:colorVals[i]+20:colorVals[i];
+                for (int i = 0; i < colorVals.length; i++) {
+                    colorVals[i] = Math.round(colorVals[i] / size);
+                    colorVals[i] = i != 0 ? colorVals[i] >= 235 ? 255 : colorVals[i] + 20 : colorVals[i];
                 }
                 color = FastColor.ARGB32.color(255, (int) colorVals[1], (int) colorVals[2], (int) colorVals[3]);
                 colorList.put(resourceLocation, color);
@@ -82,9 +91,9 @@ public class GetAvgColor {
                 LOGGER.error("Unable to find color for " + resourceLocation + ".");
             }
         } catch (ClassCastException e) {
-            LOGGER.error("Unable to load location for "+resourceLocation);
+            LOGGER.error("Unable to load location for " + resourceLocation);
         } catch (RuntimeException e) {
-            LOGGER.error("Cannot find sprite for "+resourceLocation+" ("+trueResourceLocation+")");
+            LOGGER.error("Cannot find sprite for " + resourceLocation + " (" + trueResourceLocation + ")");
         }
     }
 
@@ -93,6 +102,7 @@ public class GetAvgColor {
     }
 
     public static void buildDefaults() {
+        brightenedColors = Config.tryBrightenColors();
         colorList.clear();
         GetAvgColor avgColorMethod = new GetAvgColor();
         for (String material:Config.trimmableMaterials()) {
