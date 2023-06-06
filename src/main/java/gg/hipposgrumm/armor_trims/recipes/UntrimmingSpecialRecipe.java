@@ -68,7 +68,7 @@ public class UntrimmingSpecialRecipe extends CustomRecipe {
 
         ItemStack finalItem = ItemStack.EMPTY;
         if (LargeItemLists.getAllTrimmable().contains(armorItem.getItem()) && TrimmableItem.isTrimmed(armorItem)) {
-            finalItem = new ItemStack(armorItem.getItem());
+            finalItem = armorItem.copy();
             TrimmableItem.clearTrim(finalItem);
         }
         return !Config.enableUntrimming()?ItemStack.EMPTY:finalItem;
