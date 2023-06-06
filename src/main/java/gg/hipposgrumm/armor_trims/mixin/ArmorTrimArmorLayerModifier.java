@@ -39,7 +39,7 @@ import java.util.logging.Logger;
 @Mixin(HumanoidArmorLayer.class)
 public abstract class ArmorTrimArmorLayerModifier<T extends LivingEntity, M extends HumanoidModel<T>, A extends HumanoidModel<T>> extends RenderLayer<T, M> {
     private static final Map<String, ResourceLocation> TRIM_LOCATION_CACHE = Maps.newHashMap();
-    private static final Map<Class, Boolean> BLOCKBENCH_MODELS = Maps.newHashMap();
+    private static final Map<HumanoidModel<LivingEntity>, Boolean> CUSTOM_MODELS_CHECK_CACHE = Maps.newHashMap();
     private boolean isCustomModel = false;
 
     public ArmorTrimArmorLayerModifier(RenderLayerParent<T, M> p_117346_) {
@@ -52,7 +52,7 @@ public abstract class ArmorTrimArmorLayerModifier<T extends LivingEntity, M exte
     private void armortrims_humanoidRenderLayerModifier(PoseStack p_117119_, MultiBufferSource p_117120_, T p_117121_, EquipmentSlot p_117122_, int p_117123_, A p_117124_, CallbackInfo ci) {
         ItemStack itemstack_m = p_117121_.getItemBySlot(p_117122_);
         if (LargeItemLists.getAllTrimmable().contains(itemstack_m.getItem()) && TrimmableItem.isTrimmed(itemstack_m)) {
-            isCustomModel = this.getArmorModelHook(p_117121_, itemstack_m, p_117122_, p_117124_) != p_117124_;
+            isCustomModel = checkCustomModel(p_117121_, itemstack_m, p_117122_, p_117124_);
             this.getParentModel().copyPropertiesTo(p_117124_);
             this.setPartVisibility(p_117124_, p_117122_);
             net.minecraft.client.model.Model model = ForgeHooksClient.getArmorModel(p_117121_, Config.customArmorModelHandling().equalsIgnoreCase("NORMAL")?createVanillaArmorModel(itemstack_m.getEquipmentSlot()):itemstack_m, p_117122_, p_117124_);
@@ -69,6 +69,12 @@ public abstract class ArmorTrimArmorLayerModifier<T extends LivingEntity, M exte
         }
     }
 
+    @SuppressWarnings("unchecked")
+    private boolean checkCustomModel(T entity, ItemStack itemStack, EquipmentSlot slot, A model) {
+        if (!CUSTOM_MODELS_CHECK_CACHE.containsKey(model)) CUSTOM_MODELS_CHECK_CACHE.put((HumanoidModel<LivingEntity>) model, this.getArmorModelHook(entity, itemStack, slot, model) != model);
+        return CUSTOM_MODELS_CHECK_CACHE.get(model);
+    }
+
     private static ItemStack createVanillaArmorModel(EquipmentSlot slot) {
         if (slot==null) return Items.AIR.getDefaultInstance();
         return new ItemStack(switch (slot) {
@@ -83,24 +89,6 @@ public abstract class ArmorTrimArmorLayerModifier<T extends LivingEntity, M exte
     private void renderModel_armortrimsMixin(PoseStack p_117107_, MultiBufferSource p_117108_, int p_117109_, boolean p_117111_, net.minecraft.client.model.Model p_117112_, float alpha, float red, float green, float blue, ResourceLocation armorResource) {
         VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(p_117108_, RenderType.armorCutoutNoCull(armorResource), false, p_117111_);
         p_117112_.renderToBuffer(p_117107_, vertexconsumer, p_117109_, OverlayTexture.NO_OVERLAY, red, green, blue, alpha);
-    }
-
-    private boolean isBlockbenchModel(Class clazz) {
-        if (!BLOCKBENCH_MODELS.containsKey(clazz)) {
-            try {
-                // In order to be declared a BlockBench model, one (class) must pass... THE GAUNTLET!
-                Method test;
-                test = clazz.getMethod("setupAnim", Entity.class, Float.class, Float.class, Float.class, Float.class, Float.class);
-                if (!test.isAnnotationPresent(Override.class)) throw new NoSuchMethodException();
-                test = clazz.getMethod("renderToBuffer", PoseStack.class, VertexConsumer.class, Integer.class, Integer.class, Float.class, Float.class, Float.class, Float.class);
-                if (!test.isAnnotationPresent(Override.class)) throw new NoSuchMethodException();
-                test = clazz.getMethod("createBodyLayer");
-                BLOCKBENCH_MODELS.put(clazz, true);
-            } catch (NoSuchMethodException e) {
-                BLOCKBENCH_MODELS.put(clazz, false);
-            }
-        }
-        return BLOCKBENCH_MODELS.get(clazz);
     }
 
     private boolean usesInnerModel_armortrimsMixin(EquipmentSlot p_117129_) {
