@@ -3,12 +3,14 @@ package gg.hipposgrumm.armor_trims.compat.jei;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Unmodifiable;
 
+import java.util.List;
+
 public interface IArmortrimsRecipe {
     @Unmodifiable
     ItemStack getBaseInput();
 
     @Unmodifiable
-    ItemStack getAdditionalInput();
+    List<ItemStack> getAdditionalInput();
 
     @Unmodifiable
     ItemStack getMaterialInput();

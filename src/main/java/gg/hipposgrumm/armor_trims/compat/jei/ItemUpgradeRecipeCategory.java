@@ -63,9 +63,9 @@ public class ItemUpgradeRecipeCategory implements IRecipeCategory<ArmortrimsReci
     @Override
     public void setRecipe(@Nonnull IRecipeLayoutBuilder builder, @Nonnull ArmortrimsRecipe recipe, @Nonnull IFocusGroup focusGroup) {
         builder.addSlot(RecipeIngredientRole.INPUT, 26, 36).addIngredients(Ingredient.of(recipe.getBaseInput()));
-        builder.addSlot(RecipeIngredientRole.INPUT, 70, 36).addIngredients(Ingredient.of(recipe.getAdditionalInput()));
+        builder.addSlot(RecipeIngredientRole.INPUT, 70, 36).addIngredients(Ingredient.of(recipe.getAdditionalInput().toArray(new ItemStack[0])));
         builder.addSlot(RecipeIngredientRole.INPUT, 26, 54).addIngredients(Ingredient.of(recipe.getMaterialInput()));
 
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 124, 36).addItemStack(ItemUpgradeRecipeMaker.getUpgradedItem(recipe.getBaseInput(), recipe.getAdditionalInput(), recipe.getMaterialInput()));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 124, 36).addItemStacks(recipe.getAdditionalInput().stream().map(i -> ItemUpgradeRecipeMaker.getUpgradedItem(recipe.getBaseInput(), i, recipe.getMaterialInput())).toList());
     }
 }

@@ -80,7 +80,7 @@ public class Armortrims {
         if (ModList.get().isLoaded(MODID)) {
             ArmortrimsApi armortrims = new ArmortrimsApi(MODID);
             armortrims
-                    .createUpgradeTemplate(Tags.Items.INGOTS_NETHERITE, Items.DIAMOND, Config::disableVanillaNetheriteUpgrade, "trims.armor_trims.netherite_upgrade", "tooltip.armor_trims.applyTo.diamond_equipment", "netherite_upgrade_smithing_template")
+                    .createUpgradeTemplate(Tags.Items.INGOTS_NETHERITE, Items.DIAMOND, Config::disableVanillaNetheriteUpgrade, ()->!Config.disableNetheriteUpgrade(), "trims.armor_trims.netherite_upgrade", "tooltip.armor_trims.applyTo.diamond_equipment", "netherite_upgrade_smithing_template")
                     .createTrimTemplate(new ResourceLocation(MODID, "coast"), "trims.armor_trims.coast", "coast_armor_trim_smithing_template")
                     .createTrimTemplate(new ResourceLocation(MODID, "dune"), "trims.armor_trims.dune", "dune_armor_trim_smithing_template")
                     .createTrimTemplate(new ResourceLocation(MODID, "eye"), "trims.armor_trims.eye", "eye_armor_trim_smithing_template")
@@ -140,9 +140,9 @@ public class Armortrims {
                     armortrims.createCustomTrimModel(item, new ResourceLocation(Armortrims.MODID, "item/overlay/helmet_trim"));
                 } else if ((((ArmorItem) item).getSlot() == EquipmentSlot.CHEST)) {
                     armortrims.createCustomTrimModel(item, new ResourceLocation(Armortrims.MODID, "item/overlay/chestplate_trim"));
-                } else if ((((ArmorItem) item).getSlot() == EquipmentSlot.HEAD)) {
+                } else if ((((ArmorItem) item).getSlot() == EquipmentSlot.LEGS)) {
                     armortrims.createCustomTrimModel(item, new ResourceLocation(Armortrims.MODID, "item/overlay/leggings_trim"));
-                } else if ((((ArmorItem) item).getSlot() == EquipmentSlot.HEAD)) {
+                } else if ((((ArmorItem) item).getSlot() == EquipmentSlot.FEET)) {
                     armortrims.createCustomTrimModel(item, new ResourceLocation(Armortrims.MODID, "item/overlay/boots_trim"));
                 }
             }

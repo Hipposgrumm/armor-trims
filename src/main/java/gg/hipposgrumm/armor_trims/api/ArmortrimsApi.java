@@ -34,10 +34,11 @@ import java.util.function.Supplier;
 public class ArmortrimsApi {
     private static Map<ResourceLocation, Pair<ResourceLocation, ResourceLocation>> trims = new HashMap<>();
     private static List<Pair<Pair<ResourceLocation, String>, Pair<ResourceLocation, Item.Properties>>> trimitems = new ArrayList<>();
-    private static List<String> trimItemTypesNames = new ArrayList<>() {{add("tooltip.armor_trims.applyTo.armor");}};
-    private static List<Pair<Pair<ResourceLocation, Pair<String, String>>, Pair<Pair<Pair<TagKey<Item>, Item>, Supplier<Boolean>>, Item.Properties>>> upgradeitems = new ArrayList<>();
+    private static List<String> trimItemTypesNames = new ArrayList<>();
+    private static List<Pair<Pair<ResourceLocation, Pair<String, String>>, Pair<Pair<Pair<TagKey<Item>, Item>, Pair<Supplier<Boolean>, Supplier<Boolean>>>, Item.Properties>>> upgradeitems = new ArrayList<>();
     //private static Map<ResourceLocation, Item> templateItems = new HashMap<>();
     public static Map<Pair<TagKey<Item>, Item>, Supplier<Boolean>> upgradeBaseBlockedConditions = new HashMap<>();
+    public static Map<Pair<TagKey<Item>, Item>, Supplier<Boolean>> determiningUpgradeConditions = new HashMap<>();
     private static List<ResourceLocation> itemsList = new ArrayList<>();
     private final String modid;
 
@@ -149,7 +150,30 @@ public class ArmortrimsApi {
      * Version of {@link #createUpgradeTemplate(TagKey, Item, Supplier, String, String, String)} where you can define item properties.
      */
     public ArmortrimsApi createUpgradeTemplate(TagKey<Item> tag, Item itemRepresentative, Supplier<Boolean> blockVanillaOutput, String translatableName, String translatableInput, String itemId, Item.Properties properties) {
-        upgradeitems.add(new Pair<>(new Pair<>(new ResourceLocation(modid, itemId), new Pair<>(translatableName, translatableInput)), new Pair<>(new Pair<>(new Pair<>(tag, itemRepresentative), blockVanillaOutput), properties)));
+        createUpgradeTemplate(tag, itemRepresentative, blockVanillaOutput, ()->true, translatableName, translatableInput, itemId, properties);
+        return this;
+    }
+
+    /**
+     * Note: Upgrade recipes must be defined as smithing recipes in the datapack!
+     * @param tag Item tag that can be used to upgrade.
+     * @param itemRepresentative Item used to determine color.
+     * @param blockVanillaOutput Blocks outputs from being created the "vanilla way".
+     * @param shouldEnableRecipe Decides if a recipe is enabled.
+     * @param translatableName Translation key for template subtitle name.
+     * @param translatableInput Translation key for template input items (Apply To:)
+     * @param itemId ID of the item to create.
+     */
+    public ArmortrimsApi createUpgradeTemplate(TagKey<Item> tag, Item itemRepresentative, Supplier<Boolean> blockVanillaOutput, Supplier<Boolean> shouldEnableRecipe, String translatableName, String translatableInput, String itemId) {
+        createUpgradeTemplate(tag, itemRepresentative, blockVanillaOutput, shouldEnableRecipe, translatableName, translatableInput, itemId, new Item.Properties());
+        return this;
+    }
+
+    /**
+     * Version of {@link #createUpgradeTemplate(TagKey, Item, Supplier, Supplier, String, String, String)} where you can define item properties.
+     */
+    public ArmortrimsApi createUpgradeTemplate(TagKey<Item> tag, Item itemRepresentative, Supplier<Boolean> blockVanillaOutput, Supplier<Boolean> shouldEnableRecipe, String translatableName, String translatableInput, String itemId, Item.Properties properties) {
+        upgradeitems.add(new Pair<>(new Pair<>(new ResourceLocation(modid, itemId), new Pair<>(translatableName, translatableInput)), new Pair<>(new Pair<>(new Pair<>(tag, itemRepresentative), new Pair<>(blockVanillaOutput, shouldEnableRecipe)), properties)));
         return this;
     }
 
@@ -174,10 +198,11 @@ public class ArmortrimsApi {
             Trims.createTrim(trim, trims.get(trim).getFirst(), trims.get(trim).getSecond());
         }
         Map<String, DeferredRegister<Item>> registerMap = new HashMap<>();
-        for (Pair<Pair<ResourceLocation, Pair<String, String>>, Pair<Pair<Pair<TagKey<Item>, Item>, Supplier<Boolean>>, Item.Properties>> upgradeItem:upgradeitems) {
+        for (Pair<Pair<ResourceLocation, Pair<String, String>>, Pair<Pair<Pair<TagKey<Item>, Item>, Pair<Supplier<Boolean>, Supplier<Boolean>>>, Item.Properties>> upgradeItem:upgradeitems) {
             if (!registerMap.containsKey(upgradeItem.getFirst().getFirst().getNamespace())) registerMap.put(upgradeItem.getFirst().getFirst().getNamespace(), DeferredRegister.create(ForgeRegistries.ITEMS, upgradeItem.getFirst().getFirst().getNamespace()));
             registerMap.get(upgradeItem.getFirst().getFirst().getNamespace()).register(upgradeItem.getFirst().getFirst().getPath(), () -> new SmithingTemplate$Upgrade(upgradeItem.getSecond().getFirst().getFirst().getFirst(), upgradeItem.getSecond().getFirst().getFirst().getSecond(), upgradeItem.getFirst().getSecond().getFirst(), upgradeItem.getFirst().getSecond().getSecond(), upgradeItem.getSecond().getSecond()));
-            upgradeBaseBlockedConditions.put(upgradeItem.getSecond().getFirst().getFirst(), upgradeItem.getSecond().getFirst().getSecond());
+            upgradeBaseBlockedConditions.put(upgradeItem.getSecond().getFirst().getFirst(), upgradeItem.getSecond().getFirst().getSecond().getFirst());
+            determiningUpgradeConditions.put(upgradeItem.getSecond().getFirst().getFirst(), upgradeItem.getSecond().getFirst().getSecond().getSecond());
             itemsList.add(upgradeItem.getFirst().getFirst());
         }
         for (Pair<Pair<ResourceLocation, String>, Pair<ResourceLocation, Item.Properties>> trimitem:trimitems) {

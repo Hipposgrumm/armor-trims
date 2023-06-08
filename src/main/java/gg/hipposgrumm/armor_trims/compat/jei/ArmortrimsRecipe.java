@@ -6,10 +6,10 @@ import java.util.List;
 
 public class ArmortrimsRecipe implements IArmortrimsRecipe {
     private final ItemStack baseInput;
-    private final ItemStack additionalInput;
+    private final List<ItemStack> additionalInput;
     private final ItemStack materialInput;
 
-    public ArmortrimsRecipe(ItemStack baseInput, ItemStack additionalInput, ItemStack materialInput) {
+    public ArmortrimsRecipe(ItemStack baseInput, List<ItemStack> additionalInput, ItemStack materialInput) {
         this.baseInput = baseInput;
         this.additionalInput = additionalInput;
         this.materialInput = materialInput;
@@ -21,7 +21,7 @@ public class ArmortrimsRecipe implements IArmortrimsRecipe {
     }
 
     @Override
-    public ItemStack getAdditionalInput() {
+    public List<ItemStack> getAdditionalInput() {
         return additionalInput;
     }
 

@@ -147,7 +147,14 @@ public class SmithingMenuNew extends AbstractContainerMenu {
                 vanillaRecipeContainer.setItem(0, baseItem);
                 vanillaRecipeContainer.setItem(1, materialItem);
                 List<UpgradeRecipe> list = this.level.getRecipeManager().getRecipesFor(RecipeType.SMITHING, vanillaRecipeContainer, this.level);
-                if (list.isEmpty()) {
+                boolean deny = false;
+                for (Pair<TagKey<Item>, Item> key:ArmortrimsApi.determiningUpgradeConditions.keySet()) {
+                    if (materialItem.is(key.getFirst()) && !ArmortrimsApi.determiningUpgradeConditions.get(key).get()) {
+                        deny = true;
+                        break;
+                    }
+                }
+                if (list.isEmpty() || deny) {
                     this.resultSlots.setItem(0, ItemStack.EMPTY);
                 } else {
                     this.selectedRecipe = list.get(0);
@@ -165,7 +172,7 @@ public class SmithingMenuNew extends AbstractContainerMenu {
             List<UpgradeRecipe> list = this.level.getRecipeManager().getRecipesFor(RecipeType.SMITHING, vanillaRecipeContainer, this.level);
             boolean deny = false;
             for (Pair<TagKey<Item>, Item> key:ArmortrimsApi.upgradeBaseBlockedConditions.keySet()) {
-                if (upgradeItem.is(key.getFirst())) {
+                if (upgradeItem.is(key.getFirst()) && ArmortrimsApi.upgradeBaseBlockedConditions.get(key).get()) {
                     deny = true;
                     break;
                 }

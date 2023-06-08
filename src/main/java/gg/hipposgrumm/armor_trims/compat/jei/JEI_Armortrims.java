@@ -2,6 +2,7 @@ package gg.hipposgrumm.armor_trims.compat.jei;
 
 import gg.hipposgrumm.armor_trims.Armortrims;
 import gg.hipposgrumm.armor_trims.api.ArmortrimsApi;
+import gg.hipposgrumm.armor_trims.config.Config;
 import gg.hipposgrumm.armor_trims.item.SmithingTemplate;
 import gg.hipposgrumm.armor_trims.trimming.TrimmableItem;
 import gg.hipposgrumm.armor_trims.util.AssociateTagsWithItems;
@@ -64,7 +65,7 @@ public class JEI_Armortrims implements IModPlugin {
     public void registerRecipes(IRecipeRegistration registration) {
         registration.addRecipes(trimmingRecipeType, ArmortrimRecipeMaker.getTrimmingRecipes(new ArmortrimRecipeMaker.ArmortrimsRecipeFactory(), registration.getIngredientManager()));
         registration.addRecipes(upgradeRecipeType, ItemUpgradeRecipeMaker.getUpgradingRecipes(new ItemUpgradeRecipeMaker.ItemUpgradeRecipeFactory(), registration.getIngredientManager()));
-        registration.addIngredientInfo(Arrays.stream(new AssociateTagsWithItems("#forge:shears").getItems()).map(f -> f.getDefaultInstance()).toList(), VanillaTypes.ITEM_STACK, Component.translatable("jei.armor_untrimming_notice"));
+        if (Config.enableUntrimming()) registration.addIngredientInfo(Arrays.stream(new AssociateTagsWithItems("#forge:shears").getItems()).map(f -> f.getDefaultInstance()).toList(), VanillaTypes.ITEM_STACK, Component.translatable("jei.armor_untrimming_notice"));
     }
 
     @Override

@@ -23,14 +23,14 @@ public class ArmortrimRecipeMaker {
         public ArmortrimsRecipeFactory() {}
 
         @Override
-        public ArmortrimsRecipe createTrimmingRecipe(ItemStack baseInputs, ItemStack additionalInputs, ItemStack materialInputs) {
-            return new ArmortrimsRecipe(baseInputs, additionalInputs, materialInputs);
+        public ArmortrimsRecipe createTrimmingRecipe(ItemStack baseInputs, List<ItemStack> additionalInput, ItemStack materialInput) {
+            return new ArmortrimsRecipe(baseInputs, additionalInput, materialInput);
         }
     }
 
 
     public interface IArmortrimsRecipeFactory {
-        IArmortrimsRecipe createTrimmingRecipe(ItemStack baseInput, ItemStack additionalInputs, ItemStack materialInputs);
+        IArmortrimsRecipe createTrimmingRecipe(ItemStack baseInput, List<ItemStack> additionalInputs, ItemStack materialInputs);
     }
 
     private static Stream<IArmortrimsRecipe> getArmortrimRecipes(IArmortrimsRecipeFactory recipeFactory, IIngredientManager ingredientManager) {
@@ -40,10 +40,8 @@ public class ArmortrimRecipeMaker {
 
     private static Stream<IArmortrimsRecipe> getArmortrimRecipes(IArmortrimsRecipeFactory recipeFactory, ItemStack armorItem) {
         List<IArmortrimsRecipe> recipes = new ArrayList<>();
-        for (Item templateItem:LargeItemLists.getTrimSmithingTemplates()) {
-            for (Item materialItem:LargeItemLists.getAllMaterials()) {
-                if (LargeItemLists.getAllTrimmable().contains(armorItem.getItem())) recipes.add(recipeFactory.createTrimmingRecipe(armorItem, templateItem.getDefaultInstance(), materialItem.getDefaultInstance()));
-            }
+        for (Item materialItem:LargeItemLists.getAllMaterials()) {
+            if (LargeItemLists.getAllItemsOfType(ArmorItem.class).contains(armorItem.getItem())) recipes.add(recipeFactory.createTrimmingRecipe(armorItem, LargeItemLists.getTrimSmithingTemplates().stream().map(Item::getDefaultInstance).toList(), materialItem.getDefaultInstance()));
         }
         return recipes.stream();
     }

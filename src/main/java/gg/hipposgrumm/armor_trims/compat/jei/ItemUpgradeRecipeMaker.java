@@ -1,6 +1,8 @@
 package gg.hipposgrumm.armor_trims.compat.jei;
 
+import com.mojang.datafixers.util.Pair;
 import gg.hipposgrumm.armor_trims.Armortrims;
+import gg.hipposgrumm.armor_trims.api.ArmortrimsApi;
 import gg.hipposgrumm.armor_trims.item.SmithingTemplate;
 import gg.hipposgrumm.armor_trims.trimming.Trims;
 import gg.hipposgrumm.armor_trims.util.AssociateTagsWithItems;
@@ -8,6 +10,7 @@ import gg.hipposgrumm.armor_trims.util.LargeItemLists;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.runtime.IIngredientManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.*;
@@ -28,14 +31,14 @@ public final class ItemUpgradeRecipeMaker {
         public ItemUpgradeRecipeFactory() {}
 
         @Override
-        public ArmortrimsRecipe createUpgradingRecipe(ItemStack baseInputs, ItemStack additionalInputs, ItemStack materialInputs) {
+        public ArmortrimsRecipe createUpgradingRecipe(ItemStack baseInputs, List<ItemStack> additionalInputs, ItemStack materialInputs) {
             return new ArmortrimsRecipe(baseInputs, additionalInputs, materialInputs);
         }
     }
 
 
     public interface IItemUpgradeRecipeFactory {
-        IArmortrimsRecipe createUpgradingRecipe(ItemStack baseInput, ItemStack additionalInputs, ItemStack materialInputs);
+        IArmortrimsRecipe createUpgradingRecipe(ItemStack baseInput, List<ItemStack> additionalInputs, ItemStack materialInputs);
     }
 
     private static Stream<IArmortrimsRecipe> getArmortrimRecipes(IItemUpgradeRecipeFactory recipeFactory, IIngredientManager ingredientManager) {
@@ -49,7 +52,7 @@ public final class ItemUpgradeRecipeMaker {
             for (Item materialItem : LargeItemLists.getAllItems()) {
                 ItemStack item = getUpgradedItem(upgradableItem.copy(), templateItem.getDefaultInstance(), materialItem.getDefaultInstance());
                 if (!item.getItem().equals(upgradableItem.getItem()) && !item.isEmpty())
-                    recipes.add(recipeFactory.createUpgradingRecipe(upgradableItem, templateItem.getDefaultInstance(), materialItem.getDefaultInstance()));
+                    recipes.add(recipeFactory.createUpgradingRecipe(upgradableItem, List.of(templateItem.getDefaultInstance()), materialItem.getDefaultInstance()));
             }
         }
         return recipes.stream();
@@ -61,6 +64,11 @@ public final class ItemUpgradeRecipeMaker {
         vanillaRecipeContainer.setItem(0, tieredItem);
         vanillaRecipeContainer.setItem(1, material);
         List<UpgradeRecipe> list = Minecraft.getInstance().level.getRecipeManager().getRecipesFor(RecipeType.SMITHING, vanillaRecipeContainer, Minecraft.getInstance().level);
+        for (Pair<TagKey<Item>, Item> key: ArmortrimsApi.determiningUpgradeConditions.keySet()) {
+            if (material.is(key.getFirst()) && !ArmortrimsApi.determiningUpgradeConditions.get(key).get()) {
+                return ItemStack.EMPTY;
+            }
+        }
         if (!list.isEmpty()) return list.get(0).assemble(vanillaRecipeContainer);
         return upgradableItem;
     }
