@@ -1,0 +1,12 @@
+{
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/desert_pyramid"
+    }
+  ],
+  "addition": "armor_trims:dune_armor_trim_smithing_template",
+  "count": 2,
+  "chance": 14.3,
+  "type": "armor_trims:chest_loot_modifier"
+}

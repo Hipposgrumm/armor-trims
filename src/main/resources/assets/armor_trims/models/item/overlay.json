@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "trim": "armor_trims:item/overlay/other_trim",
+    "layer0": "#trim"
+  }
+}

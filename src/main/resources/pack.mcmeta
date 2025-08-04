@@ -1,0 +1,8 @@
+{
+    "pack": {
+        "description": "${modid} resources",
+        "pack_format": ${datapack_version},
+        "forge:resource_pack_format": ${resourcepack_version},
+        "forge:data_pack_format": ${datapack_version}
+    }
+}

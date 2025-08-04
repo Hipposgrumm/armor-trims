@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "armor_trims:item/empty_slot_smithing_template_armor_trim"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.armor_trims.trim_with_any_armor_pattern.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "armor_trims:dune_armor_trim_smithing_template"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.armor_trims.trim_with_any_armor_pattern.title"
+    }
+  },
+  "criteria": {
+    "code_triggered": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [[
+    "code_triggered"
+  ]],
+  "parent": "minecraft:adventure/root"
+}

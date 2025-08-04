@@ -1,0 +1,12 @@
+{
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/shipwreck_treasure"
+    }
+  ],
+  "addition": "armor_trims:coast_armor_trim_smithing_template",
+  "count": 2,
+  "chance": 16.7,
+  "type": "armor_trims:chest_loot_modifier"
+}

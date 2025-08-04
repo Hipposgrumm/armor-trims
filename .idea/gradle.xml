@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/versions/1.16.5-fabric" />
+            <option value="$PROJECT_DIR$/versions/1.16.5-forge" />
+            <option value="$PROJECT_DIR$/versions/1.18.2-fabric" />
+            <option value="$PROJECT_DIR$/versions/1.18.2-forge" />
+            <option value="$PROJECT_DIR$/versions/1.19.2-fabric" />
+            <option value="$PROJECT_DIR$/versions/1.19.2-forge" />
+          </set>
+        </option>
+        <option name="resolveExternalAnnotations" value="true" />
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

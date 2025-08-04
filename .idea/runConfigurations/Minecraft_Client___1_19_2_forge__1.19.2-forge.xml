@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" factoryName="Application" name="Minecraft Client (:1.19.2-forge)" type="Application">
+    <option name="MAIN_CLASS_NAME" value="net.fabricmc.devlaunchinjector.Main"/>
+    <module name="ArmorTrimsBackport.1.19.2-forge.main"/>
+    <option name="PROGRAM_PARAMETERS" value=""/>
+    <option name="VM_PARAMETERS" value="-Dfabric.dli.config=G:\My@@0020Drive\Minecraft@@0020Mods\ArmorTrimsBackport\versions\1.19.2-forge\.gradle\loom-cache\launch.cfg -Dfabric.dli.env=client -Djava.net.preferIPv6Addresses=system -p C:\Users\Admin\.gradle\caches\modules-2\files-2.1\cpw.mods\securejarhandler\2.1.4\f47e3b9dd860a7b82154b8f90a650ffd0aaa5582\securejarhandler-2.1.4.jar;C:\Users\Admin\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm-commons\9.7\e86dda4696d3c185fcc95d8d311904e7ce38a53f\asm-commons-9.7.jar;C:\Users\Admin\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm-util\9.7\c0655519f24d92af2202cb681cd7c1569df6ead6\asm-util-9.7.jar;C:\Users\Admin\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm-analysis\9.7\e4a258b7eb96107106c0599f0061cfc1832fe07a\asm-analysis-9.7.jar;C:\Users\Admin\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm-tree\9.7\e446a17b175bfb733b87c5c2560ccb4e57d69f1a\asm-tree-9.7.jar;C:\Users\Admin\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm\9.7\73d7b3086e14beb604ced229c302feff6449723\asm-9.7.jar;C:\Users\Admin\.gradle\caches\modules-2\files-2.1\net.minecraftforge\JarJarFileSystems\0.3.16\e52afbb2599dc7c6f779efea0496d32fc01152e3\JarJarFileSystems-0.3.16.jar --add-modules ALL-MODULE-PATH --add-opens java.base/java.util.jar=cpw.mods.securejarhandler --add-opens java.base/java.lang.invoke=cpw.mods.securejarhandler --add-exports java.base/sun.security.util=cpw.mods.securejarhandler --add-exports jdk.naming.dns/com.sun.jndi.dns=java.naming -Dfabric.dli.main=cpw.mods.bootstraplauncher.BootstrapLauncher"/>
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/versions\1.19.2-forge/../../run/"/>
+    <method v="2">
+      <option enabled="true" name="Make"/>
+    </method>
+    <envs>
+      <env name="MOD_CLASSES" value="main%%G:\My Drive\Minecraft Mods\ArmorTrimsBackport\versions\1.19.2-forge\build\resources\main;main%%G:\My Drive\Minecraft Mods\ArmorTrimsBackport\versions\1.19.2-forge\build\classes\java\main;main%%G:\My Drive\Minecraft Mods\ArmorTrimsBackport\out\production\ArmorTrimsBackport.1.19.2-forge.main;armor_trims%%G:\My Drive\Minecraft Mods\ArmorTrimsBackport\versions\1.19.2-forge\build\resources\main;armor_trims%%G:\My Drive\Minecraft Mods\ArmorTrimsBackport\versions\1.19.2-forge\build\classes\java\main;armor_trims%%G:\My Drive\Minecraft Mods\ArmorTrimsBackport\out\production\ArmorTrimsBackport.1.19.2-forge.main"/><env name="MCP_MAPPINGS" value="loom.stub"/>
+    </envs>
+    <shortenClasspath name="ARGS_FILE"/>
+  <classpathModifications/></configuration>
+</component>

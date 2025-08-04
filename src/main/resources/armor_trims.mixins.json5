@@ -1,0 +1,23 @@
+{
+  "required": true,
+  "package": "dev.hipposgrumm.${modid}.mixin",
+  //? if forge && <1.18.2
+  /*"plugin": "dev.hipposgrumm.${modid}.mixinaccess.ArmortrimsMixinPlugin",*/
+  "compatibilityLevel": "${mixin_java_version}",
+  "refmap": "${modid}.mixins.refmap.json",
+  "mixins": [
+    "MixinSmithingTable"
+  ],
+  "client": [
+    //? if fabric {
+    /*"FabricMixinModelManager",
+    //? if <1.18
+    /^"Fabric1_16SyncTags",^/
+    *///?}
+    "MixinHumanoidArmorLayer",
+    "MixinItemRenderer",
+    "MixinModelBakery",
+    "MixinTextureAtlas"
+  ],
+  "minVersion": "0.8"
+}

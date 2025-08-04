@@ -1,0 +1,12 @@
+{
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/jungle_temple"
+    }
+  ],
+  "addition": "armor_trims:wild_armor_trim_smithing_template",
+  "count": 2,
+  "chance": 33.3,
+  "type": "armor_trims:chest_loot_modifier"
+}

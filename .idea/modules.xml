@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/versions/1.16.5-fabric/ArmorTrimsBackport.1.16.5-fabric.main.iml" filepath="$PROJECT_DIR$/.idea/modules/versions/1.16.5-fabric/ArmorTrimsBackport.1.16.5-fabric.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/versions/1.16.5-fabric/ArmorTrimsBackport.1.16.5-fabric.test.iml" filepath="$PROJECT_DIR$/.idea/modules/versions/1.16.5-fabric/ArmorTrimsBackport.1.16.5-fabric.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/versions/1.16.5-forge/ArmorTrimsBackport.1.16.5-forge.main.iml" filepath="$PROJECT_DIR$/.idea/modules/versions/1.16.5-forge/ArmorTrimsBackport.1.16.5-forge.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/versions/1.16.5-forge/ArmorTrimsBackport.1.16.5-forge.test.iml" filepath="$PROJECT_DIR$/.idea/modules/versions/1.16.5-forge/ArmorTrimsBackport.1.16.5-forge.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/versions/1.18.2-fabric/ArmorTrimsBackport.1.18.2-fabric.main.iml" filepath="$PROJECT_DIR$/.idea/modules/versions/1.18.2-fabric/ArmorTrimsBackport.1.18.2-fabric.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/versions/1.18.2-fabric/ArmorTrimsBackport.1.18.2-fabric.test.iml" filepath="$PROJECT_DIR$/.idea/modules/versions/1.18.2-fabric/ArmorTrimsBackport.1.18.2-fabric.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/versions/1.18.2-forge/ArmorTrimsBackport.1.18.2-forge.main.iml" filepath="$PROJECT_DIR$/.idea/modules/versions/1.18.2-forge/ArmorTrimsBackport.1.18.2-forge.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/versions/1.18.2-forge/ArmorTrimsBackport.1.18.2-forge.test.iml" filepath="$PROJECT_DIR$/.idea/modules/versions/1.18.2-forge/ArmorTrimsBackport.1.18.2-forge.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/versions/1.19.2-fabric/ArmorTrimsBackport.1.19.2-fabric.main.iml" filepath="$PROJECT_DIR$/.idea/modules/versions/1.19.2-fabric/ArmorTrimsBackport.1.19.2-fabric.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/versions/1.19.2-fabric/ArmorTrimsBackport.1.19.2-fabric.test.iml" filepath="$PROJECT_DIR$/.idea/modules/versions/1.19.2-fabric/ArmorTrimsBackport.1.19.2-fabric.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/versions/1.19.2-forge/ArmorTrimsBackport.1.19.2-forge.main.iml" filepath="$PROJECT_DIR$/.idea/modules/versions/1.19.2-forge/ArmorTrimsBackport.1.19.2-forge.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/versions/1.19.2-forge/ArmorTrimsBackport.1.19.2-forge.test.iml" filepath="$PROJECT_DIR$/.idea/modules/versions/1.19.2-forge/ArmorTrimsBackport.1.19.2-forge.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/versions/1.19.3-fabric/ArmorTrimsBackport.1.19.3-fabric.main.iml" filepath="$PROJECT_DIR$/.idea/modules/versions/1.19.3-fabric/ArmorTrimsBackport.1.19.3-fabric.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/versions/1.19.3-forge/ArmorTrimsBackport.1.19.3-forge.main.iml" filepath="$PROJECT_DIR$/.idea/modules/versions/1.19.3-forge/ArmorTrimsBackport.1.19.3-forge.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/versions/1.16.5-fabric/dev.hipposgrumm.ArmorTrimsBackport.1.16.5-fabric.main.iml" filepath="$PROJECT_DIR$/.idea/modules/versions/1.16.5-fabric/dev.hipposgrumm.ArmorTrimsBackport.1.16.5-fabric.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/versions/1.16.5-forge/dev.hipposgrumm.ArmorTrimsBackport.1.16.5-forge.main.iml" filepath="$PROJECT_DIR$/.idea/modules/versions/1.16.5-forge/dev.hipposgrumm.ArmorTrimsBackport.1.16.5-forge.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/versions/1.18.2-fabric/dev.hipposgrumm.ArmorTrimsBackport.1.18.2-fabric.main.iml" filepath="$PROJECT_DIR$/.idea/modules/versions/1.18.2-fabric/dev.hipposgrumm.ArmorTrimsBackport.1.18.2-fabric.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/versions/1.19.2-fabric/dev.hipposgrumm.ArmorTrimsBackport.1.19.2-fabric.main.iml" filepath="$PROJECT_DIR$/.idea/modules/versions/1.19.2-fabric/dev.hipposgrumm.ArmorTrimsBackport.1.19.2-fabric.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/versions/1.19.2-forge/dev.hipposgrumm.ArmorTrimsBackport.1.19.2-forge.main.iml" filepath="$PROJECT_DIR$/.idea/modules/versions/1.19.2-forge/dev.hipposgrumm.ArmorTrimsBackport.1.19.2-forge.main.iml" />
+    </modules>
+  </component>
+</project>

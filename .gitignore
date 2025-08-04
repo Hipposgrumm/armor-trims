@@ -1,0 +1,6 @@
+/.gradle/
+/versions/*/.gradle/
+/versions/*/build/
+/versions/*/run/
+/build/
+/run/

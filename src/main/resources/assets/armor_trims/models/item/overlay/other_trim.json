@@ -1,0 +1,6 @@
+{
+  "parent": "armor_trims:item/overlay",
+  "textures": {
+    "trim": "armor_trims:item/overlay/other_trim"
+  }
+}

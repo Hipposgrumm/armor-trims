@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#T#",
+    "#B#",
+    "###"
+  ],
+  "key": {
+    "#": {
+      //? if forge {
+      "tag": "forge:gems/diamond"
+      //?} elif >=1.18 {
+      /*"tag": "c:diamonds"
+      *///?} else {
+      /*"tag": "c:gems/diamond"
+      *///?}
+    },
+    "T": {
+      "item": "armor_trims:ward_armor_trim_smithing_template"
+    },
+    "B": {
+      //? if forge {
+      "tag": "forge:cobblestone/deepslate"
+      //?} else {
+      /*"item": "minecraft:cobbled_deepslate"
+      *///?}
+    }
+  },
+  "result": {
+    "item": "armor_trims:ward_armor_trim_smithing_template",
+    "count": 1
+  }
+}

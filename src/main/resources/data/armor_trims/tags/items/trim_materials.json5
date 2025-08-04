@@ -1,0 +1,40 @@
+{
+  "values": [
+    //? if forge {
+    "#forge:ingots/iron",
+    "#forge:ingots/gold",
+    "#forge:ingots/copper",
+    "#forge:ingots/netherite",
+    "#forge:gems/emerald",
+    //? if >=1.17
+    "minecraft:amethyst_shard",
+    "#forge:dusts/redstone",
+    "#forge:gems/lapis",
+    "#forge:gems/quartz",
+    "#forge:gems/diamond"
+    //?} elif >=1.18 {
+    /*"#c:iron_ingots",
+    "#c:gold_ingots",
+    "#c:copper_ingots",
+    "#c:netherite_ingots",
+    "#c:emeralds",
+    "minecraft:amethyst_shard",
+    "#c:redstone_dusts",
+    "#c:lapis",
+    "#c:quartz",
+    "#c:diamonds"
+    *///?} else {
+    /*"#c:ingots/iron",
+    "#c:ingots/gold",
+    "#c:ingots/copper",
+    "#c:ingots/netherite",
+    "#c:gems/emerald",
+    //? if >=1.17
+    /^"minecraft:amethyst_shard",^/
+    "#c:dusts/redstone",
+    "#c:gems/lapis",
+    "#c:gems/quartz",
+    "#c:gems/diamond"
+    *///?}
+  ]
+}

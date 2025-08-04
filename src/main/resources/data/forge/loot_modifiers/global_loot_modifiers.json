@@ -1,0 +1,31 @@
+{
+  "replace": false,
+  "entries": [
+    "armor_trims:ancient_city",
+    "armor_trims:ancient_city_silence",
+    "armor_trims:bastion_bridge",
+    "armor_trims:bastion_hoglin_stable",
+    "armor_trims:bastion_other",
+    "armor_trims:bastion_treasure",
+    "armor_trims:bastion_bridge_netherite",
+    "armor_trims:bastion_hoglin_stable_netherite",
+    "armor_trims:bastion_other_netherite",
+    "armor_trims:bastion_treasure_netherite",
+    "armor_trims:desert_temple",
+    "armor_trims:elder_guardian",
+    "armor_trims:end_city",
+    "armor_trims:jungle_temple",
+    "armor_trims:nether_bridge",
+    "armor_trims:pillager_outpost",
+    "armor_trims:shipwreck_map",
+    "armor_trims:shipwreck_supply",
+    "armor_trims:shipwreck_treasure",
+    "armor_trims:stronghold_altar",
+    "armor_trims:stronghold_library",
+    "armor_trims:trail_ruins_host",
+    "armor_trims:trail_ruins_raiser",
+    "armor_trims:trail_ruins_shaper",
+    "armor_trims:trail_ruins_wayfinder",
+    "armor_trims:woodland_mansion"
+  ]
+}

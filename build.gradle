@@ -1,0 +1,348 @@
+plugins {
+    id 'maven-publish'
+    id "dev.architectury.loom"
+    id "dev.kikugie.j52j" version "1.0.2"
+    id "com.github.johnrengelman.shadow" version "8.1.0"
+}
+
+def platform = project.property("loom.platform")
+def mc_version = stonecutter.current.version
+def targetJavaVersion = 17
+
+// Unnecessary code thing.
+if (stonecutter.eval(mc_version, ">=1.20.5")) { // Java 21 for 1.20.5+
+    targetJavaVersion = 21
+} else if (stonecutter.eval(mc_version, "<1.18")) { // Java 17 for 1.18+
+    if (stonecutter.eval(mc_version, ">=1.17")) { // Java 16 for 1.17
+        targetJavaVersion = 16
+    } else targetJavaVersion = 8 // Java 8 for versions below.
+}
+def shadowmixinextras = platform == "forge" && stonecutter.eval(mc_version, "<1.18.2")
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = "${project.modid}-$platform-${project.minecraft_version}"
+}
+
+loom {
+    mods {
+        "${project.modid}" {
+            sourceSet sourceSets.main
+        }
+    }
+
+    if (platform == "forge") forge {
+        //if (stonecutter.eval(project.minecraft_version, ">=1.19.3")) convertAccessWideners.set(true)
+        mixinConfigs("${project.modid}.mixins.json")
+    } else if (platform == "neoforge") neoForge {}
+
+    //if (stonecutter.eval(project.minecraft_version, ">=1.19.3")) accessWidenerPath = file("../../src/main/resources/${modid}.accesswidener")
+
+    runConfigs.all {
+        ideConfigGenerated(true) // Run configurations are not created for subprojects by default
+        runDir = "../../run" // Use a shared run folder and create separate worlds
+    }
+
+    mixin {
+        defaultRefmapName = "${project.modid}.mixins.refmap.json"
+    }
+}
+
+stonecutter {
+    stonecutter.const("fabric", platform == "fabric")
+    stonecutter.const("forge", platform == "forge")
+    stonecutter.const("neoforge", platform == "neoforge")
+}
+
+//j52j {
+//    params {
+//        /* Enables indentation in the processed JSON files.
+//        Due to limitations of Gson, the indent can only be two spaces.*/
+//        prettyPrinting = true // default: false
+//    }
+//}
+
+if (shadowmixinextras) tasks.build.dependsOn tasks.shadowJar
+shadowJar {
+    if (shadowmixinextras) {
+        configurations = [project.configurations.shadow]
+        relocate("com.llamalad7.mixinextras", project.group+'.'+project.modid+".mixinextras")
+        mergeServiceFiles() // Very important!
+    }
+}
+
+remapJar {
+    if (shadowmixinextras) {
+        inputFile.set shadowJar.archiveFile
+        dependsOn shadowJar
+    }
+}
+
+configurations {
+    if (shadowmixinextras) {
+        shade
+        implementation.extendsFrom shadow
+    }
+}
+
+repositories {
+    // Add repositories to retrieve artifacts from in here.
+    // You should only use this when depending on other mods because
+    // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+    // See https://docs.gradle.org/current/userguide/declaring_repositories.html
+    // for more information about repositories.
+    maven {
+        name = 'NeoForge'
+        url = 'https://maven.neoforged.net/releases/'
+    }
+
+    mavenCentral()
+
+    maven {
+        name = 'Sponge / Mixin'
+        url = 'https://repo.spongepowered.org/repository/maven-public/'
+    }
+
+    maven {
+        name = 'BlameJared Maven (CrT / Bookshelf)' // also JEI
+        url = 'https://maven.blamejared.com'
+    }
+
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    }
+
+    maven { url "https://maven.shedaniel.me/" }
+
+    // Cursemaven
+    maven {
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+
+    maven { url "https://maven.terraformersmc.com/releases/" }
+
+    maven {
+        name "tterrag maven"
+        url "https://maven.tterrag.com/"
+    }
+}
+
+dependencies {
+    // To change the versions see the gradle.properties file
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
+
+    if (platform == "fabric") {
+        modImplementation "net.fabricmc:fabric-loader:${project.fabric_version}"
+        // Fabric API. This is technically optional, but you probably want it anyway.
+        modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+        if (stonecutter.eval(project.minecraft_version, "<1.17")) {
+            modImplementation("me.shedaniel:RoughlyEnoughItems:${project.jei_rei_version}") {
+                exclude(group: "net.fabricmc.fabric-api")
+                exclude(group: "net.fabricmc", module: "fabric-loader")
+            }
+        } else {
+            modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.jei_rei_version}")
+            modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${project.jei_rei_version}") {
+                exclude(group: "net.fabricmc.fabric-api")
+                exclude(group: "net.fabricmc", module: "fabric-loader")
+                if (stonecutter.eval(project.minecraft_version, ">=1.19")) {
+                    exclude(group: "dev.architectury")
+                }
+            }
+            if (stonecutter.eval(project.minecraft_version, "=1.19.3")) {
+                modRuntimeOnly("curse.maven:architectury-api-419699:4555755")
+            } else if (stonecutter.eval(project.minecraft_version, "=1.19.2")) {
+                modRuntimeOnly("curse.maven:architectury-api-419699:5137941")
+            }
+        }
+        modImplementation("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_version}") {
+            exclude(group: "net.fabricmc.fabric-api")
+            exclude(group: "net.fabricmc", module: "fabric-loader")
+        }
+
+        modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}") {
+            exclude(group: "net.fabricmc.fabric-api")
+            exclude(group: "net.fabricmc", module: "fabric-loader")
+        }
+    } else if (platform == "forge") {
+        forge "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
+        if (shadowmixinextras) {
+            shadow(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
+        } else {
+            compileOnly annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1")
+            implementation include("io.github.llamalad7:mixinextras-forge:0.4.1")
+        }
+        if (stonecutter.eval(project.minecraft_version, "1.18.2")) {
+            modRuntimeOnly "curse.maven:atlasviewer-633577:3868446"
+        } else if (stonecutter.eval(project.minecraft_version, "1.19.2")) {
+            modRuntimeOnly "curse.maven:atlasviewer-633577:4420382"
+
+            //modRuntimeOnly "curse.maven:create-328085:5797604"
+            //modRuntimeOnly "com.jozufozu.flywheel:flywheel-forge-1.19.2:0.6.11"
+            //modRuntimeOnly "curse.maven:architectury-api-419699:5137942"
+            //modRuntimeOnly "curse.maven:curios-309927:5843737"
+            //modRuntimeOnly "curse.maven:estrogen-850410:5538094" // Still cis tho
+        } else if (stonecutter.eval(project.minecraft_version, "1.19.3")) {
+            modRuntimeOnly "curse.maven:atlasviewer-633577:4420383"
+        } else if (stonecutter.eval(project.minecraft_version, "1.19.4")) {
+            modRuntimeOnly  "curse.maven:atlasviewer-633577:4441340"
+        }
+    } else if (platform == "neoforge") {
+        neoForge "net.neoforged:neoforge:${project.neoforge_version}"
+    }
+    if (platform.contains("forge")) { // Forge and Neoforge
+        if (stonecutter.eval(project.minecraft_version, ">=1.18.2")) {
+            modCompileOnlyApi "mezz.jei:jei-${project.minecraft_version}-forge-api:${project.jei_rei_version}"
+            modRuntimeOnly "mezz.jei:jei-${project.minecraft_version}-forge:${project.jei_rei_version}"
+        } else {
+            modCompileOnlyApi "mezz.jei:jei-${project.minecraft_version}:${project.jei_rei_version}:api"
+            modRuntimeOnly "mezz.jei:jei-${project.minecraft_version}:${project.jei_rei_version}"
+        }
+
+        modApi "me.shedaniel.cloth:cloth-config-forge:${project.cloth_version}"
+    }
+}
+
+processResources {
+    inputs.property "minecraft_version", project.minecraft_version
+    inputs.property "fabric_version", project.fabric_version
+    inputs.property "fabric_api_version", project.fabric_api_version
+    inputs.property "forge_version", project.forge_version
+    inputs.property "neoforge_version", project.neoforge_version
+    inputs.property "group", project.group
+    inputs.property "modid", project.modid
+    inputs.property "version", project.version
+    filteringCharset "UTF-8"
+
+    def replacements = [
+            minecraft_version: project.minecraft_version,
+            resourcepack_version: project.resourcepack_version,
+            datapack_version: project.datapack_version,
+            mixin_java_version: "JAVA_"+targetJavaVersion,
+            fabric_version: project.fabric_version,
+            fabric_api_version: project.fabric_api_version,
+            forge_version: project.forge_version,
+            forge_loader_version: project.forge_loader_version,
+            neoforge_version: project.neoforge_version,
+            neoforge_loader_version: project.neoforge_loader_version,
+            group: project.group,
+            modid: project.modid,
+            mod_name: project.mod_name,
+            version: project.version,
+            mod_description: project.mod_description,
+            author: project.author,
+            license: project.license,
+            minecraft_dep: project.minecraft_dep,
+            jei_rei_version: project.jei_rei_version,
+            cloth_version: project.cloth_version,
+            modmenu_version: project.modmenu_version,
+            rei_plugin_endpoint: stonecutter.eval(project.minecraft_version, ">=1.17") ? "rei_client" : "rei_plugins"
+    ]
+
+    filesMatching("fabric.mod.json") { expand replacements }
+    filesMatching("META-INF/mods.toml") { expand replacements }
+    filesMatching("META-INF/neoforge.mods.toml") { expand replacements }
+    filesMatching("${project.modid}.mixins.json5") { expand replacements }
+    filesMatching("pack.mcmeta") { expand replacements }
+
+    if (platform == "forge") {
+        if (stonecutter.eval(project.minecraft_version, ">=1.17")) exclude("data/c/**")
+    } else {
+        exclude("data/forge/**")
+    }
+    if (stonecutter.eval(project.minecraft_version, "<1.17")) {
+        exclude("data/armor_trims/recipes/bolt_smithing_template.json5")
+        exclude("data/armor_trims/recipes/bolt_smithing_template_waxed.json5")
+        exclude("data/armor_trims/recipes/silence_smithing_template.json5")
+        exclude("data/armor_trims/recipes/ward_smithing_template.json5")
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+
+    // ensure that the encoding is set to UTF-8, no matter what the system default is
+    // this fixes some edge cases with special characters not displaying correctly
+    // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
+    // If Javadoc is generated, this must be specified in that task too.
+    it.options.encoding = "UTF-8"
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        it.options.release.set(targetJavaVersion)
+    }
+}
+
+tasks.register("collect") {
+    setGroup "project"
+    doLast {
+        file("$rootDir/build/libs").mkdirs()
+        copy {
+            from "build/libs"
+            into "$rootDir/build/libs"
+        }
+    }
+}
+
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+    // if it is present.
+    // If you remove this line, sources will not be generated.
+    withSourcesJar()
+
+    //withJavadocJar()
+}
+
+jar {
+    from("LICENSE") {
+        rename { "${it}_${project.modid}" }
+    }
+    manifest {
+        attributes([
+                'Specification-Title'     : mod_name,
+                'Specification-Vendor'    : author,
+                'Specification-Version'   : project.jar.archiveVersion,
+                'Implementation-Title'    : project.name,
+                'Implementation-Version'  : project.jar.archiveVersion,
+                'Implementation-Vendor'   : author,
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'Timestamp'               : System.currentTimeMillis(),
+                'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
+                'Build-On-Minecraft'      : minecraft_version
+        ])
+    }
+
+    sourcesJar {
+        from(rootProject.file("LICENSE")) {
+            rename { "${it}_${mod_name}" }
+        }
+    }
+}
+
+// configure the maven publication
+publishing {
+    publications {
+        create("mavenJava", MavenPublication) {
+            artifactId = project.modid
+            from components.java
+        }
+    }
+
+    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+    repositories {
+        // Add repositories to publish to here.
+        // Notice: This block does NOT have the same function as the block in the top level.
+        // The repositories here will be used for publishing your artifact, not for
+        // retrieving dependencies.
+    }
+}

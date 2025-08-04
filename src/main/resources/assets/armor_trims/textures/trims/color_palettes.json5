@@ -1,0 +1,125 @@
+// Note: This file is JSON5 because of Stonecutter. Any resourcepacks color palettes should use regular JSON.
+{
+  "tag": [
+    //? if forge {
+    {
+      "id": "forge:ingots/iron",
+      "path": "armor_trims:trims/color_palettes/iron"
+    },
+    {
+      "id": "forge:ingots/gold",
+      "path": "armor_trims:trims/color_palettes/gold"
+    },
+    {
+      "id": "forge:ingots/copper",
+      "path": "armor_trims:trims/color_palettes/copper"
+    },
+    {
+      "id": "forge:ingots/netherite",
+      "path": "armor_trims:trims/color_palettes/netherite"
+    },
+    {
+      "id": "forge:gems/emerald",
+      "path": "armor_trims:trims/color_palettes/emerald"
+    },
+    {
+      "id": "forge:dusts/redstone",
+      "path": "armor_trims:trims/color_palettes/redstone"
+    },
+    {
+      "id": "forge:gems/lapis",
+      "path": "armor_trims:trims/color_palettes/lapis"
+    },
+    {
+      "id": "forge:gems/quartz",
+      "path": "armor_trims:trims/color_palettes/quartz"
+    },
+    {
+      "id": "forge:gems/diamond",
+      "path": "armor_trims:trims/color_palettes/diamond"
+    }
+    //?} elif >=1.18.2 {
+    /*{
+      "id": "c:iron_ingots",
+      "path": "armor_trims:trims/color_palettes/iron"
+    },
+    {
+      "id": "c:gold_ingots",
+      "path": "armor_trims:trims/color_palettes/gold"
+    },
+    {
+      "id": "c:copper_ingots",
+      "path": "armor_trims:trims/color_palettes/copper"
+    },
+    {
+      "id": "c:netherite_ingots",
+      "path": "armor_trims:trims/color_palettes/netherite"
+    },
+    {
+      "id": "c:emeralds",
+      "path": "armor_trims:trims/color_palettes/emerald"
+    },
+    {
+      "id": "c:redstone_dusts",
+      "path": "armor_trims:trims/color_palettes/redstone"
+    },
+    {
+      "id": "c:lapis",
+      "path": "armor_trims:trims/color_palettes/lapis"
+    },
+    {
+      "id": "c:quartz",
+      "path": "armor_trims:trims/color_palettes/quartz"
+    },
+    {
+      "id": "c:diamonds",
+      "path": "armor_trims:trims/color_palettes/diamond"
+    }
+    *///?} else {
+    /*{
+      "id": "c:ingots/iron",
+      "path": "armor_trims:trims/color_palettes/iron"
+    },
+    {
+      "id": "c:ingots/gold",
+      "path": "armor_trims:trims/color_palettes/gold"
+    },
+    {
+      "id": "c:ingots/copper",
+      "path": "armor_trims:trims/color_palettes/copper"
+    },
+    {
+      "id": "c:ingots/netherite",
+      "path": "armor_trims:trims/color_palettes/netherite"
+    },
+    {
+      "id": "c:gems/emerald",
+      "path": "armor_trims:trims/color_palettes/emerald"
+    },
+    {
+      "id": "c:dusts/redstone",
+      "path": "armor_trims:trims/color_palettes/redstone"
+    },
+    {
+      "id": "c:gems/lapis",
+      "path": "armor_trims:trims/color_palettes/lapis"
+    },
+    {
+      "id": "c:gems/quartz",
+      "path": "armor_trims:trims/color_palettes/quartz"
+    },
+    {
+      "id": "c:gems/diamond",
+      "path": "armor_trims:trims/color_palettes/diamond"
+    }
+    *///?}
+  ]
+  //? if >=1.17 {
+  , "item": [
+    {
+      "id": "minecraft:amethyst_shard",
+      "path": "armor_trims:trims/color_palettes/amethyst"
+    }
+  ]
+  //?}
+}

@@ -1,0 +1,68 @@
+{
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.armor_trims.trim_with_all_armor_patterns.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      //? if >=1.19 {
+      "item": "armor_trims:silence_armor_trim_smithing_template"
+      //?} else {
+      /*"item": "armor_trims:spire_armor_trim_smithing_template"
+      *///?}
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.armor_trims.trim_with_all_armor_patterns.title"
+    }
+  },
+  "parent": "armor_trims:trim_with_any_armor_pattern",
+  "criteria": {
+    /*"code_triggered_bolt":      {"trigger": "minecraft:impossible"},
+    "code_triggered_flow":      {"trigger": "minecraft:impossible"},
+    "code_triggered_host":      {"trigger": "minecraft:impossible"},
+    "code_triggered_raiser":    {"trigger": "minecraft:impossible"},
+    "code_triggered_shaper":    {"trigger": "minecraft:impossible"},
+    "code_triggered_wayfinder": {"trigger": "minecraft:impossible"},
+    */
+    //? if >=1.19 {
+    "code_triggered_silence":   {"trigger": "minecraft:impossible"},
+    "code_triggered_ward":      {"trigger": "minecraft:impossible"},
+    //?}
+    "code_triggered_coast":     {"trigger": "minecraft:impossible"},
+    "code_triggered_dune":      {"trigger": "minecraft:impossible"},
+    "code_triggered_eye":       {"trigger": "minecraft:impossible"},
+    "code_triggered_rib":       {"trigger": "minecraft:impossible"},
+    "code_triggered_sentry":    {"trigger": "minecraft:impossible"},
+    "code_triggered_snout":     {"trigger": "minecraft:impossible"},
+    "code_triggered_spire":     {"trigger": "minecraft:impossible"},
+    "code_triggered_tide":      {"trigger": "minecraft:impossible"},
+    "code_triggered_vex":       {"trigger": "minecraft:impossible"},
+    "code_triggered_wild":      {"trigger": "minecraft:impossible"}
+  },
+  "requirements": [
+    /*["code_triggered_bolt"],
+    ["code_triggered_flow"],
+    ["code_triggered_host"],
+    ["code_triggered_raiser"],
+    ["code_triggered_shaper"],
+    ["code_triggered_wayfinder"],
+    */
+    //? if >=1.19 {
+    ["code_triggered_silence"],
+    ["code_triggered_ward"],
+    //?}
+    ["code_triggered_coast"],
+    ["code_triggered_dune"],
+    ["code_triggered_eye"],
+    ["code_triggered_rib"],
+    ["code_triggered_sentry"],
+    ["code_triggered_snout"],
+    ["code_triggered_spire"],
+    ["code_triggered_tide"],
+    ["code_triggered_vex"],
+    ["code_triggered_wild"]
+  ]
+}

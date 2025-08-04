@@ -1,0 +1,12 @@
+{
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/woodland_mansion"
+    }
+  ],
+  "addition": "armor_trims:vex_armor_trim_smithing_template",
+  "count": 1,
+  "chance": 50,
+  "type": "armor_trims:chest_loot_modifier"
+}

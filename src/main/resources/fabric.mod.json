@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "id": "${modid}",
+  "version": "${version}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
+  "authors": [
+    "${author}"
+  ],
+  "contact": {
+    "sources": "https://github.com/Hipposgrumm/armor-trims",
+    "homepage": "https://github.com/Hipposgrumm/armor-trims",
+    "issues": "https://github.com/Hipposgrumm/armor-trims/issues"
+  },
+  "license": "${license}",
+  "icon": "${modid}.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "${group}.${modid}.Armortrims"
+    ],
+    "client": [
+      "${group}.${modid}.Armortrims"
+    ],
+    "${rei_plugin_endpoint}": [
+      "${group}.${modid}.compat.jei.REI_Armortrims"
+    ],
+    "modmenu": [
+      "${group}.${modid}.config.ModMenuAccess"
+    ]
+  },
+  "mixins": [
+    "${modid}.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${fabric_version}",
+    "fabric": ">=${fabric_api_version}",
+    "minecraft": "${minecraft_dep}"
+  },
+  "suggests": {
+    "rei": ">=${jei_rei_version}",
+    "cloth-config": ">=${cloth_version}",
+    "modmenu": ">=${modmenu_version}"
+  }
+}
