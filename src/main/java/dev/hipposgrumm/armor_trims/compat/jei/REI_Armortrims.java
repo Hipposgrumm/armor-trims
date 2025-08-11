@@ -10,7 +10,7 @@ import dev.hipposgrumm.armor_trims.api.jei.ArmortrimsRecipeDisplay;
 import dev.hipposgrumm.armor_trims.api.trimming.TrimGetter;
 import dev.hipposgrumm.armor_trims.config.Config;
 //? <1.19
-/^import net.minecraft.network.chat.TranslatableComponent;^/
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -53,7 +53,7 @@ public class REI_Armortrims implements
     /^public void registerPluginCategories(RecipeHelper registry) {
     ^///?}
         if (Config.enableJei) {
-            registry./^? if >=1.17 {^/add/^?} else {^//^registerCategory^//^?}^/(new ArmortrimsRecipeCategory(TRIMMING, /^? if >=1.19 {^/Component.translatable/^?} else {^//^new TranslatableComponent^//^?}^/("jei.armor_trimming"), TrimGetter.applyTrim(new ItemStack(Items.IRON_CHESTPLATE), TrimRegistry.defaultTrim(), new ItemStack(Items.EMERALD))) {
+            registry./^? if >=1.17 {^/add/^?} else {^//^registerCategory^//^?}^/(new ArmortrimsRecipeCategory(TRIMMING, /^? if >=1.19 {^//^Component.translatable^//^?} else {^/new TranslatableComponent/^?}^/("jei.armor_trimming"), TrimGetter.applyTrim(new ItemStack(Items.IRON_CHESTPLATE), TrimRegistry.defaultTrim(), new ItemStack(Items.EMERALD))) {
                 @Override
                 protected void onSlotsCreated(Slot base, Slot additional, Slot materials, Slot out) {
                     out.clearEntries();
@@ -89,7 +89,7 @@ public class REI_Armortrims implements
                     return false;
                 }
             });
-            registry./^? if >=1.17 {^/add/^?} else {^//^registerCategory^//^?}^/(new ArmortrimsRecipeCategory(UPGRADING, /^? if >=1.19 {^/Component.translatable/^?} else {^//^new TranslatableComponent^//^?}^/("jei.item_upgrading"), Items.NETHERITE_CHESTPLATE.getDefaultInstance()));
+            registry./^? if >=1.17 {^/add/^?} else {^//^registerCategory^//^?}^/(new ArmortrimsRecipeCategory(UPGRADING, /^? if >=1.19 {^//^Component.translatable^//^?} else {^/new TranslatableComponent/^?}^/("jei.item_upgrading"), Items.NETHERITE_CHESTPLATE.getDefaultInstance()));
     //? if <1.17 {
         /^}
     }

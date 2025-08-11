@@ -132,7 +132,7 @@ public abstract class SmithingTemplate extends Item {
                 /*// This is only needed on Fabric because the UI doesn't wraparound like on Forge.
                 if (item.getString().length()>=(flag.isAdvanced()?Math.max(30,Registry.ITEM.getKey(this).toString().length()):30)) {
                     itemlist.add(item);
-                    item = /^? if >=1.19 {^/Component.literal/^?} else {^//^new TextComponent^//^?}^/("");
+                    item = /^? if >=1.19 {^//^Component.literal^//^?} else {^/new TextComponent/^?}^/("");
                 }
                 *///?}
             }

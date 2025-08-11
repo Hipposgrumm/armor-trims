@@ -22,6 +22,8 @@ import net.minecraft.world.item.Items;
 import java.util.*;
 
 //? if forge {
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
 //?}
 

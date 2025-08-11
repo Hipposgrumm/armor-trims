@@ -23,11 +23,11 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
 //? if >=1.18.2 {
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.tags.TagKey;
+    import net.minecraft.server.packs.resources.ResourceManager;
+    import net.minecraft.tags.TagKey;
 //?} else {
-/*import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.tags.Tag;
+    /*import net.minecraft.server.packs.resources.ResourceManager;
+    import net.minecraft.tags.Tag;
 *///?}
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.inventory.MenuType;
@@ -35,44 +35,44 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
 //? if forge {
-import dev.hipposgrumm.armor_trims.loot.ChestLootModifier;
-import dev.hipposgrumm.armor_trims.loot.EntityLootModifier;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.loot.IGlobalLootModifier;
-import net.minecraftforge.event.TagsUpdatedEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-//? if >=1.19 {
-    import net.minecraftforge.client.ConfigScreenHandler;
-    import net.minecraftforge.client.event.ModelEvent;
-//?} else {
-    /*import net.minecraftforge.client.event.ModelBakeEvent;
-    import net.minecraftforge.client.event.ModelRegistryEvent;
-    import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
-    //? if >=1.18 {
-        /^import net.minecraftforge.client.ConfigGuiHandler;
-        import net.minecraftforge.client.model.ForgeModelBakery;
-    ^///?}
-*///?}
-//? if >=1.17 {
-    import net.minecraftforge.common.extensions.IForgeMenuType;
-    import net.minecraftforge.event.ModMismatchEvent;
-    import net.minecraftforge.registries.RegistryObject;
-//?} else {
-    /*import net.minecraftforge.client.model.ModelLoader;
-    import net.minecraftforge.fml.ExtensionPoint;
-    import net.minecraftforge.common.extensions.IForgeContainerType;
-    import net.minecraftforge.event.RegistryEvent;
-*///?}
+    import dev.hipposgrumm.armor_trims.loot.ChestLootModifier;
+    import dev.hipposgrumm.armor_trims.loot.EntityLootModifier;
+    import net.minecraftforge.common.MinecraftForge;
+    import net.minecraftforge.common.Tags;
+    import net.minecraftforge.common.loot.IGlobalLootModifier;
+    import net.minecraftforge.event.TagsUpdatedEvent;
+    import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+    import net.minecraftforge.eventbus.api.IEventBus;
+    import net.minecraftforge.fml.ModList;
+    import net.minecraftforge.fml.ModLoadingContext;
+    import net.minecraftforge.fml.common.Mod;
+    import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+    import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+    import net.minecraftforge.fml.loading.FMLEnvironment;
+    import net.minecraftforge.registries.DeferredRegister;
+    import net.minecraftforge.registries.ForgeRegistries;
+    //? if >=1.19 {
+        import net.minecraftforge.client.ConfigScreenHandler;
+        import net.minecraftforge.client.event.ModelEvent;
+    //?} else {
+        /*import net.minecraftforge.client.event.ModelBakeEvent;
+        import net.minecraftforge.client.event.ModelRegistryEvent;
+        import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
+        //? if >=1.18 {
+            import net.minecraftforge.client.ConfigGuiHandler;
+            import net.minecraftforge.client.model.ForgeModelBakery;
+        //?}
+    *///?}
+    //? if >=1.17 {
+        import net.minecraftforge.common.extensions.IForgeMenuType;
+        import net.minecraftforge.event.ModMismatchEvent;
+        import net.minecraftforge.registries.RegistryObject;
+    //?} else {
+        /*import net.minecraftforge.client.model.ModelLoader;
+        import net.minecraftforge.fml.ExtensionPoint;
+        import net.minecraftforge.common.extensions.IForgeContainerType;
+        import net.minecraftforge.event.RegistryEvent;
+    *///?}
 //?} else {
     /*import dev.hipposgrumm.armor_trims.loot.LootModifiers;
     import net.fabricmc.api.ClientModInitializer;
@@ -99,7 +99,7 @@ import java.util.function.Supplier;
 
 //? if forge
 @Mod(Armortrims.MODID)
-public class Armortrims/*? if fabric {*//*implements ModInitializer, ClientModInitializer*//*?}*/{
+public class Armortrims/*? if fabric {*//*implements ModInitializer, ClientModInitializer*//*?}*/ {
     public static final String MODID = "armor_trims";
     public static final Logger LOGGER = LogManager.getLogger("Armor Trims Backport");
 
@@ -115,40 +115,41 @@ public class Armortrims/*? if fabric {*//*implements ModInitializer, ClientModIn
 
     //?} else {
     /*private static MenuType<SmithingMenuNew> _SMITHING_MENU_NEW;
-    *///?}
+     *///?}
 
     public static final Supplier<MenuType<SmithingMenuNew>> SMITHING_MENU_NEW =
             //? if forge {
             GUIS.register("smithing_menu_new", () -> /*? if >=1.17 {*/IForgeMenuType/*?} else {*//*IForgeContainerType*//*?}*/.create(SmithingMenuNew::new))
             //?} else {
             /*() -> _SMITHING_MENU_NEW
-            *///?}
-    ;
+             *///?}
+            ;
 
     public static final Supplier<RecipeSerializer<UntrimmingSpecialRecipe>> UNTRIMMING_RECIPE =
             //? if forge {
             RECIPE_TYPES.register(UntrimmingSpecialRecipe.ID.getPath(), () -> UntrimmingSpecialRecipe.Serializer.INSTANCE)
             //?} else {
             /*() -> UntrimmingSpecialRecipe.Serializer.INSTANCE
-            *///?}
-    ;
+             *///?}
+            ;
 
     //? if >=1.18.2 {
     public static final TagKey<Item> TRIM_MATERIALS_TAG = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(MODID,"trim_materials"));
     public static final TagKey<Item> NON_TRIMMABLE_ITEMS_TAG = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(MODID,"non_trimmables"));
     //?} else {
-    /*public static final Tag<Item> TRIM_MATERIALS_TAG = /^? if forge {^/ItemTags.createOptional/^?} else {^//^TagRegistry.item^//^?}^/(new ResourceLocation(MODID,"trim_materials"));
-    public static final Tag<Item> NON_TRIMMABLE_ITEMS_TAG = /^? if forge {^/ItemTags.createOptional/^?} else {^//^TagRegistry.item^//^?}^/(new ResourceLocation(MODID,"non_trimmables"));
+    /*public static final Tag<Item> TRIM_MATERIALS_TAG = /^? if forge {^/ItemTags.createOptional/^?} else {^//^TagRegistry.item^//^?}^/(new ResourceLocation(MODID, "trim_materials"));
+    public static final Tag<Item> NON_TRIMMABLE_ITEMS_TAG = /^? if forge {^/ItemTags.createOptional/^?} else {^//^TagRegistry.item^//^?}^/(new ResourceLocation(MODID, "non_trimmables"));
     *///?}
 
-    private static final TrimTextureManager trimTextures = new TrimTextureManager();
+    private static TrimTextureManager trimTextures;
 
     //? if fabric {
     /*@Override
     public void onInitialize() {
     *///?} else {
     public Armortrims() {
-    //?}
+        if (FMLEnvironment.dist.isClient()) trimTextures = new TrimTextureManager();
+        //?}
         Config.registerConfig();
 
         //? if forge
@@ -176,20 +177,18 @@ public class Armortrims/*? if fabric {*//*implements ModInitializer, ClientModIn
         //? if >=1.17
         LOOT_MODIFIERS.register(bus);
 
-        MinecraftForge.EVENT_BUS.addListener(Armortrims::appendTrimInfo);
-        //? if <1.17 {
-        /*bus.addGenericListener(GlobalLootModifierSerializer.class, Armortrims::registerLootModifiers);
-        *///?}
+        //? if <1.17
+        /*bus.addGenericListener(GlobalLootModifierSerializer.class, Armortrims::registerLootModifiers);*/
         if (FMLEnvironment.dist.isClient()) {
             bus.addListener(Armortrims::onClientSetup);
-            bus.addListener(Armortrims::onModelRegister);
-            bus.addListener(Armortrims::onModelBake);
+            MinecraftForge.EVENT_BUS.addListener(Armortrims.ForgeAppendTooltipEvent::appendTrimInfo);
+            bus.addListener(Armortrims.ForgeModelBakeryEvents::onModelRegister);
+            bus.addListener(Armortrims.ForgeModelBakeryEvents::onModelBake);
             MinecraftForge.EVENT_BUS.addListener(Armortrims::onReloadData);
         }
         //?} else {
-        /*ItemTooltipCallback.EVENT.register(Armortrims::appendTrimInfo);
 
-        //? if >=1.18 {
+        /*//? if >=1.18 {
         LootTableEvents.MODIFY
         //?} else {
         /^LootTableLoadingCallback.EVENT
@@ -205,6 +204,10 @@ public class Armortrims/*? if fabric {*//*implements ModInitializer, ClientModIn
     //? if fabric {
     /*@Override
     public void onInitializeClient() {
+        trimTextures = new TrimTextureManager();
+
+        ItemTooltipCallback.EVENT.register(Armortrims::appendTrimInfo);
+
         //? if >=1.18 {
         MenuScreens
         //?} else {
@@ -225,6 +228,7 @@ public class Armortrims/*? if fabric {*//*implements ModInitializer, ClientModIn
 
     // Add Trim stuff to tooltip.
     //? if forge {
+    public static class ForgeAppendTooltipEvent {
     public static void appendTrimInfo(ItemTooltipEvent event) {
         ItemStack itemstack = event.getItemStack();
         TooltipFlag tooltipFlag = event.getFlags();
@@ -241,8 +245,8 @@ public class Armortrims/*? if fabric {*//*implements ModInitializer, ClientModIn
             List<Component> extra = new ArrayList<>(3);
             extra.add(/*? if >=1.19 {*/Component.translatable/*?} else {*//*new TranslatableComponent*//*?}*/("tooltip.armor_trims.trim").withStyle(ChatFormatting.GRAY));
 
-            MutableComponent trimName = /*? if >=1.19 {*/Component.translatable/*?} else {*//*new TranslatableComponent*//*?}*/("trims."+trim.replace(':','.'));
-            if (tooltipFlag.isAdvanced()) trimName.append(" ("+trim+")");
+            MutableComponent trimName = /*? if >=1.19 {*/Component.translatable/*?} else {*//*new TranslatableComponent*//*?}*/("trims." + trim.replace(':', '.'));
+            if (tooltipFlag.isAdvanced()) trimName.append(" (" + trim + ")");
             trimName.withStyle(trimName.getStyle().withColor(color));
             extra.add(/*? if >=1.19 {*/Component.literal/*?} else {*//*new TextComponent*//*?}*/(" ").append(trimName));
 
@@ -252,21 +256,22 @@ public class Armortrims/*? if fabric {*//*implements ModInitializer, ClientModIn
                 materialName = /*? if >=1.19 {*/Component.translatable/*?} else {*//*new TranslatableComponent*//*?}*/(ForgeRegistries.ITEMS.getValue(material).getDescriptionId());
             //?} else {
             /*if (Registry.ITEM.containsKey(material)) {
-                materialName = /^? if >=1.19 {^/Component.translatable/^?} else {^//^new TranslatableComponent^//^?}^/(Registry.ITEM.get(material).getDescriptionId());
+                materialName = /^? if >=1.19 {^//^Component.translatable^//^?} else {^/new TranslatableComponent/^?}^/(Registry.ITEM.get(material).getDescriptionId());
             *///?}
             } else {
                 //? if >=1.19 {
                 materialName = Component.empty();
-                //?} else {
+                 //?} else {
                 /*materialName = (TextComponent) TextComponent.EMPTY;
                 *///?}
             }
-            if (tooltipFlag.isAdvanced()) materialName.append(" ("+material+")");
+            if (tooltipFlag.isAdvanced()) materialName.append(" (" + material + ")");
             materialName.withStyle(materialName.getStyle().withColor(color));
             extra.add(/*? if >=1.19 {*/Component.literal/*?} else {*//*new TextComponent*//*?}*/(" ").append(materialName));
 
-            list.addAll(1,extra);
+            list.addAll(1, extra);
         }
+    }//? if forge
     }
 
     //? if forge {
@@ -289,26 +294,28 @@ public class Armortrims/*? if fabric {*//*implements ModInitializer, ClientModIn
     // Reload Datapacks
     //? if forge {
     public static void onReloadData(TagsUpdatedEvent event) {
-    //?} else {
-    /*public static void onReloadData(RegistryAccess registries, boolean client) {
-    *///?}
+        //?} else {
+        /*public static void onReloadData(RegistryAccess registries, boolean client) {
+         *///?}
         TrimTextureManager.onReloadData();
         ColorPaletteManager.onReloadData();
     }
 
     //? if forge {
-    // Register Models
-    public static void onModelRegister(/*? if >=1.19 {*/ModelEvent.RegisterAdditional/*?} else {*//*ModelRegistryEvent*//*?}*/ event) {
-        ItemTrimModels.registerModels(/*? if >=1.19 {*/event::register/*?} elif >=1.18 {*//*ForgeModelBakery::addSpecialModel*//*?} else {*//*ModelLoader::addSpecialModel*//*?}*/);
-    }
+    public static class ForgeModelBakeryEvents {
+        // Register Models
+        public static void onModelRegister(/*? if >=1.19 {*/ModelEvent.RegisterAdditional/*?} else {*//*ModelRegistryEvent*//*?}*/ event) {
+            ItemTrimModels.registerModels(/*? if >=1.19 {*/event::register/*?} elif >=1.18 {*//*ForgeModelBakery::addSpecialModel*//*?} else {*//*ModelLoader::addSpecialModel*//*?}*/);
+        }
 
-    // Bake Models
-    public static void onModelBake(/*? if >=1.19 {*/ModelEvent.BakingCompleted/*?} else {*//*ModelBakeEvent*//*?}*/ event) {
-        //? if >=1.19 {
-        ItemTrimModels.bakeModels(event.getModels(), event.getModelBakery());
-        //?} else {
-        /*ItemTrimModels.bakeModels(event.getModelRegistry(), event.getModelLoader());
-        *///?}
+        // Bake Models
+        public static void onModelBake(/*? if >=1.19 {*/ModelEvent.BakingCompleted/*?} else {*//*ModelBakeEvent*//*?}*/ event) {
+            //? if >=1.19 {
+            ItemTrimModels.bakeModels(event.getModels(), event.getModelBakery());
+             //?} else {
+            /*ItemTrimModels.bakeModels(event.getModelRegistry(), event.getModelLoader());
+            *///?}
+        }
     }
     //?} else {
     /*// Register Models
